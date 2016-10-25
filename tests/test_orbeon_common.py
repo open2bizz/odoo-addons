@@ -26,7 +26,7 @@ import os
 from lxml import etree
 from xmlunittest import XmlTestMixin
 
-from ...tests import TODO
+from ...test_extensions import TODO
 
 _logger = logging.getLogger(__name__)
 
