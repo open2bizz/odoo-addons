@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+    <record id="orbeon_runner_form_form" model="ir.ui.view">
+      <field name="name">orbeon.runner_form.form</field>
+      <field name="model">orbeon.runner</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <field
+                name="state"
+                widget="statusbar"
+                />
+          </header>
+          <sheet>
+            <group>
+              <field name="builder_id" domain='[("state", "=", "current")]'/>
+              <field name="url" widget="url"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="orbeon_runner_form_tree" model="ir.ui.view">
+      <field name="name">orbeon.runner_form.tree</field>
+      <field name="model">orbeon.runner</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="builder_id" />
+          <field name="url" widget="url"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Runner form kanban (example: odoo/addons/hr/hr_dashboard.xml) -->
+    <record id="orbeon_runner_form_kanban" model="ir.ui.view">
+      <field name="name">orbeon.runner_form.kanban</field>
+      <field name="model">orbeon.runner</field>
+      <field name="arch" type="xml">
+        <kanban class="oe_background_grey o_kanban_dashboard">
+          <field name="builder_id" />
+          <field name="builder_name" />
+          <field name="url"/>
+          <templates>
+            <t t-name="kanban-box">
+              <div>   <!-- t-attf-class="#{kanban_color(record.color.raw_value)}"> -->
+                <div class="o_kanban_card_header">
+
+                  <div class="o_kanban_card_header_title">
+                    <div class="o_primary"><field name="builder_name"/></div>
+                    <div class="o_secondary">
+                      <t class="badge"><i class="fa fa-fw fa-at"/></t>
+                      <field name="builder_version"/>
+                    </div>
+                  </div>
+                  <!-- <div class="o_kanban_manage_button_section"> -->
+                  <!--   <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a> -->
+                  <!-- </div> -->
+                </div>
+                <div class="container o_kanban_card_content o_visible">
+                  <div class="row">
+                    <div class="col-xs-6 o_kanban_primary_left">
+                      <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
+                    </div>
+                    <div class="col-xs-6 o_kanban_primary_right">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- <div class="container o_kanban_card_manage_pane o_invisible"> -->
+                <!--   <div t-if="widget.editable" class="o_kanban_card_manage_settings row"> -->
+                <!--     <div class="col-xs-4 text-right"> -->
+                <!--       <a type="edit">Settings</a> -->
+                <!--     </div> -->
+                <!--   </div> -->
+                <!-- </div> -->
+
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <record id="orbeon_runner_form_action" model="ir.actions.act_window">
+      <field name="name">Orbeon Runner Forms</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">orbeon.runner</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="orbeon_runner_form_action_tree" model="ir.actions.act_window.view">
+      <field name="act_window_id" ref="orbeon_runner_form_action" />
+      <field name="sequence" eval="1" />
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="orbeon_runner_form_tree" />
+    </record>
+
+    <record id="orbeon_runner_form_action_form" model="ir.actions.act_window.view">
+      <field name="act_window_id" ref="orbeon_runner_form_action" />
+      <field name="sequence" eval="2" />
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="orbeon_runner_form_form" />
+    </record>
+  </data>
+</openerp>
