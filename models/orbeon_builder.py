@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import models, fields, api
-from openerp.exceptions import ValidationError
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 from lxml import etree
 
@@ -28,7 +28,7 @@ import re
 import logging
 _logger = logging.getLogger(__name__)
 
-class orbeon_builder(models.Model):
+class OrbeonBuilder(models.Model):
     _name = "orbeon.builder"
 
     name = fields.Char(
@@ -81,7 +81,6 @@ class orbeon_builder(models.Model):
         "is editable",
         default=False)
 
-    # TODO store
     url = fields.Text(
         'URL',
         compute="_get_url",
@@ -145,12 +144,12 @@ class orbeon_builder(models.Model):
                 
             vals['xml'] = etree.tostring(xml)
 
-        res = super(orbeon_builder, self).create(vals)
+        res = super(OrbeonBuilder, self).create(vals)
 
         # TODO store URL, because computation could casue performance issues
         # update_vals = {}
         # update_vals["url"] = res._get_url()
-        #super(orbeon_builder, self).write(update_vals)
+        #super(OrbeonBuilder, self).write(update_vals)
         
         return res
 
@@ -163,7 +162,7 @@ class orbeon_builder(models.Model):
         alter = {}
         alter["state"] = 'new'
         alter["version"] = builder.version + 1
-        res = super(orbeon_builder, self).copy(alter)
+        res = super(OrbeonBuilder, self).copy(alter)
 
         return res
 
@@ -192,16 +191,18 @@ class orbeon_builder(models.Model):
             "context": {}
         }
 
-    @api.one
     @api.onchange('state', 'server_id')
-    def _get_url(self, id=None):
+    def _get_url(self):
+        if hasattr(self, '_origin') and not isinstance(self._origin.id, models.NewId):
+            builder_id = self._origin.id
+        else:
+            builder_id = self.id
+        
+        builder_url = "%s/%s" % (self.server_id.base_url, "fr/orbeon/builder")
+        get_mode = {'new' : 'edit'}
+        url = "%s/%s/%i" % (builder_url, get_mode.get(self.state ,'view'), builder_id)
 
-        if not isinstance(self.id, models.NewId):
-            builder_url = "%s/%s" % (self.server_id.base_url, "fr/orbeon/builder")
-            get_mode = {'new' : 'edit'}
-            url = "%s/%s/%i" % (builder_url, get_mode.get(self.state ,'view'), self.id)
-
-            self.url = url
+        self.url = url
 
     @api.model
     def orbeon_search_read_data(self, domain=None, fields=None):

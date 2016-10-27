@@ -29,6 +29,7 @@
     "category": "Tools",
     "depends": [],
     "data": [
+        'security/ir.model.access.csv',
         "views/orbeon_server.xml",
         "views/orbeon_builder.xml",
         "views/orbeon_runner.xml",

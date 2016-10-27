@@ -18,13 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp import models, fields, api
+from odoo import api, fields, models
 
 import logging
 
 _logger = logging.getLogger(__name__)
 
-class orbeon_runner(models.Model):
+class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
     
     builder_id = fields.Many2one(
@@ -97,9 +97,9 @@ class orbeon_runner(models.Model):
             'url': self.url
         }
 
-    def orbeon_runner_form(self, cr, uid, ids, context=None):
-        _logger.error('open orbeon_runner_form')
-        # TODO From here open wizard (action window: to coppy or create/new
+    # def orbeon_runner_form(self, cr, uid, ids, context=None):
+    #     _logger.error('open orbeon_runner_form')
+    #     # TODO From here open wizard (action window: to coppy or create/new
 
     @api.multi
     def write(self, vals):
@@ -133,7 +133,6 @@ class orbeon_runner(models.Model):
             order='version DESC')
 
         return self.merge_xml_builder(current_builder.id)
-
 
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_builder(self, builder_id):

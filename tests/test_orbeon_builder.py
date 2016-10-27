@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from openerp.tests.common import TransactionCase
-from openerp.exceptions import UserError, ValidationError
+from odoo.tests.common import TransactionCase
+from odoo.exceptions import UserError, ValidationError
 
 from test_orbeon_common import TestOrbeonCommon, TODO
 
@@ -155,7 +155,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         try:
             self.builder_form_a_v1.sudo().write(
                 {
-                    'xml': '<?xml version="1.0"?><openerp></openerp>'
+                    'xml': '<?xml version="1.0"?><odoo></odoo>'
                 }
             )
         except Exception as e:
@@ -423,7 +423,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 {
                     'name': 'test_create_server_id_required',
                     'version_comment': 'version 1',
-                    'xml': '<?xml version="1.0"?><openerp></openerp>'
+                    'xml': '<?xml version="1.0"?><odoo></odoo>'
                 }
             )
 
@@ -434,7 +434,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 {
                     'name': 'test_write_server_id_required',
                     'version_comment': 'version 1',
-                    'xml': '<?xml version="1.0"?><openerp></openerp>'
+                    'xml': '<?xml version="1.0"?><odoo></odoo>'
                 }
             )
 
@@ -452,7 +452,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         try:
             self.builder_form_a_v1.sudo().write(
                 {
-                    'xml': '<?xml version="1.0"?><openerp></openerp>'                    
+                    'xml': '<?xml version="1.0"?><odoo></odoo>'                    
                 }
             )
         except Exception as e:

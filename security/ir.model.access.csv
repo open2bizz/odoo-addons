@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_orbeon_server,access_orbeon_server,model_orbeon_server,,1,0,0,0
+access_orbeon_builder,access_orbeon_builder,model_orbeon_builder,,1,0,0,0
+access_orbeon_runner,access_orbeon_runner,model_orbeon_runner,,1,0,0,0
