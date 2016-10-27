@@ -404,13 +404,44 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 }
             )
 
-    @TODO
     def test_create_constraint_state_current_unique_by_name(self):
         """Test create with unique "current" state by name"""
+        
+        # check a current exists
+        domain_filter = [('name', '=', self.builder_form_a_v2_current.name), ('state', '=', orbeon_builder.STATE_CURRENT)]
+        builder_current = self.builder_model.search(domain_filter)
+        self.assertEquals(builder_current.state, orbeon_builder.STATE_CURRENT)
 
-    @TODO
+        with self.assertRaisesRegexp(ValidationError, "already has a record with status 'current'"):
+            self.builder_model.sudo().create(
+                {
+                    'name': builder_current.name,
+                    'version_comment': 'version foobar',
+                    'server_id': self.server_1.id,
+                    'version': builder_current.version + 1,
+                    'state': orbeon_builder.STATE_CURRENT,
+                }
+            )
+
     def test_write_constraint_state_current_unique_by_name(self):
         """Test write with unique "current" state by name"""
+
+                # check a current exists
+        domain_filter = [('name', '=', self.builder_form_a_v2_current.name), ('state', '=', orbeon_builder.STATE_CURRENT)]
+        builder_current = self.builder_model.search(domain_filter)
+        self.assertEquals(builder_current.state, orbeon_builder.STATE_CURRENT)
+
+        # duplicate and update version to 1
+        self.builder_form_a_v2_current.duplicate_builder_form()
+        domain_filter = [('name', '=', self.builder_form_a_v2_current.name), ('version', '=', self.builder_form_a_v2_current.version + 1)]
+        builder_current_duplicated = self.builder_model.search(domain_filter)
+
+        with self.assertRaisesRegexp(ValidationError, "already has a record with status 'current'"):
+            builder_current_duplicated.write(
+                {
+                    'state': orbeon_builder.STATE_CURRENT
+                }
+            )
 
     @TODO
     def test_create_allow_duplicate_by_name_where_state_notcurrent(self):
