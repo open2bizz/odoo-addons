@@ -217,10 +217,10 @@ class TestOrbeonBuilder(TestOrbeonCommon):
     def test_write_name_required(self):
         """Test write with a missing, but required, name"""
         with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
-            self.builder_model.sudo().create(
+            self.builder_form_a_v1.sudo().write(
                 {
-                    'version_comment': 'version 1',
-                    'server_id': self.server_1.id
+                    'name': None,
+                    'version_comment': 'cleared name',
                 }
             )
 
@@ -276,7 +276,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
 
         for name in names:
             with self.assertRaisesRegexp(ValidationError, 'Name should not contain following characters.'):
-                self.builder_model.sudo().create(
+                self.builder_form_a_v1.sudo().write(
                     {
                         'name': name,
                         'version_comment': 'version 1',
@@ -323,10 +323,11 @@ class TestOrbeonBuilder(TestOrbeonCommon):
     def test_write_version_comment_required(self):
         """Test write with a missing, but required, version_comment"""
         with self.assertRaisesRegexp(IntegrityError, 'column "version_comment" violates not-null'):
-            self.builder_model.sudo().create(
+            self.builder_form_a_v1.sudo().write(
                 {
                     'name': 'test_write_version_comment_required',
-                    'server_id': self.server_1.id
+                    'server_id': self.server_1.id,
+                    'version_comment': None,
                 }
             )
 
@@ -465,11 +466,12 @@ class TestOrbeonBuilder(TestOrbeonCommon):
     def test_write_server_id_required(self):
         """Test write with a missing, but required, server_id"""
         with self.assertRaisesRegexp(IntegrityError, 'column "server_id" violates not-null'):
-            self.builder_model.sudo().create(
+            self.builder_form_a_v1.sudo().write(
                 {
                     'name': 'test_write_server_id_required',
                     'version_comment': 'version 1',
-                    'xml': '<?xml version="1.0"?><odoo></odoo>'
+                    'xml': '<?xml version="1.0"?><odoo></odoo>',
+                    'server_id': None,
                 }
             )
 
