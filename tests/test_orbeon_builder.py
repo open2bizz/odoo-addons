@@ -282,6 +282,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     }
                 )
 
+    @TODO
     def test_create_title_notrequired(self):
         """Test create with a missing, but not-required, title"""
 
@@ -467,6 +468,14 @@ class TestOrbeonBuilder(TestOrbeonCommon):
 
         with self.assertRaises(IntegrityError):
             self.builder_form_a_v1.sudo().unlink()
+
+    def test_delete_contains_no_runner_forms(self):
+        """Test delete with NO references to orbeon.runner(forms)"""
+
+        try:
+            self.builder_form_b_no_runner_forms.unlink()
+        except Exception as e:
+            self.fail(e)        
 
     def test_orbeon_search_read_new_notstored_by_orbeon_persistence(self):
         """Test reading a new Builder form, where xml (field) is empty - isn't stored yet (by

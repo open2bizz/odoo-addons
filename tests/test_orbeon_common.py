@@ -80,6 +80,17 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
                 'xml': self.xmlFromFile('test_orbeon4.10_builder_form_a_v2.xml'),
             })
 
+        self.builder_form_b_no_runner_forms = self.builder_model.sudo().create(
+            {
+                'name': 'form_b',
+                'title': 'Form B',
+                'state': 'current', # live (in production)
+                'version': 1,
+                'version_comment': 'no runner forms, just/only a builder form',
+                'server_id': self.server_1.id,
+            }
+        )
+
         # self.builder_form_a_v3_new_all = self.builder_model.sudo().create(
         #     {
         #         'name': 'form_a',
