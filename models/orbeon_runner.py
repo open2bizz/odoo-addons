@@ -115,7 +115,7 @@ class OrbeonRunner(models.Model):
         if self.is_merged == False:
             vals['is_merged'] = True
         
-        res = super(orbeon_runner, self).write(vals)
+        res = super(OrbeonRunner, self).write(vals)
         return res
     
     @api.multi
@@ -127,7 +127,7 @@ class OrbeonRunner(models.Model):
         # XXX maybe useless if merge_xml_current_builder() returns None?
         alter["xml"] = self.merge_xml_current_builder()
 
-        res = super(orbeon_runner, self).copy(alter)        
+        res = super(OrbeonRunner, self).copy(alter)        
         
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_current_builder(self):

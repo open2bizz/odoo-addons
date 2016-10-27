@@ -22,7 +22,9 @@
 from odoo.tests.common import TransactionCase
 
 from test_orbeon_common import TestOrbeonCommon, TODO
+from ..models import orbeon_runner
 
+from psycopg2 import IntegrityError
 from lxml import etree, objectify
 
 import logging
@@ -32,9 +34,15 @@ _logger = logging.getLogger(__name__)
 class TestOrbeonRunner(TestOrbeonCommon):
     """Tests for Orbeon Runner Forms"""
 
-    @TODO
     def test_write_invalidate_change_builder_id(self):
         """Test updating the builder_id is not allowed"""
+        with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
+            self.runner_form_a_v1.sudo().write(
+                {
+                    'builder_id': self.builder_form_a_v2_current.id,
+                }
+            )
+        
     
     def test_orbeon_search_read_new_notstored_by_orbeon_persistence(self):
         """Test reading a new runner form, where xml (field) is empty - isn't stored yet (by
