@@ -28,6 +28,9 @@ from xmlunittest import XmlTestMixin
 
 from ...test_extensions import TODO
 
+from ..models import orbeon_builder
+from ..models import orbeon_runner
+
 _logger = logging.getLogger(__name__)
 
 class TestOrbeonCommon(TransactionCase, XmlTestMixin):
@@ -57,7 +60,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
             {
                 'name': 'form_a',
                 'title': 'Form A',
-                # state: new
+                # state: orbeon_builder.STATE_NEW
                 # version: 1
                 'version_comment': '1 input',
                 'server_id': self.server_1.id,
@@ -68,7 +71,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
             {
                 'name': 'form_a',
                 'title': 'Form A',
-                'state': 'current', # live (in production)
+                'state': orbeon_builder.STATE_CURRENT, # live (in production)
                 'version': 2,
                 'version_comment': '2 inputs, 1 date',
                 'server_id': self.server_1.id,
@@ -84,7 +87,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
             {
                 'name': 'form_b',
                 'title': 'Form B',
-                'state': 'current', # live (in production)
+                'state': orbeon_builder.STATE_CURRENT, # live (in production)
                 'version': 1,
                 'version_comment': 'no runner forms, just/only a builder form',
                 'server_id': self.server_1.id,
@@ -94,7 +97,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
         # self.builder_form_a_v3_new_all = self.builder_model.sudo().create(
         #     {
         #         'name': 'form_a',
-        #         'state': 'new',
+        #         'state': orbeon_builder.STATE_NEW,
         #         'version': 3,
         #         'version_comment': 'Several controls; also with Odoo directives: nocopy (NC.), ERP-fields',
         #         'xml': self.xmlFromFile('test_orbeon4.10_builder_form_a_v3_all.xml'),

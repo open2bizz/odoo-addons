@@ -24,6 +24,14 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+from orbeon_builder import STATE_NEW as BUILDER_STATE_NEW
+from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
+
+STATE_NEW = 'new'
+STATE_PROGRESS = 'progress'
+STATE_COMPLETE = 'complete'
+STATE_CANCELED = 'canceled'
+
 class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
     
@@ -44,13 +52,13 @@ class OrbeonRunner(models.Model):
     
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("progress", "In Progress"),
-            ("complete", "Complete"),
-            ("canceled", "Canceled"),
+            (STATE_NEW, "New"),
+            (STATE_PROGRESS, "In Progress"),
+            (STATE_COMPLETE, "Complete"),
+            (STATE_CANCELED, "Canceled"),
         ],
         string="State",
-        default="new")
+        default=STATE_NEW)
 
     """Lets us know if this filed is merged with latest builder fields."""
     is_merged = fields.Boolean(
@@ -83,7 +91,7 @@ class OrbeonRunner(models.Model):
         if isinstance(self.id, models.NewId):
             url = "%s/new" % base_url
         else:
-            get_mode = {'new': 'edit', 'progress': 'edit'}
+            get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
             path_mode = get_mode.get(self.state ,'view')
             url = "%s/%s/%i" % (base_url, path_mode, self.id)
             self.url = url
@@ -109,10 +117,11 @@ class OrbeonRunner(models.Model):
         
         res = super(orbeon_runner, self).write(vals)
         return res
+    
     @api.multi
     def duplicate_runner_form(self):
         alter = {}
-        alter["state"] = 'new'
+        alter["state"] = STATE_NEW
         alter["is_merged"] = False
 
         # XXX maybe useless if merge_xml_current_builder() returns None?
@@ -123,13 +132,13 @@ class OrbeonRunner(models.Model):
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_current_builder(self):
         # No merge required if the runner's builder already is currrent
-        if (self.builder_id.state == 'current'):
+        if (self.builder_id.state == BUILDER_STATE_CURRENT):
             return self.xml
 
         orbeon_server = self.env['orbeon.builder']
-        current_builder = orbeon_server.search(
+        current_builder = orbeon_builder.search(
             [('name', '=', self.builder_id.name),
-             ('state', '=', 'current')],
+             ('state', '=', BUILDER_STATE_CURRENT)],
             limit=1,
             order='version DESC')
 

@@ -28,6 +28,12 @@ import re
 import logging
 _logger = logging.getLogger(__name__)
 
+STATE_CURRENT = 'current'
+STATE_NEW = 'new'
+STATE_MODIFIED = 'modified'
+STATE_OBSOLETE = 'obsolete'
+STATE_TEMPLATE = 'template'
+
 class OrbeonBuilder(models.Model):
     _name = "orbeon.builder"
 
@@ -53,14 +59,14 @@ class OrbeonBuilder(models.Model):
     
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("current", "Current"),
-            ("modified", "Modified"),
-            ("obsolete", "Obsolete"),
-            ("template", "Template"),
+            (STATE_NEW, "New"),
+            (STATE_CURRENT, "Current"),
+            (STATE_MODIFIED, "Modified"),
+            (STATE_OBSOLETE, "Obsolete"),
+            (STATE_TEMPLATE, "Template"),
         ],
         "State",
-        default="new",
+        default=STATE_NEW,
         required=True)
 
     xml = fields.Text(
@@ -104,7 +110,7 @@ class OrbeonBuilder(models.Model):
         """
         cur_record = self.search([
             ("name","=",self.name), 
-            ("state","=","current")
+            ("state","=",STATE_CURRENT)
             ])
         if len(cur_record) > 1:
             raise ValidationError("%s already has a record with status 'current'.\
@@ -160,7 +166,7 @@ class OrbeonBuilder(models.Model):
         builder = self.search([('name', '=', self.name)], limit=1, order='version DESC')
         
         alter = {}
-        alter["state"] = 'new'
+        alter["state"] = STATE_NEW
         alter["version"] = builder.version + 1
         res = super(OrbeonBuilder, self).copy(alter)
 
@@ -199,7 +205,7 @@ class OrbeonBuilder(models.Model):
             builder_id = self.id
         
         builder_url = "%s/%s" % (self.server_id.base_url, "fr/orbeon/builder")
-        get_mode = {'new' : 'edit'}
+        get_mode = {STATE_NEW: 'edit'}
         url = "%s/%s/%i" % (builder_url, get_mode.get(self.state ,'view'), builder_id)
 
         self.url = url

@@ -22,6 +22,8 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError, ValidationError
 
 from test_orbeon_common import TestOrbeonCommon, TODO
+from ..models import orbeon_builder
+from ..models import orbeon_runner
 
 from psycopg2 import IntegrityError
 from lxml import etree
@@ -82,7 +84,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': form_title,
                     'version_comment': 'version 1',
                     'server_id': self.server_1.id,
-                    'state': 'new',
+                    'state': orbeon_builder.STATE_NEW,
                     'version': 2,
                 }
             )
@@ -114,7 +116,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': form_title,
                     'version_comment': 'version 1',
                     'server_id': self.server_1.id,
-                    'state': 'current',
+                    'state': orbeon_builder.STATE_CURRENT,
                     'version': 3,
                 }
             )
@@ -176,13 +178,13 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         try:
             self.builder_form_a_v2_current.sudo().write(
                 {
-                    'state': 'new',
+                    'state': orbeon_builder.STATE_NEW,
                 }
             )
             
             self.builder_form_a_v1.sudo().write(
                 {
-                    'state': 'current',
+                    'state': orbeon_builder.STATE_CURRENT,
                 }
             )
         except Exception as e:
@@ -524,16 +526,16 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         builder_version_1 = self.builder_model.search(version_1_filter)
 
         self.assertEquals(builder_version_1.version, 1)
-        self.assertEquals(builder_version_1.state, 'new')
+        self.assertEquals(builder_version_1.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_model.search_count(version_1_filter), 1)
 
         # version 2: initial to be copied
         current_version_filter = list(name_filter)
-        current_version_filter.append(('state', '=', 'current'))
+        current_version_filter.append(('state', '=', orbeon_builder.STATE_CURRENT))
         builder_current = self.builder_model.search(current_version_filter)
 
         self.assertEquals(builder_current.version, 2)
-        self.assertEquals(builder_current.state, 'current')
+        self.assertEquals(builder_current.state, orbeon_builder.STATE_CURRENT)
         self.assertEquals(self.builder_model.search_count(current_version_filter), 1)
 
         # version 3: copy from builder_current (builder_form_a_v2_current)
@@ -544,7 +546,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         builder_version_3 = self.builder_model.search(version_3_filter)
 
         self.assertEquals(builder_version_3.version, 3)
-        self.assertEquals(builder_version_3.state, 'new')
+        self.assertEquals(builder_version_3.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_model.search_count(version_3_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 3)
 
@@ -556,7 +558,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         builder_version_4 = self.builder_model.search(version_4_filter)
 
         self.assertEquals(builder_version_4.version, 4)
-        self.assertEquals(builder_version_4.state, 'new')
+        self.assertEquals(builder_version_4.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_model.search_count(version_4_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 4)
 
@@ -568,7 +570,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         builder_version_5 = self.builder_model.search(version_5_filter)
 
         self.assertEquals(builder_version_5.version, 5)
-        self.assertEquals(builder_version_5.state, 'new')
+        self.assertEquals(builder_version_5.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_model.search_count(version_5_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 5)
 
@@ -580,19 +582,19 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         builder_version_6 = self.builder_model.search(version_6_filter)
 
         self.assertEquals(builder_version_6.version, 6)
-        self.assertEquals(builder_version_6.state, 'new')
+        self.assertEquals(builder_version_6.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_model.search_count(version_6_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 6)
 
         # Only 1 version where state is 'current'
         state_current_filter = list(name_filter)
-        state_current_filter.append(('state', '=', 'current'))
+        state_current_filter.append(('state', '=', orbeon_builder.STATE_CURRENT))
         
         self.assertEquals(self.builder_model.search_count(state_current_filter), 1)
 
         # 5 versions where state is 'new'
         state_new_filter = list(name_filter)
-        state_new_filter.append(('state', '=', 'new'))
+        state_new_filter.append(('state', '=', orbeon_builder.STATE_NEW))
         
         self.assertEquals(self.builder_model.search_count(state_new_filter), 5)
 
@@ -609,12 +611,12 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         """Test edit URL (function field)"""
         builder_1_url = "%s/fr/orbeon/builder/edit/%i" % (self.server_1.base_url, self.builder_form_a_v1.id)
 
-        self.assertEquals(self.builder_form_a_v1.state, 'new')
+        self.assertEquals(self.builder_form_a_v1.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_form_a_v1.url, builder_1_url)
 
     def test_url_view_state(self):
         """Test view URL (function field)"""
         builder_2_url = "%s/fr/orbeon/builder/view/%i" % (self.server_1.base_url, self.builder_form_a_v2_current.id)
 
-        self.assertEquals(self.builder_form_a_v2_current.state, 'current')
+        self.assertEquals(self.builder_form_a_v2_current.state, orbeon_builder.STATE_CURRENT)
         self.assertEquals(self.builder_form_a_v2_current.url, builder_2_url)
