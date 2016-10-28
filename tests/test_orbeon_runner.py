@@ -40,7 +40,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
         with self.assertRaisesRegexp(ValidationError, 'Changing the builder is not allowed.'):
             self.runner_form_a_v1.sudo().write(
                 {
-                    'builder_id': self.builder_form_a_v2_current.id,
+                    'builder_id': self.builder_form_a_v2_current,
                 }
             )
         
