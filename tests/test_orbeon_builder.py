@@ -284,31 +284,31 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     }
                 )
 
-    @TODO
     def test_create_title_notrequired(self):
         """Test create with a missing, but not-required, title"""
 
-        ## TODO BOB Assert no exception
-        # with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
-        #     self.builder_model.sudo().create(
-        #         {
-        #             'version_comment': 'version 1',
-        #             'server_id': self.server_1.id
-        #         }
-        #     )
-
-    @TODO
+        try:
+            record = self.builder_model.sudo().create(
+                {
+                    'name': 'test_create_title_notrequired',
+                    'version_comment': 'some version',
+                    'server_id': self.server_1.id,
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+            
     def test_write_title_notrequired(self):
         """Test write with a missing, but not required, title"""
 
-        ## TODO BOB Assert no exception
-        # with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
-        #     self.builder_model.sudo().create(
-        #         {
-        #             'version_comment': 'version 1',
-        #             'server_id': self.server_1.id
-        #         }
-        #     )
+        try:
+            record = self.builder_form_a_v1.sudo().write(
+                {
+                    'title': False,
+                }
+            )
+        except Exception as e:
+            self.fail(e)
 
     def test_create_version_comment_required(self):
         """Test create with a missing, but required, version_comment"""
@@ -445,12 +445,12 @@ class TestOrbeonBuilder(TestOrbeonCommon):
             )
 
     @TODO
-    def test_create_allow_duplicate_by_name_where_state_notcurrent(self):
-        """Test create allow duplicate builder names, where state IS NOT current"""
+    def test_create_allow_duplicate_by_unique_name_and_version(self):
+        """Test create allow duplicate builder names with unique version, where state IS NOT current"""
 
     @TODO
-    def test_write_allow_duplicate_by_name_where_state_notcurrent(self):
-        """Test write allow duplicate builder names, where state IS NOT current"""
+    def test_write_allow_duplicate_by_unique_name_and_version(self):
+        """Test write allow duplicate builder names with unique version, where state IS NOT current"""
 
     def test_create_server_id_required(self):
         """Test create with a missing, but required, server_id"""
@@ -631,10 +631,6 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         
         self.assertEquals(self.builder_model.search_count(state_new_filter), 5)
 
-    @TODO
-    def test_toggle_state_builder_forms(self):
-        """Test toggle state, only 1 current, for a set of builder forms by name"""
-    
     def test_url_is_readonly(self):
         """Test url field is readonly"""
         field = self.builder_model._fields['url']
