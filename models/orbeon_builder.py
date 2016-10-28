@@ -39,13 +39,20 @@ class OrbeonBuilder(models.Model):
 
     name = fields.Char(
         "Name",
-        required=True)
+        required=True,
+        help="""\
+        Identifies this specific form (e.g. "health-record" or "claim").
+        This name shows in the URL, so we recommend you use only lowercases characters.""",
+    )
 
     title = fields.Char(
-        "Title")
+        "Title",
+        help="Form title in the current language"
+    )
     
     description = fields.Text(
-        "Description")
+        "Description",
+        help="Form description in the current language")
 
     version = fields.Integer(
         "Version",
