@@ -178,9 +178,48 @@ class TestOrbeonServer(TestOrbeonCommon):
                 }
             )
 
-    @TODO
     def test_write_successful(self):
         """Test successful write"""
+
+        # write: name
+        try:
+            self.server_1.sudo().write(
+                {
+                    'name': 'test_write_successful_server'
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+
+        # write: url
+        try:
+            self.server_1.sudo().write(
+                {
+                    'url': 'http://localhost/test_write_successful_server',
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+
+        # write: description
+        try:
+            self.server_1.sudo().write(
+                {
+                    'description': 'test_write_successful_server',
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+
+        # write: default_builder_xml
+        try:
+            self.server_1.sudo().write(
+                {
+                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_form_a_v2.xml')
+                }
+            )
+        except Exception as e:
+            self.fail(e)
 
     def test_delete_contains_builder_forms(self):
         """Test delete with references to orbeon.builder(forms)"""
