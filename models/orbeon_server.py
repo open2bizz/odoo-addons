@@ -67,3 +67,9 @@ class OrbeonServer(models.Model):
         cur_record = self.search([("name","=",self.name)])
         if len(cur_record) > 1:
             raise ValidationError("Server with name '%s' already exists!" % self.name)
+
+    @api.constrains("base_url")
+    def constraint_unique_url(self):
+        cur_record = self.search([("base_url","=",self.base_url)])
+        if len(cur_record) > 1:
+            raise ValidationError("Server with URL '%s' already exists!" % self.base_url)

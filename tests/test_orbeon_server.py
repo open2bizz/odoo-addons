@@ -141,13 +141,42 @@ class TestOrbeonServer(TestOrbeonCommon):
                 }
             )
 
-    @TODO
     def test_create_constraint_unique_base_url(self):
         """Test write with duplicate base_url, in existing server"""
 
-    @TODO
+        # Check whether 'name' of the comparison server-object is valid.
+        self.assertEquals(self.server_1.base_url, 'http://localhost/orbeon_server_1')
+
+        with self.assertRaisesRegexp(ValidationError, 'Server with URL .* already exists'):
+            self.server_model.sudo().create(
+                {
+                    'name': 'test_create_constraint_unique_base_url_server',
+                    'base_url': 'http://localhost/orbeon_server_1',
+                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
+                }
+            )
+
     def test_write_constraint_unique_base_url(self):
         """Test write with duplicate base_url, in existing server"""
+
+        # First create 2nd server
+        try:
+            record = self.server_model.sudo().create(
+                {
+                    'name': 'server_test_write_constraint_unique_name',
+                    'base_url': 'http://localhost/server_test_write_constraint_unique_base_url',
+                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+        
+        with self.assertRaisesRegexp(ValidationError, 'Server with URL .* already exists'):
+            self.server_1.sudo().write(
+                {
+                    'base_url': 'http://localhost/server_test_write_constraint_unique_base_url',
+                }
+            )
 
     @TODO
     def test_write_successful(self):
