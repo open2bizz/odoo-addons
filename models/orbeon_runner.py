@@ -35,6 +35,7 @@ STATE_CANCELED = 'canceled'
 
 class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
+    _rec_name = "builder_name"
     
     builder_id = fields.Many2one(
         "orbeon.builder",
@@ -68,7 +69,7 @@ class OrbeonRunner(models.Model):
 
     xml = fields.Text(
         'XML',
-        default=None) # WTF! Odoo ORM decodes NULL to False instead of None.
+        default=False)
 
     url = fields.Text(
         'URL',
@@ -77,25 +78,33 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_name(self, id=None):
-        self.builder_name = self.builder_id.name
+        self.builder_name = "%s (%s)" % (self.builder_id.name, self.builder_id.version)
 
     @api.one
     def _get_builder_version(self, id=None):
         self.builder_version = self.builder_id.version
-    
-    @api.one
-    def _get_url(self, id=None):
-        server_url = self.builder_id.server_id.base_url
-        base_path = 'fr/orbeon/runner'
-        base_url = "%s/%s" % (server_url, base_path)
-        
-        if isinstance(self.id, models.NewId):
-            url = "%s/new" % base_url
-        else:
-            get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
-            path_mode = get_mode.get(self.state ,'view')
-            url = "%s/%s/%i" % (base_url, path_mode, self.id)
-            self.url = url
+
+    @api.multi
+    @api.onchange('builder_id')
+    def _get_url(self):
+        for rec in self:
+            
+            if isinstance(rec.id, models.NewId) and not rec.builder_id.id:
+                return rec.url
+
+            server_url = rec.builder_id.server_id.base_url
+            base_path = 'fr/orbeon/runner'
+            base_url = "%s/%s" % (server_url, base_path)
+
+            if isinstance(rec.id, models.NewId):
+                url = "%s/new" % base_url
+            else:
+                #runner_id = rec.id
+                get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
+                path_mode = get_mode.get(rec.state ,'view')
+                url = "%s/%s/%i" % (base_url, path_mode, rec.id)
+
+            rec.url = url
 
     @api.multi
     def action_open_orbeon_runner(self):

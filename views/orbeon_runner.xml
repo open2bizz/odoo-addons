@@ -29,7 +29,7 @@
       <field name="arch" type="xml">
         <tree>
           <field name="builder_id" />
-          <field name="url" widget="url"/>
+          <field name="url"/>
         </tree>
       </field>
     </record>
