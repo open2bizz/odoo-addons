@@ -642,14 +642,14 @@ class TestOrbeonBuilder(TestOrbeonCommon):
 
     def test_url_edit_state(self):
         """Test edit URL (function field)"""
-        builder_1_url = "%s/fr/orbeon/builder/edit/%i" % (self.server_1.base_url, self.builder_form_a_v1.id)
+        builder_1_url = "%s/fr/orbeon/builder/edit/%i" % (self.server_1.url, self.builder_form_a_v1.id)
 
         self.assertEquals(self.builder_form_a_v1.state, orbeon_builder.STATE_NEW)
         self.assertEquals(self.builder_form_a_v1.url, builder_1_url)
 
     def test_url_view_state(self):
         """Test view URL (function field)"""
-        builder_2_url = "%s/fr/orbeon/builder/view/%i" % (self.server_1.base_url, self.builder_form_a_v2_current.id)
+        builder_2_url = "%s/fr/orbeon/builder/view/%i" % (self.server_1.url, self.builder_form_a_v2_current.id)
 
         self.assertEquals(self.builder_form_a_v2_current.state, orbeon_builder.STATE_CURRENT)
         self.assertEquals(self.builder_form_a_v2_current.url, builder_2_url)

@@ -50,7 +50,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
         self.server_1 = self.server_model.sudo().create(
             {
                 'name': 'server_1',
-                'base_url': 'http://localhost/orbeon_server_1',
+                'url': 'http://localhost/orbeon_server_1',
                 'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
             }
         )

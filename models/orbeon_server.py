@@ -23,14 +23,14 @@ from odoo.exceptions import ValidationError
 
 class OrbeonServer(models.Model):
     _name = "orbeon.server"
-    _rec_name = "base_url"
+    _rec_name = "url"
 
     name = fields.Char(
         "Name",
         required=True,
     )
-    base_url = fields.Char(
-        "Base URL",
+    url = fields.Char(
+        "URL",
         required=True,
     )
     summary_url = fields.Char(
@@ -54,12 +54,12 @@ class OrbeonServer(models.Model):
     )
 
     @api.one
-    @api.depends("base_url")
+    @api.depends("url")
     def _set_summary_url(self):
-        if self.base_url:
-            url = "%s/fr/orbeon/builder/summary" % self.base_url
+        if self.url:
+            url = "%s/fr/orbeon/builder/summary" % self.url
         else:
-            url = "Enter base url"
+            url = "Enter URL"
         self.summary_url = url
 
     @api.constrains("name")
@@ -68,8 +68,8 @@ class OrbeonServer(models.Model):
         if len(cur_record) > 1:
             raise ValidationError("Server with name '%s' already exists!" % self.name)
 
-    @api.constrains("base_url")
+    @api.constrains("url")
     def constraint_unique_url(self):
-        cur_record = self.search([("base_url","=",self.base_url)])
+        cur_record = self.search([("url","=",self.url)])
         if len(cur_record) > 1:
-            raise ValidationError("Server with URL '%s' already exists!" % self.base_url)
+            raise ValidationError("Server with URL '%s' already exists!" % self.url)

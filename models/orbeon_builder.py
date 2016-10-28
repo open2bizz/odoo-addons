@@ -204,7 +204,7 @@ class OrbeonBuilder(models.Model):
         else:
             builder_id = self.id
         
-        builder_url = "%s/%s" % (self.server_id.base_url, "fr/orbeon/builder")
+        builder_url = "%s/%s" % (self.server_id.url, "fr/orbeon/builder")
         get_mode = {STATE_NEW: 'edit'}
         url = "%s/%s/%i" % (builder_url, get_mode.get(self.state ,'view'), builder_id)
 

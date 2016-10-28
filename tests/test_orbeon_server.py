@@ -36,7 +36,7 @@ class TestOrbeonServer(TestOrbeonCommon):
         with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
             self.server_model.sudo().create(
                 {
-                    'base_url': 'http://localhost/orbeon_test_server_2',
+                    'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml
                 }
             )
@@ -46,14 +46,14 @@ class TestOrbeonServer(TestOrbeonCommon):
         with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
             self.server_model.sudo().create(
                 {
-                    'base_url': 'http://localhost/orbeon_test_server_2',
+                    'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml
                 }
             )
 
-    def test_create_missing_required_base_url(self):
-        """Test create with missing, but required, base_url"""
-        with self.assertRaisesRegexp(IntegrityError, 'column "base_url" violates not-null'):
+    def test_create_missing_required_url(self):
+        """Test create with missing, but required, url"""
+        with self.assertRaisesRegexp(IntegrityError, 'column "url" violates not-null'):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
@@ -61,9 +61,9 @@ class TestOrbeonServer(TestOrbeonCommon):
                 }
             )
 
-    def test_write_missing_required_base_url(self):
-        """Test write with missing, but required, base_url"""
-        with self.assertRaisesRegexp(IntegrityError, 'column "base_url" violates not-null'):
+    def test_write_missing_required_url(self):
+        """Test write with missing, but required, url"""
+        with self.assertRaisesRegexp(IntegrityError, 'column "url" violates not-null'):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
@@ -77,7 +77,7 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
-                    'base_url': 'http://localhost/orbeon_test_server_2',
+                    'url': 'http://localhost/orbeon_test_server_2',
                 }
             )
 
@@ -87,7 +87,7 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
-                    'base_url': 'http://localhost/orbeon_test_server_2',
+                    'url': 'http://localhost/orbeon_test_server_2',
                 }
             )
 
@@ -97,7 +97,7 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
-                    'base_url': 'http://localhost/orbeon_test_server_2',
+                    'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml
                 }
             )
@@ -114,7 +114,7 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'server_1',
-                    'base_url': 'http://localhost/server_test_create_constraint_unique_name',
+                    'url': 'http://localhost/server_test_create_constraint_unique_name',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
                 }
             )
@@ -127,7 +127,7 @@ class TestOrbeonServer(TestOrbeonCommon):
             record = self.server_model.sudo().create(
                 {
                     'name': 'server_test_write_constraint_unique_name',
-                    'base_url': 'http://localhost/server_test_write_constraint_unique_name',
+                    'url': 'http://localhost/server_test_write_constraint_unique_name',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
                 }
             )
@@ -141,30 +141,30 @@ class TestOrbeonServer(TestOrbeonCommon):
                 }
             )
 
-    def test_create_constraint_unique_base_url(self):
-        """Test write with duplicate base_url, in existing server"""
+    def test_create_constraint_unique_url(self):
+        """Test write with duplicate url, in existing server"""
 
         # Check whether 'name' of the comparison server-object is valid.
-        self.assertEquals(self.server_1.base_url, 'http://localhost/orbeon_server_1')
+        self.assertEquals(self.server_1.url, 'http://localhost/orbeon_server_1')
 
         with self.assertRaisesRegexp(ValidationError, 'Server with URL .* already exists'):
             self.server_model.sudo().create(
                 {
-                    'name': 'test_create_constraint_unique_base_url_server',
-                    'base_url': 'http://localhost/orbeon_server_1',
+                    'name': 'test_create_constraint_unique_url_server',
+                    'url': 'http://localhost/orbeon_server_1',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
                 }
             )
 
-    def test_write_constraint_unique_base_url(self):
-        """Test write with duplicate base_url, in existing server"""
+    def test_write_constraint_unique_url(self):
+        """Test write with duplicate url, in existing server"""
 
         # First create 2nd server
         try:
             record = self.server_model.sudo().create(
                 {
                     'name': 'server_test_write_constraint_unique_name',
-                    'base_url': 'http://localhost/server_test_write_constraint_unique_base_url',
+                    'url': 'http://localhost/server_test_write_constraint_unique_url',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
                 }
             )
@@ -174,7 +174,7 @@ class TestOrbeonServer(TestOrbeonCommon):
         with self.assertRaisesRegexp(ValidationError, 'Server with URL .* already exists'):
             self.server_1.sudo().write(
                 {
-                    'base_url': 'http://localhost/server_test_write_constraint_unique_base_url',
+                    'url': 'http://localhost/server_test_write_constraint_unique_url',
                 }
             )
 
@@ -188,7 +188,7 @@ class TestOrbeonServer(TestOrbeonCommon):
 
     def test_summary_url(self):
         """Test summary_url (function field)"""
-        summary_url = "%s/fr/orbeon/builder/summary" % self.server_1.base_url
+        summary_url = "%s/fr/orbeon/builder/summary" % self.server_1.url
         msg = "Expect summary_url to be %s ! Check function: orbeon_server_summary_url()" % summary_url
 
         self.assertEquals(self.server_1.summary_url, summary_url)

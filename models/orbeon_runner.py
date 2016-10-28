@@ -92,7 +92,7 @@ class OrbeonRunner(models.Model):
             if isinstance(rec.id, models.NewId) and not rec.builder_id.id:
                 return rec.url
 
-            server_url = rec.builder_id.server_id.base_url
+            server_url = rec.builder_id.server_id.url
             base_path = 'fr/orbeon/runner'
             base_url = "%s/%s" % (server_url, base_path)
 
