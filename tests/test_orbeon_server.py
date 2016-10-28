@@ -182,9 +182,11 @@ class TestOrbeonServer(TestOrbeonCommon):
     def test_write_successful(self):
         """Test successful write"""
 
-    @TODO
     def test_delete_contains_builder_forms(self):
-        """Test delete with references to orbeon.builder(forms)"""        
+        """Test delete with references to orbeon.builder(forms)"""
+
+        with self.assertRaises(IntegrityError):
+            self.server_1.sudo().unlink()
 
     def test_summary_url(self):
         """Test summary_url (function field)"""

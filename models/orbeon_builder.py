@@ -76,7 +76,8 @@ class OrbeonBuilder(models.Model):
     server_id = fields.Many2one(
         "orbeon.server",
         "Server",
-        required=True)
+        required=True,
+        ondelete='restrict')
 
     runner_form_ids = fields.One2many(
         "orbeon.runner",
