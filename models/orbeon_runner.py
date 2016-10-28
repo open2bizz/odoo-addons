@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 import logging
 
@@ -114,6 +115,9 @@ class OrbeonRunner(models.Model):
     def write(self, vals):
         if self.is_merged == False:
             vals['is_merged'] = True
+
+        if vals.get('builder_id', False) and vals['builder_id'] != self.builder_id:
+            raise ValidationError("Changing the builder is not allowed.")
         
         res = super(OrbeonRunner, self).write(vals)
         return res

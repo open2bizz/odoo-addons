@@ -14,7 +14,8 @@
           </header>
           <sheet>
             <group>
-              <field name="builder_id" domain='[("state", "=", "current")]'/>
+              <field name="id" invisible="1"/>
+              <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
               <field name="url" widget="url"/>
             </group>
           </sheet>

@@ -20,6 +20,7 @@
 ##############################################################################
 
 from odoo.tests.common import TransactionCase
+from odoo.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon, TODO
 from ..models import orbeon_runner
@@ -35,8 +36,8 @@ class TestOrbeonRunner(TestOrbeonCommon):
     """Tests for Orbeon Runner Forms"""
 
     def test_write_invalidate_change_builder_id(self):
-        """Test updating the builder_id is not allowed"""
-        with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
+        """Test changing the builder_id is not allowed"""
+        with self.assertRaisesRegexp(ValidationError, 'Changing the builder is not allowed.'):
             self.runner_form_a_v1.sudo().write(
                 {
                     'builder_id': self.builder_form_a_v2_current.id,
