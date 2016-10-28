@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 class OrbeonServer(models.Model):
     _name = "orbeon.server"
@@ -60,3 +61,9 @@ class OrbeonServer(models.Model):
         else:
             url = "Enter base url"
         self.summary_url = url
+
+    @api.constrains("name")
+    def constraint_unique_name(self):
+        cur_record = self.search([("name","=",self.name)])
+        if len(cur_record) > 1:
+            raise ValidationError("Server with name '%s' already exists!" % self.name)

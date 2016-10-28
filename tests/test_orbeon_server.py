@@ -19,6 +19,7 @@
 #
 ##############################################################################
 from odoo.tests.common import TransactionCase
+from odoo.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon, TODO
 
@@ -103,13 +104,42 @@ class TestOrbeonServer(TestOrbeonCommon):
         except Exception:
             self.fail("create() raised an Exception unexpectedly!")
 
-    @TODO
     def test_create_constraint_unique_name(self):
         """Test create with duplicate name, in existing server"""
 
-    @TODO
+        # Check whether 'name' of the comparison server-object is valid.
+        self.assertEquals(self.server_1.name, 'server_1')
+
+        with self.assertRaisesRegexp(ValidationError, 'Server with name .* already exists'):
+            self.server_model.sudo().create(
+                {
+                    'name': 'server_1',
+                    'base_url': 'http://localhost/server_test_create_constraint_unique_name',
+                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
+                }
+            )
+
     def test_write_constraint_unique_name(self):
         """Test write with duplicate name, in existing server"""
+
+        # First create 2nd server
+        try:
+            record = self.server_model.sudo().create(
+                {
+                    'name': 'server_test_write_constraint_unique_name',
+                    'base_url': 'http://localhost/server_test_write_constraint_unique_name',
+                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml')
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+        
+        with self.assertRaisesRegexp(ValidationError, 'Server with name .* already exists'):
+            self.server_1.sudo().write(
+                {
+                    'name': 'server_test_write_constraint_unique_name'
+                }
+            )
 
     @TODO
     def test_create_constraint_unique_base_url(self):
