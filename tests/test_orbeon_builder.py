@@ -331,41 +331,19 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 }
             )
 
-    @TODO # Maybe several tests need to bypass this validation
-    def test_create_set_version_not_allowed(self):
-        """Test create with explicitly setting a version, which isn't allowed"""
-
-        # write: version (not allowed!)
-        # with self.assertRaisesRegexp(ValidationError, 'column "version" is readonly'):
-        #     self.builder_form_a_v1.sudo().write(
-        #         {
-        #             'version': 2,
-        #         }
-        #     )
-
-    @TODO # Maybe several tests need to bypass this validation
-    def test_write_set_version_not_allowed(self):
-        """Test write with explicitly setting a version, which isn't allowed"""
-        # self.builder_model.sudo().create(
-        #     {
-        #         'name': 'test_write_set_version_not_allowed',
-        #         'version': 4,
-        #         'version_comment': 'version 1',
-        #     }
-        # )
-        
-        # # write: version (not allowed!)
-        # with self.assertRaisesRegexp(ValidationError, 'column "version" is readonly'):
-        #     self.builder_form_a_v1.sudo().update(
-        #         {
-        #             'version': 2,
-        #         }
-        #
-
     def test_version_is_readonly(self):
         """Test version field is readonly"""
         field = self.builder_model._fields['version']
         self.assertTrue(field.readonly)
+
+
+    @TODO
+    def test_crreate_version_increment_in_sequence(self):
+        """Test create version increments by 1 (in sequence)"""
+
+    @TODO
+    def test_write_version_increment_in_sequence(self):
+        """Test create version increments by 1 (in sequence)"""
     
     def test_create_constraint_version_unique_by_name(self):
         """Test create with unique version by name"""
