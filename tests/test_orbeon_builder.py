@@ -336,7 +336,14 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         field = self.builder_model._fields['version']
         self.assertTrue(field.readonly)
 
+    @TODO
+    def test_crreate_version_increment_in_sequence(self):
+        """Test create version increments by 1 (in sequence)"""
 
+    @TODO
+    def test_write_version_increment_in_sequence(self):
+        """Test create version increments by 1 (in sequence)"""
+        
     @TODO
     def test_crreate_version_increment_in_sequence(self):
         """Test create version increments by 1 (in sequence)"""
@@ -422,13 +429,42 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 }
             )
 
-    @TODO
     def test_create_allow_duplicate_by_unique_name_and_version(self):
         """Test create allow duplicate builder names with unique version, where state IS NOT current"""
 
-    @TODO
+        # Create a 3rd version of OrbeonBuilder form with name: form_a
+        try:
+            record = self.builder_model.sudo().create(
+                {
+                    'name': self.builder_form_a_v2_current.name,
+                    'title': self.builder_form_a_v2_current.title,
+                    'version_comment': 'test_create_allow_duplicate_by_unique_name_and_version',
+                    'server_id': self.server_1.id,
+                    'version': 3
+                }
+            )
+        except Exception as e:
+            self.fail(e)
+
     def test_write_allow_duplicate_by_unique_name_and_version(self):
         """Test write allow duplicate builder names with unique version, where state IS NOT current"""
+
+        # First create a unique 1st version of a OrbeonBuilder form
+        # Then update the name (and version = 3), to name of an existing OrbeonBuilder form: form_a
+        try:
+            record = self.builder_model.sudo().create(
+                {
+                    'name': 'test_write_allow_duplicate_by_unique_name_and_version',
+                    'title': self.builder_form_a_v2_current.title,
+                    'version_comment': 'test_write_allow_duplicate_by_unique_name_and_version',
+                    'server_id': self.server_1.id,
+                }
+            )
+
+            record.write({'name': self.builder_form_a_v1.name, 'version': 3})
+            
+        except Exception as e:
+            self.fail(e)
 
     def test_create_server_id_required(self):
         """Test create with a missing, but required, server_id"""
