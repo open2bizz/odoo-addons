@@ -19,12 +19,12 @@
 #
 
 ##############################################################################
-from openerp import models, fields, api
+from odoo import api, fields, models
 import logging
 
 _logger = logging.getLogger(__name__)
 
-class project_project_type_orbeon(models.Model):
+class ProjectProjectTypeOrbeon(models.Model):
     _inherit = "project.type"
     
     orbeon_builder_form_ids = fields.Many2many(
@@ -32,7 +32,7 @@ class project_project_type_orbeon(models.Model):
         string="Orbeon Builder Forms",
     )
 
-class project_orbeon_project(models.Model):
+class ProjectOrbeonProject(models.Model):
     _inherit = "project.project"
 
     orbeon_runner_form_ids = fields.One2many(
@@ -53,7 +53,7 @@ class project_orbeon_project(models.Model):
 
     @api.model
     def create(self, vals):
-        res = super(project_orbeon_project, self).create(vals)
+        res = super(ProjectOrbeonProject, self).create(vals)
         runner = self.env["orbeon.runner"]
 
         for builder in res.type_id.orbeon_builder_form_ids:
@@ -63,13 +63,6 @@ class project_orbeon_project(models.Model):
                 'project_id': res.id,
             })
         
-        return res
-
-    @api.one
-    def _orbeon_runner_forms_count(self):
-        res={}
-        for project in self.browse(cr, uid, ids, context=context):
-            res[project.id] = len(project.task_ids)
         return res
 
     @api.multi
@@ -97,7 +90,7 @@ class project_orbeon_project(models.Model):
             "domain": [("id","in",runner_form_ids)],
         }
 
-class project_orbeon_orbeon_runner(models.Model):
+class ProjectOrbeonOrbeonRunner(models.Model):
     _inherit = "orbeon.runner"
 
     project_id = fields.Many2one(

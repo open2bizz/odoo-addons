@@ -1,89 +1,92 @@
 <?xml version="1.0"?>
-<openerp>
-  <data>
+<odoo>
+	<data>
 
-    <record id="orbeon_project_project_form" model="ir.ui.view">
-      <field name="model">project.project</field>
-      <field name="inherit_id" ref="project.edit_project" />
-      <field name="arch" type="xml">
-        <notebook position="inside">
-          <page string="Orbeon Runner Forms">
-            <field name="orbeon_runner_form_ids">
-              <tree>
-                <field name="builder_name" />
-                <field name="state" />
-                <button name="orbeon_runner_form"
-                        string="Form" type="object"
-                        icon="fa-external-link"
-                        />
-              </tree>
-            </field>
-          </page>
-        </notebook>
-      </field>
-    </record>
+		<record id="orbeon_project_project_form" model="ir.ui.view">
+			<field name="model">project.project</field>
+			<field name="inherit_id" ref="project.edit_project" />
+			<field name="arch" type="xml">
+				<notebook position="inside">
+					<page string="Orbeon Runner Forms">
+						<field name="orbeon_runner_form_ids">
+							<tree>
+								<field name="builder_name" />
+								<field name="state" />
+								<button name="orbeon_runner_form" string="Form" type="object"
+									icon="fa-external-link" />
+							</tree>
+						</field>
+					</page>
+				</notebook>
+			</field>
+		</record>
 
-    <record id="project_orbeon_project_kanban" model="ir.ui.view">
-      <field name="name">project.orbeon.project.kanban</field>
-      <field name="model">project.project</field>
-      <field name="priority" eval="20"/>
-      <field name="inherit_id" ref="project_project_type.view_project_project_type_kanban" />
-      <field name="arch" type="xml">
-        <data>
-          <xpath expr="//templates" position="before">
-            <field name="orbeon_runner_forms_count"/>
-          </xpath>
+		<record id="project_orbeon_project_kanban" model="ir.ui.view">
+			<field name="name">project.orbeon.project.kanban</field>
+			<field name="model">project.project</field>
+			<field name="priority" eval="20" />
+			<field name="inherit_id"
+				ref="project_project_type.view_project_project_type_kanban" />
+			<field name="arch" type="xml">
+				<data>
+					<xpath expr="//templates" position="before">
+						<field name="orbeon_runner_forms_count" />
+					</xpath>
 
-          <xpath expr="//div[contains(@class, 'o_project_kanban_boxes')]" position="inside">
-            <a t-if="record.orbeon_runner_forms_count.raw_value" class="o_project_kanban_box" name="action_project_orbeon_runner_forms" type="object">
-              <span class="o_value"><t t-esc="record.orbeon_runner_forms_count.value"/></span>
-              <span class="o_label">Forms</span>
-            </a>
-          </xpath>
-        </data>
-      </field>
-    </record>
+					<xpath expr="//div[contains(@class, 'o_project_kanban_boxes')]"
+						position="inside">
+						<a t-if="record.orbeon_runner_forms_count.raw_value" class="o_project_kanban_box"
+							name="action_project_orbeon_runner_forms" type="object">
+							<span class="o_value">
+								<t t-esc="record.orbeon_runner_forms_count.value" />
+							</span>
+							<span class="o_label">Forms</span>
+						</a>
+					</xpath>
+				</data>
+			</field>
+		</record>
 
-    <!-- orbeon runner forms kanban view -->
-    <record id="project_orbeon_runner_kanban" model="ir.ui.view">
-      <field name="name">project.orbeon.runner.forms.kanban</field>
-      <field name="model">orbeon.runner</field>
-      <field name="arch" type="xml">
-        <kanban>
-          <templates>
-            <t t-name="kanban-box">
-              <div class="oe_kanban_global_click">
-                <div class="o_primary">
-                  <!-- <span><t t-esc="record.name.value"/></span> -->
-                </div>
-                <!-- <div class="oe_kanban_details"> -->
-                <!--   <ul> -->
-                <!--     <li t-if="record.name"> -->
-                <!--       <span> -->
-                <!--         <t class="badge"><i class="fa fa-fw fa-user"/></t> -->
-                <!--         <strong class="oe_partner_heading"><field name="name" /></strong> -->
-                <!--       </span> -->
-                <!--     </li> -->
-                <!--     <li> -->
-                <!--       <span> -->
-                <!--         <t class="badge"><i class="fa fa-fw fa-stethoscope" /></t> -->
-                <!--         <field name="primary_doctor_id" /> -->
-                <!--       </span> -->
-                <!--     </li> -->
-                <!--     <li t-if="record.email"> -->
-                <!--       <span> -->
-                <!--         <t class="badge"><i class="fa fa-fw fa-envelope"/></t> -->
-                <!--         <a><field name="email" /> </a> -->
-                <!--       </span> -->
-                <!--     </li> -->
-                <!--   </ul> -->
-                <!-- </div> -->
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
+		<!-- orbeon runner forms kanban view -->
+		<record id="project_orbeon_runner_kanban" model="ir.ui.view">
+			<field name="name">project.orbeon.runner.forms.kanban</field>
+			<field name="model">orbeon.runner</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<templates>
+						<t t-name="kanban-box">
+							<div class="oe_kanban_global_click">
+								<div class="o_primary">
+									<!-- <span><t t-esc="record.name.value"/></span> -->
+								</div>
+								<!-- <div class="oe_kanban_details"> -->
+								<!-- <ul> -->
+								<!-- <li t-if="record.name"> -->
+								<!-- <span> -->
+								<!-- <t class="badge"><i class="fa fa-fw fa-user"/></t> -->
+								<!-- <strong class="oe_partner_heading"><field name="name" /></strong> -->
+								<!-- </span> -->
+								<!-- </li> -->
+								<!-- <li> -->
+								<!-- <span> -->
+								<!-- <t class="badge"><i class="fa fa-fw fa-stethoscope" /></t> -->
+								<!-- <field name="primary_doctor_id" /> -->
+								<!-- </span> -->
+								<!-- </li> -->
+								<!-- <li t-if="record.email"> -->
+								<!-- <span> -->
+								<!-- <t class="badge"><i class="fa fa-fw fa-envelope"/></t> -->
+								<!-- <a><field name="email" /> </a> -->
+								<!-- </span> -->
+								<!-- </li> -->
+								<!-- </ul> -->
+								<!-- </div> -->
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
 
-  </data>
-</openerp>
+	</data>
+</odoo>
