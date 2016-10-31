@@ -27,7 +27,7 @@ from lxml import etree
 from xmlunittest import XmlTestMixin
 
 try:
-    from ...test_extensions import TODO qrtools
+    from ...test_extensions import TODO
 except:
     def TODO(self):
         pass
