@@ -26,7 +26,11 @@ import os
 from lxml import etree
 from xmlunittest import XmlTestMixin
 
-from ...test_extensions import TODO
+try:
+    from ...test_extensions import TODO qrtools
+except:
+    def TODO(self):
+        pass
 
 from ..models import orbeon_builder
 from ..models import orbeon_runner
