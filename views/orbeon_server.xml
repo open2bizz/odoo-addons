@@ -10,10 +10,17 @@
         <header>
         </header>
         <sheet>
+	  <div class="oe_button_box" name="button_box">
+	    <button class="oe_stat_button" icon="fa-play" string="Start"
+		    name="action_start_persistence_server" type="object" />
+            <button class="oe_stat_button" icon="fa-stop" string="Stop"
+		    name="action_stop_persistence_server" type="object" />
+	  </div>
           <group>
             <field name="name" string="Name" />
             <field name="url" widget="url" string="URL" />
             <field name="summary_url" widget="url" string="Summary URL" />
+            <field name="persistence_server_port"/>
 	    <newline/>
             <field name="description"/>
 	    <newline/>
@@ -30,6 +37,7 @@
     <field name="arch" type="xml">
         <tree>
             <field name="name" />
+            <field name="persistence_server_port" />
         </tree>
     </field>
 </record>

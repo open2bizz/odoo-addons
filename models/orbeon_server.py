@@ -21,6 +21,32 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
+from werkzeug.serving import BaseWSGIServer, ThreadedWSGIServer
+
+from .. import services
+
+import threading
+import logging
+_logger = logging.getLogger(__name__)
+
+ORBEON_PERSISTENCE_SERVER_PREFIX = 'orbeon.persistence.server'
+ORBEON_PERSISTENCE_SERVER_INTERFACE = '127.0.0.1'
+
+class OrbeonThreadedWSGIServer(threading.Thread):
+    
+    def __init__(self, name, server, stopper):
+        super(OrbeonThreadedWSGIServer, self).__init__(name=name)
+
+        self.server = server
+        self.stopper = stopper
+
+    def run(self):
+        while not self.stopper.is_set():
+            try:
+                self.server.serve_forever()
+            except:
+                pass
+
 class OrbeonServer(models.Model):
     _name = "orbeon.server"
     _rec_name = "url"
@@ -41,8 +67,12 @@ class OrbeonServer(models.Model):
     description = fields.Text(
         "Description"
     )
-    
-    # TODO Still needed (is_active)?
+
+    persistence_server_port = fields.Char(
+        "Persistence port"
+    )
+
+    # todo Still needed (is_active)?
     is_active = fields.Boolean(
         "Is active",
     )
@@ -53,6 +83,16 @@ class OrbeonServer(models.Model):
         required=True
     )
 
+    def __init__(self, pool, cr):
+        res = super(OrbeonServer, self).__init__(pool, cr)
+        self._autostart_persistence_servers(pool, cr)
+        return res
+
+    def _autostart_persistence_servers(self, pool, cr):
+        cr.execute("SELECT persistence_server_port FROM orbeon_server")
+        for (port,) in cr.fetchall():
+            self.start_persistence_server(port)
+        
     @api.one
     @api.depends("url")
     def _set_summary_url(self):
@@ -73,3 +113,40 @@ class OrbeonServer(models.Model):
         cur_record = self.search([("url","=",self.url)])
         if len(cur_record) > 1:
             raise ValidationError("Server with URL '%s' already exists!" % self.url)
+
+    @api.multi
+    def action_start_persistence_server(self, context=None, *args, **kwargs):
+        self.start(self.persistence_server_port)
+
+    @api.multi
+    def action_stop_persistence_server(self, context=None, *args, **kwargs):
+        self.stop_persistence_server(self.persistence_server_port)
+
+    # def application(self, environment, start_response):
+    #     start_response('200 OK', [('Content-Type', 'text/plain')])
+    #     return ['Hello World!']
+
+    def start_persistence_server(self, port):
+        #app = self.application
+        app = services.wsgi_server.app
+        
+        server = BaseWSGIServer(ORBEON_PERSISTENCE_SERVER_INTERFACE, port, app)
+        stopper = threading.Event()
+
+        t = OrbeonThreadedWSGIServer(
+            name=ORBEON_PERSISTENCE_SERVER_PREFIX,
+            server=server,
+            stopper=stopper
+        )
+        
+        t.setDaemon(True)
+        _logger.info('Initiating HTTP %s (werkzeug) START on port %s', ORBEON_PERSISTENCE_SERVER_PREFIX, port)
+        t.start()
+        
+    def stop_persistence_server(self, port):
+        for thread in threading.enumerate():
+            if thread.getName() == ORBEON_PERSISTENCE_SERVER_PREFIX:
+                thread.stopper.set()
+                _logger.info("Initiating HTTP %s (werkzeug) SHUTDOWN on port %s", ORBEON_PERSISTENCE_SERVER_PREFIX, port)
+                thread.server.server_close()
+                thread.join()
