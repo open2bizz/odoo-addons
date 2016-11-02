@@ -1,6 +1,6 @@
 import xmlrpclib
 
-class XmlrpcObj(object):
+class XMLRPCService(object):
 
     def __init__(self, db, uid, pwd, url):
         self.db = db
@@ -75,7 +75,7 @@ class XmlrpcObj(object):
         @type fields: array of strings
         @return: array of dicts
         """
-        return self.api.execute_kw(self.db, self.uid, self.pwd, "o2b.orbeon.builder", "orbeon_search_read_data", domain, {"fields":fields})
+        return self.api.execute_kw(self.db, self.uid, self.pwd, "orbeon.builder", "orbeon_search_read_data", domain, {"fields":fields})
 
     def runner_search_read_builder(self, domain, fields):
         """
@@ -85,7 +85,7 @@ class XmlrpcObj(object):
         @type fields: array of strings
         @return: array of dicts
         """
-        return self.api.execute_kw(self.db, self.uid, self.pwd, "o2b.orbeon.runner", "orbeon_search_read_builder", domain, {"fields":fields})
+        return self.api.execute_kw(self.db, self.uid, self.pwd, "orbeon.runner", "orbeon_search_read_builder", domain, {"fields":fields})
         
     def runner_search_read_data(self, domain, fields):
         """
@@ -95,4 +95,4 @@ class XmlrpcObj(object):
         @type fields: array of strings
         @return: array of dicts
         """
-        return self.api.execute_kw(self.db, self.uid, self.pwd, "o2b.orbeon.runner", "orbeon_search_read_data", domain, {"fields":fields})
+        return self.api.execute_kw(self.db, self.uid, self.pwd, "orbeon.runner", "orbeon_search_read_data", domain, {"fields":fields})

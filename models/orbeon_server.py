@@ -116,7 +116,7 @@ class OrbeonServer(models.Model):
 
     @api.multi
     def action_start_persistence_server(self, context=None, *args, **kwargs):
-        self.start(self.persistence_server_port)
+        self.start_persistence_server(self.persistence_server_port)
 
     @api.multi
     def action_stop_persistence_server(self, context=None, *args, **kwargs):

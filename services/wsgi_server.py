@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-from werkzeug.wrappers import Request, Response
-from xmlrpc_script import XmlrpcObj
-from xmlgen import XmlGenerator
 import base64
-import logging
 import ConfigParser
-
 import dicttoxml
+import logging
+import os
+from werkzeug.wrappers import Request, Response
 from xml.dom.minidom import parseString
+
+from xmlrpc_service import XMLRPCService
+from xmlgen import XmlGenerator
 
 FORMAT = "%(asctime)-15s %(log_lvl)-4s: %(message)s"
 logging.basicConfig(format=FORMAT)
@@ -31,11 +32,18 @@ def _log(type, msg):
 class PersistenceLayer(object):
 
     def __init__(self):
-        self.use_config_file = self.assert_config_file() 
+        self.use_config_file = self.assert_config_file()
+
+    def get_config(self):
+        config = ConfigParser.ConfigParser()
+        file_path = os.path.dirname(os.path.realpath(__file__))
+        path = os.path.join(file_path, "config.cfg")
+        config.read(path)
+        return config
 
     def assert_config_file(self):
-        config = ConfigParser.ConfigParser()
-        config.read("config.cfg")
+        config = self.get_config()
+        
         if len(config.sections()) > 0:
             return True
         else:
@@ -59,10 +67,10 @@ class PersistenceLayer(object):
         
         res = Response("")
         if request.path == "/search/orbeon/builder":
-            xml = self._get_xmlrpc_obj(request.headers)
+            xmlrpc = self._get_xmlrpc(request.headers)
             try:
-                form = xml.search_read(
-                        "o2b.orbeon.builder", 
+                form = xmlrpc.search_read(
+                        "orbeon.builder", 
                         [[("id",">",0)]],
                         ["name","create_date","write_date"]
                         )
@@ -102,12 +110,18 @@ class PersistenceLayer(object):
     http://localhost:8080/orbeon4.10/fr/orbeon/runner/edit/<ID>
     """
     def get_orbeon_method(self, request, path):
-        xmlrpc_obj = self._get_xmlrpc_obj(request.headers)
+        # import pdb
+        # pdb.set_trace()
+        try:
+            xmlrpc = self._get_xmlrpc(request.headers)
+        except Exception, e:
+            _log('error', "Exception: %s" % e)
+            
         form_mode = path[3]
 
         if form_mode == 'builder':
             form_id = path[5]
-            record = xmlrpc_obj.builder_search_read_data(
+            record = xmlrpc.builder_search_read_data(
                     [[("id","=",form_id)]],
                     ["xml"],
                     )
@@ -119,13 +133,13 @@ class PersistenceLayer(object):
 
             if runner_action == 'form':
                 form_id = request.args.get('document')
-                record = xmlrpc_obj.runner_search_read_builder(
+                record = xmlrpc.runner_search_read_builder(
                     [[("id","=",form_id)]],
                     ["xml"],
                     )
             elif runner_action == 'data':
                 form_id = path[5]
-                record = xmlrpc_obj.runner_search_read_data(
+                record = xmlrpc.runner_search_read_data(
                     [[("id","=",form_id)]],
                     ["xml"],
                     )
@@ -176,8 +190,8 @@ class PersistenceLayer(object):
         _log('debug', "[get_erp_resource_method] domain: %s" % domain)
 
         try:
-            xmlrpc_obj = self._get_xmlrpc_obj(request.headers)
-            records = xmlrpc_obj.search_read(model, [domain], [label])
+            xmlrpc = self._get_xmlrpc(request.headers)
+            records = xmlrpc.search_read(model, [domain], [label])
             xml = dicttoxml.dicttoxml(records)
             dom = parseString(xml)
 
@@ -196,18 +210,18 @@ class PersistenceLayer(object):
         form_type = path[3]
         form_id = path[5]
 
-        xmlrpc_obj = self._get_xmlrpc_obj(request.headers)
+        xmlrpc = self._get_xmlrpc(request.headers)
         if form_type == "builder":
-            record = xmlrpc_obj.search(
-                        "o2b.orbeon.builder",
+            record = xmlrpc.search(
+                        "orbeon.builder",
                         [[("id","=",form_id)]],
                         )
             if len(record) == 1:
                 data = {
                         "xml": str(request.data),
                         }
-                xmlrpc_obj.write(
-                        "o2b.orbeon.builder",
+                xmlrpc.write(
+                        "orbeon.builder",
                         int(form_id),
                         data
                         ) 
@@ -216,21 +230,21 @@ class PersistenceLayer(object):
                         "name": str(form_id),
                         "xml": str(request.data),
                         }
-                xmlrpc_obj.create(
-                       "o2b.orbeon.builder",
+                xmlrpc.create(
+                       "orbeon.builder",
                        [data]
                        )
         elif form_type == "runner":
-            record = xmlrpc_obj.search(
-                    "o2b.orbeon.runner",
+            record = xmlrpc.search(
+                    "orbeon.runner",
                     [[("id","=",form_id)]],
                     )
             if len(record) == 1:
                 data = {
                         "xml": str(request.data),
                         }
-                xmlrpc_obj.write(
-                        "o2b.orbeon.runner",
+                xmlrpc.write(
+                        "orbeon.runner",
                         int(form_id),
                         data,
                         )
@@ -239,8 +253,8 @@ class PersistenceLayer(object):
                         "name": str(form_id),
                         "xml": str(request.data),
                         }
-                xmlrpc_obj.create(
-                        "o2b.orbeon.runner",
+                xmlrpc.create(
+                        "orbeon.runner",
                         [data],
                         )
         return res
@@ -253,7 +267,7 @@ class PersistenceLayer(object):
     def __call__(self, environ, start_response):
         return self.wsgi_app(environ, start_response)
 
-    def _get_xmlrpc_obj(self, header):
+    def _get_xmlrpc(self, header):
         """ use config file if exists, otherwise get header data """
         if not self.use_config_file:
             url = "http://%s:%s" % (
@@ -268,8 +282,8 @@ class PersistenceLayer(object):
             auth = auth_str.split(":")
             usr, pwd = (auth[0], auth[1])	
         else:
-            config = ConfigParser.ConfigParser()
-            config.read("config.cfg")
+            config = self.get_config()
+            
             url = "%s:%s" % (
                     config.get("odoo config", "server_url"),
                     config.get("odoo config", "port"),
@@ -278,8 +292,7 @@ class PersistenceLayer(object):
             usr = config.get("odoo config", "username")
             pwd = config.get("odoo config", "password")
 
-        xml = XmlrpcObj(db, usr, pwd, url)
-        return xml
+        return XMLRPCService(db, usr, pwd, url)
 
 def app(environ, start_response):
     """ WSGI entry point."""
