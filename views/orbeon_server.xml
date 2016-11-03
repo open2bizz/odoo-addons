@@ -21,8 +21,9 @@
             <field name="url" widget="url" string="URL" />
             <field name="summary_url" widget="url" string="Summary URL" />
 	    <newline/>            
-            <field name="persistence_server_port"/>
-            <field name="persistence_server_processtype"/>
+            <field name="persistence_server_port" />
+            <field name="persistence_server_processtype" />
+            <field name="persistence_server_configfilename" />
 	    <newline/>
             <field name="description"/>
 	    <newline/>
@@ -41,6 +42,7 @@
             <field name="name" />
             <field name="persistence_server_port" />
             <field name="persistence_server_processtype" />
+            <field name="persistence_server_configfilename" />
         </tree>
     </field>
 </record>

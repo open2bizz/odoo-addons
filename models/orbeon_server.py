@@ -79,13 +79,18 @@ class OrbeonServer(models.Model):
 
     persistence_server_processtype = fields.Selection(
         [
-            (PERSISTENCE_SERVER_SINGLE_THREADED, "Single thread"),
-            (PERSISTENCE_SERVER_MULTI_THREADED, "Multi thread"),
+            (PERSISTENCE_SERVER_SINGLE_THREADED, "Single threaded"),
+            (PERSISTENCE_SERVER_MULTI_THREADED, "Multi threaded"),
             (PERSISTENCE_SERVER_FORKING, "Forking (process)"),
         ],
         "Persistence server proces-type",
         default=PERSISTENCE_SERVER_SINGLE_THREADED,
-        required=True)
+        required=True
+    )
+
+    persistence_server_configfilename = fields.Char(
+        "Persistence server config-filename"
+    )
 
     # todo Still needed (is_active)?
     is_active = fields.Boolean(
@@ -128,15 +133,15 @@ class OrbeonServer(models.Model):
 
     @api.multi
     def action_start_persistence_server(self, context=None, *args, **kwargs):
-        self._start_persistence_server(self.persistence_server_port, self.persistence_server_processtype)
+        self._start_persistence_server(
+            self.persistence_server_port,
+            self.persistence_server_processtype,
+            self.persistence_server_configfilename
+        )
 
     @api.multi
     def action_stop_persistence_server(self, context=None, *args, **kwargs):
         self._stop_persistence_server(self.persistence_server_port)
-
-    # def application(self, environment, start_response):
-    #     start_response('200 OK', [('Content-Type', 'text/plain')])
-    #     return ['Hello World!']
 
     def _persistence_server_name(self, uuid):
         #TODO
@@ -157,19 +162,20 @@ class OrbeonServer(models.Model):
 
     def _autostart_persistence_servers(self, pool, cr):
         try:
-            cr.execute("SELECT persistence_server_port, persistence_server_processtype FROM orbeon_server")
+            # TODO: add active check == True
+            cr.execute("SELECT persistence_server_port, persistence_server_processtype, persistence_server_configfilename FROM orbeon_server")
             for (port, server_processtype) in cr.fetchall():
                 self._start_persistence_server(port, server_processtype)
         except:
             pass
         
-    def _start_persistence_server(self, port, server_processtype):
+    def _start_persistence_server(self, port, server_processtype, config_filename=None):
         dbuuid = self.env['ir.config_parameter'].get_param('database.uuid')
 
-        app = services.wsgi_server.app
+        app = services.wsgi_server.create_app(config_filename)
         wsgi_server = self._persistence_wsgi_server(server_processtype)
         wsgi_app_server = wsgi_server(ORBEON_PERSISTENCE_SERVER_INTERFACE, port, app)
-        
+
         stopper = threading.Event()
 
         t = OrbeonThreadedWSGIServer(
@@ -187,8 +193,8 @@ class OrbeonServer(models.Model):
         dbuuid = self.env['ir.config_parameter'].get_param('database.uuid')
         
         for thread in threading.enumerate():
-            if thread.getName() == self.persistence_server_name(dbuuid):
+            if thread.getName() == self._persistence_server_name(dbuuid):
                 thread.stopper.set()
-                _logger.info("Initiating HTTP %s (werkzeug) SHUTDOWN on port %s", self.persistence_server_name(dbuuid), port)
+                _logger.info("Initiating HTTP %s (werkzeug) SHUTDOWN on port %s", self._persistence_server_name(dbuuid), port)
                 thread.server.server_close()
                 thread.join()

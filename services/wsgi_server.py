@@ -31,13 +31,19 @@ def _log(type, msg):
 
 class PersistenceLayer(object):
 
-    def __init__(self):
+    def __init__(self, config_filename=None):
+        self.config_filename = config_filename
         self.use_config_file = self.assert_config_file()
+
+    def set_config_filename(self, config_filename=None):
+        if filename:
+            self.config_filename = config_filename
 
     def get_config(self):
         config = ConfigParser.ConfigParser()
         file_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.join(file_path, "config.cfg")
+        path = os.path.join(file_path, self.config_filename)
+        
         config.read(path)
         return config
 
@@ -294,7 +300,6 @@ class PersistenceLayer(object):
 
         return XMLRPCService(db, usr, pwd, url)
 
-def app(environ, start_response):
-    """ WSGI entry point."""
-    app = PersistenceLayer()
-    return app.wsgi_app(environ, start_response)
+def create_app(config_filename=None):
+    app = PersistenceLayer(config_filename)
+    return app
