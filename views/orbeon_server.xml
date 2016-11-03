@@ -20,7 +20,9 @@
             <field name="name" string="Name" />
             <field name="url" widget="url" string="URL" />
             <field name="summary_url" widget="url" string="Summary URL" />
+	    <newline/>            
             <field name="persistence_server_port"/>
+            <field name="persistence_server_processtype"/>
 	    <newline/>
             <field name="description"/>
 	    <newline/>
@@ -38,12 +40,13 @@
         <tree>
             <field name="name" />
             <field name="persistence_server_port" />
+            <field name="persistence_server_processtype" />
         </tree>
     </field>
 </record>
 
 <record id="orbeon_server_action" model="ir.actions.act_window">
-    <field name="name">Orbeon Forms Server</field>
+    <field name="name">Orbeon Server</field>
     <field name="type">ir.actions.act_window</field>
     <field name="res_model">orbeon.server</field>
     <field name="view_type">form</field>
