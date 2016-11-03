@@ -6,29 +6,37 @@
     <field name="name">orbeon.server.form</field>
     <field name="model">orbeon.server</field>
     <field name="arch" type="xml">
-      <form>
-        <header>
-        </header>
+      <form string="Orbeon Server">
         <sheet>
-	  <div class="oe_button_box" name="button_box">
-	    <button class="oe_stat_button" icon="fa-play" string="Start"
-		    name="action_start_persistence_server" type="object" />
-            <button class="oe_stat_button" icon="fa-stop" string="Stop"
-		    name="action_stop_persistence_server" type="object" />
-	  </div>
-          <group>
-            <field name="name" string="Name" />
-            <field name="url" widget="url" string="URL" />
-            <field name="summary_url" widget="url" string="Summary URL" />
-	    <newline/>            
-            <field name="persistence_server_port" />
-            <field name="persistence_server_processtype" />
-            <field name="persistence_server_configfilename" />
-	    <newline/>
-            <field name="description"/>
-	    <newline/>
-            <field name="default_builder_xml"/>
-          </group>
+          <div class="oe_title">
+            <h1><field name="name" string="Name" /></h1>
+	    <div class="oe_button_box" name="button_box">
+	    <button class="btn btn-primary" icon="fa-play" string="Start persistence"
+		    name="action_start_persistence_server" type="object" 
+                    attrs="{'invisible':[('persistence_server_started','=',True)]}" />
+            <button class="btn btn-primary" icon="fa-stop" string="Stop persistence"
+		    name="action_stop_persistence_server" type="object"
+                    attrs="{'invisible':[('persistence_server_started','=',False)]}" />
+            </div>
+          </div>
+          <notebook>
+            <page string="Configuration">
+              <group string="Orbeon Server">
+                <field name="url" widget="url" string="URL" />
+                <field name="summary_url" widget="url" string="Summary URL" />
+                <field name="description"/>
+              </group>
+              <group string="Orbeon Persistence Server">
+	        <field name="persistence_server_started" string="Started" readonly="1" />
+                <field name="persistence_server_port" string="Port" />
+                <field name="persistence_server_processtype" string="Process-type" />
+                <field name="persistence_server_configfilename" string="Config filename" />
+              </group>
+            </page>
+            <page string="Default Builder XML">
+              <field name="default_builder_xml"/>
+            </page>
+          </notebook>
         </sheet>
       </form>
     </field>
@@ -43,6 +51,7 @@
             <field name="persistence_server_port" />
             <field name="persistence_server_processtype" />
             <field name="persistence_server_configfilename" />
+	    <field name="persistence_server_started" />
         </tree>
     </field>
 </record>

@@ -92,6 +92,10 @@ class OrbeonServer(models.Model):
         "Persistence server config-filename"
     )
 
+    persistence_server_started = fields.Boolean(
+        default=False
+    )
+
     # todo Still needed (is_active)?
     is_active = fields.Boolean(
         "Is active",
@@ -138,10 +142,12 @@ class OrbeonServer(models.Model):
             self.persistence_server_processtype,
             self.persistence_server_configfilename
         )
+        self.persistence_server_started = True
 
     @api.multi
     def action_stop_persistence_server(self, context=None, *args, **kwargs):
         self._stop_persistence_server(self.persistence_server_port)
+        self.persistence_server_started = False
 
     def _persistence_server_name(self, uuid):
         #TODO
