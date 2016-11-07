@@ -13,10 +13,10 @@
 	    <div class="oe_button_box" name="button_box">
 	    <button class="btn btn-primary" icon="fa-play" string="Start persistence"
 		    name="action_start_persistence_server" type="object" 
-                    attrs="{'invisible':[('persistence_server_started','=',True)]}" />
+                    attrs="{'invisible':[('persistence_server_uuid','!=',False)]}" />
             <button class="btn btn-primary" icon="fa-stop" string="Stop persistence"
 		    name="action_stop_persistence_server" type="object"
-                    attrs="{'invisible':[('persistence_server_started','=',False)]}" />
+                    attrs="{'invisible':[('persistence_server_uuid','=',False)]}" />
             </div>
           </div>
           <notebook>
@@ -27,7 +27,7 @@
                 <field name="description"/>
               </group>
               <group string="Orbeon Persistence Server">
-	        <field name="persistence_server_started" string="Started" readonly="1" />
+	        <field name="persistence_server_uuid" string="uuid" readonly="1" />
                 <field name="persistence_server_port" string="Port" />
                 <field name="persistence_server_processtype" string="Process-type" />
                 <field name="persistence_server_configfilename" string="Config filename" />
@@ -48,10 +48,10 @@
     <field name="arch" type="xml">
         <tree>
             <field name="name" />
+            <field name="persistence_server_uuid" />
             <field name="persistence_server_port" />
             <field name="persistence_server_processtype" />
             <field name="persistence_server_configfilename" />
-	    <field name="persistence_server_started" />
         </tree>
     </field>
 </record>

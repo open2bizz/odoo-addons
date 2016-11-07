@@ -73,6 +73,12 @@ class OrbeonServer(models.Model):
         "Description"
     )
 
+    persistence_server_uuid = fields.Char(
+        "Persistence server uuid ",
+        compute='_persistence_server_uuid',
+        store=True
+    )
+    
     persistence_server_port = fields.Char(
         "Persistence server port"
     )
@@ -92,10 +98,6 @@ class OrbeonServer(models.Model):
         "Persistence server config-filename"
     )
 
-    persistence_server_started = fields.Boolean(
-        default=False
-    )
-
     # todo Still needed (is_active)?
     is_active = fields.Boolean(
         "Is active",
@@ -109,9 +111,7 @@ class OrbeonServer(models.Model):
 
     def __init__(self, pool, cr):
         res = super(OrbeonServer, self).__init__(pool, cr)
-
-        # TODO enable again
-        #self._autostart_persistence_servers(pool, cr)
+        self._autostart_persistence_servers(pool, cr)
         return res
 
     @api.one
@@ -137,70 +137,88 @@ class OrbeonServer(models.Model):
 
     @api.multi
     def action_start_persistence_server(self, context=None, *args, **kwargs):
-        self._start_persistence_server(
-            self.persistence_server_port,
-            self.persistence_server_processtype,
-            self.persistence_server_configfilename
-        )
-        self.persistence_server_started = True
+        try:
+            uuid = self._persistence_server_uuid()
+            
+            self._start_persistence_server(
+                uuid,
+                self.persistence_server_port,
+                self.persistence_server_processtype,
+                self.persistence_server_configfilename
+            )
+            self.persistence_server_uuid = uuid
+        except Exception, e:
+            _logger.error('Exception: %s' % e)
 
     @api.multi
     def action_stop_persistence_server(self, context=None, *args, **kwargs):
-        self._stop_persistence_server(self.persistence_server_port)
-        self.persistence_server_started = False
+        self._stop_persistence_server(self.persistence_server_uuid, self.persistence_server_port)
+        self.persistence_server_uuid = None
 
-    def _persistence_server_name(self, uuid):
-        #TODO
-        # uuid_generate_v4() on start/stop!!! Not here
-        
-        dbuuid = self.env['ir.config_parameter'].get_param('database.uuid')
-        return "%s.%s" % (ORBEON_PERSISTENCE_SERVER_PREFIX, uuid)
+    def _persistence_server_uuid(self):
+        from uuid import uuid4
+        return uuid4()
 
-    def _persistence_wsgi_server(self, server_processtype):
+    def _persistence_wsgi_server(self, processtype):
         from werkzeug.serving import BaseWSGIServer, ThreadedWSGIServer, ForkingWSGIServer
 
-        if server_processtype == PERSISTENCE_SERVER_SINGLE_THREADED:
+        if processtype == PERSISTENCE_SERVER_SINGLE_THREADED:
             return BaseWSGIServer
-        elif server_processtype == PERSISTENCE_SERVER_MULTI_THREADED:
+        elif processtype == PERSISTENCE_SERVER_MULTI_THREADED:
             return ThreadedWSGIServer
-        elif server_processtype == PERSISTENCE_SERVER_FORKING:
+        elif processtype == PERSISTENCE_SERVER_FORKING:
             return ForkingWSGIServer
 
     def _autostart_persistence_servers(self, pool, cr):
         try:
-            # TODO: add active check == True
-            cr.execute("SELECT persistence_server_port, persistence_server_processtype, persistence_server_configfilename FROM orbeon_server")
-            for (port, server_processtype) in cr.fetchall():
-                self._start_persistence_server(port, server_processtype)
-        except:
-            pass
-        
-    def _start_persistence_server(self, port, server_processtype, config_filename=None):
-        dbuuid = self.env['ir.config_parameter'].get_param('database.uuid')
+            cr.execute("SELECT id, persistence_server_uuid, persistence_server_port, persistence_server_processtype, persistence_server_configfilename FROM orbeon_server")
+            
+            for (id, persistence_server_uuid, persistence_server_port, persistence_server_processtype, persistence_server_configfilename) in cr.fetchall():
+                # In case there's already a thread running on the UUID, don't start it again (twice) - Hence the `else` on the `for` loop.
+                # This triggers: error(98, 'Address already in use')
+                for thread in threading.enumerate():
+                    # Don't start if thread/port is already in use.
+                    if thread.getName() == persistence_server_uuid:
+                        break;
+                else:
+                    # Can start (thread isn't in use)
+                    uuid = self._persistence_server_uuid()
+                                     
+                    self._start_persistence_server(
+                        uuid,
+                        persistence_server_port,
+                        persistence_server_processtype,
+                        persistence_server_configfilename
+                    )
 
-        app = services.wsgi_server.create_app(config_filename)
-        wsgi_server = self._persistence_wsgi_server(server_processtype)
+                    # Force clear (uuid) which ensures a clean start
+                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = '%s'" % (id))
+                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(uuid), id))
+                
+        except Exception, e:
+            _logger.error("Exception: %s" % e)
+
+    def _start_persistence_server(self, uuid, port, processtype, configfilename=None):
+        app = services.wsgi_server.create_app(configfilename)
+        wsgi_server = self._persistence_wsgi_server(processtype)
         wsgi_app_server = wsgi_server(ORBEON_PERSISTENCE_SERVER_INTERFACE, port, app)
 
         stopper = threading.Event()
 
         t = OrbeonThreadedWSGIServer(
-            name=self._persistence_server_name(dbuuid),
+            name=uuid,
             server=wsgi_app_server,
             stopper=stopper
         )
         
         t.setDaemon(True)
-        _logger.info('Initiating HTTP %s (werkzeug) START on port %s', self._persistence_server_name(dbuuid), port)
+        _logger.info('Starting HTTP (werkzeug) %s (thread: %s) on port %s', ORBEON_PERSISTENCE_SERVER_PREFIX, uuid, port)
         t.start()
         
-    def _stop_persistence_server(self, port):
-        # TODO uuid_generate and cache/store somehwere?
-        dbuuid = self.env['ir.config_parameter'].get_param('database.uuid')
-        
+    def _stop_persistence_server(self, uuid, port):
         for thread in threading.enumerate():
-            if thread.getName() == self._persistence_server_name(dbuuid):
+            if thread.getName() == uuid: # TODO uuid
                 thread.stopper.set()
-                _logger.info("Initiating HTTP %s (werkzeug) SHUTDOWN on port %s", self._persistence_server_name(dbuuid), port)
+                _logger.info("Stopping HTTP (werkzeug) %s (thread: %s) on port %s", ORBEON_PERSISTENCE_SERVER_PREFIX, uuid, port)
                 thread.server.server_close()
                 thread.join()
