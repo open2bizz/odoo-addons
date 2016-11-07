@@ -19,6 +19,7 @@
                     attrs="{'invisible':[('persistence_server_uuid','=',False)]}" />
             </div>
           </div>
+
           <notebook>
             <page string="Configuration">
               <group string="Orbeon Server">
@@ -27,7 +28,8 @@
                 <field name="description"/>
               </group>
               <group string="Orbeon Persistence Server">
-	        <field name="persistence_server_uuid" string="uuid" readonly="1" />
+                <field name="persistence_server_active" string="Active" />
+	        <field name="persistence_server_uuid" string="UUID (thread)" readonly="1" />
                 <field name="persistence_server_port" string="Port" />
                 <field name="persistence_server_processtype" string="Process-type" />
                 <field name="persistence_server_configfilename" string="Config filename" />
@@ -48,6 +50,7 @@
     <field name="arch" type="xml">
         <tree>
             <field name="name" />
+            <field name="persistence_server_active" />
             <field name="persistence_server_uuid" />
             <field name="persistence_server_port" />
             <field name="persistence_server_processtype" />

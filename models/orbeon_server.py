@@ -73,14 +73,19 @@ class OrbeonServer(models.Model):
         "Description"
     )
 
+    persistence_server_active = fields.Boolean(
+        "Active",
+        default=False,
+    )
+
     persistence_server_uuid = fields.Char(
-        "Persistence server uuid ",
+        "UUID (thread)",
         compute='_persistence_server_uuid',
         store=True
     )
     
     persistence_server_port = fields.Char(
-        "Persistence server port"
+        "Port"
     )
 
     persistence_server_processtype = fields.Selection(
@@ -89,18 +94,13 @@ class OrbeonServer(models.Model):
             (PERSISTENCE_SERVER_MULTI_THREADED, "Multi threaded"),
             (PERSISTENCE_SERVER_FORKING, "Forking (process)"),
         ],
-        "Persistence server proces-type",
+        "Process-type",
         default=PERSISTENCE_SERVER_SINGLE_THREADED,
         required=True
     )
 
     persistence_server_configfilename = fields.Char(
-        "Persistence server config-filename"
-    )
-
-    # todo Still needed (is_active)?
-    is_active = fields.Boolean(
-        "Is active",
+        "Config-filename"
     )
 
     default_builder_xml = fields.Text(
@@ -171,29 +171,43 @@ class OrbeonServer(models.Model):
 
     def _autostart_persistence_servers(self, pool, cr):
         try:
-            cr.execute("SELECT id, persistence_server_uuid, persistence_server_port, persistence_server_processtype, persistence_server_configfilename FROM orbeon_server")
+            cr.execute(
+                "SELECT "
+                "    id, "
+                "    persistence_server_active AS active,"
+                "    persistence_server_uuid AS uuid,"
+                "    persistence_server_port AS port,"
+                "    persistence_server_processtype AS processtype,"
+                "    persistence_server_configfilename AS configfilename"
+                "  FROM"
+                "    orbeon_server"
+            )
             
-            for (id, persistence_server_uuid, persistence_server_port, persistence_server_processtype, persistence_server_configfilename) in cr.fetchall():
+            for (id,active,uuid,port,processtype,configfilename) in cr.fetchall():
                 # In case there's already a thread running on the UUID, don't start it again (twice) - Hence the `else` on the `for` loop.
                 # This triggers: error(98, 'Address already in use')
                 for thread in threading.enumerate():
                     # Don't start if thread/port is already in use.
-                    if thread.getName() == persistence_server_uuid:
+                    if thread.getName() == uuid:
                         break;
                 else:
+                    # Force clear (uuid) which ensures a clean start
+                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = '%s'" % (id))
+                    
+                    if not active:
+                        return
+                    
                     # Can start (thread isn't in use)
-                    uuid = self._persistence_server_uuid()
+                    new_uuid = self._persistence_server_uuid()
                                      
                     self._start_persistence_server(
-                        uuid,
+                        new_uuid,
                         persistence_server_port,
                         persistence_server_processtype,
                         persistence_server_configfilename
                     )
 
-                    # Force clear (uuid) which ensures a clean start
-                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = '%s'" % (id))
-                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(uuid), id))
+                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
                 
         except Exception, e:
             _logger.error("Exception: %s" % e)
