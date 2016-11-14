@@ -73,17 +73,6 @@ class OrbeonServer(models.Model):
         "Description"
     )
 
-    persistence_server_active = fields.Boolean(
-        "Active",
-        default=False,
-    )
-
-    persistence_server_uuid = fields.Char(
-        "UUID (thread)",
-        compute='_persistence_server_uuid',
-        store=True
-    )
-    
     persistence_server_port = fields.Char(
         "Port"
     )
@@ -101,6 +90,24 @@ class OrbeonServer(models.Model):
 
     persistence_server_configfilename = fields.Char(
         "Config-filename"
+    )
+
+    persistence_server_active = fields.Boolean(
+        "Active",
+        default=False,
+        help="Provisioning the persistence-server is enabled if active is checked (True).",
+    )
+
+    persistence_server_autostart = fields.Boolean(
+        "Autostart",
+        default=False,
+        help="Ensures the persistence-server will be started right after Odoo starts"
+    )
+
+    persistence_server_uuid = fields.Char(
+        "UUID (thread)",
+        compute='_persistence_server_uuid',
+        store=True
     )
 
     default_builder_xml = fields.Text(
@@ -147,6 +154,7 @@ class OrbeonServer(models.Model):
                 self.persistence_server_configfilename
             )
             self.persistence_server_uuid = uuid
+            return True
         except Exception, e:
             _logger.error('Exception: %s' % e)
 
@@ -154,6 +162,7 @@ class OrbeonServer(models.Model):
     def action_stop_persistence_server(self, context=None, *args, **kwargs):
         self._stop_persistence_server(self.persistence_server_uuid, self.persistence_server_port)
         self.persistence_server_uuid = None
+        return True
 
     def _persistence_server_uuid(self):
         from uuid import uuid4
@@ -175,6 +184,7 @@ class OrbeonServer(models.Model):
                 "SELECT "
                 "    id, "
                 "    persistence_server_active AS active,"
+                "    persistence_server_autostart AS autostart,"
                 "    persistence_server_uuid AS uuid,"
                 "    persistence_server_port AS port,"
                 "    persistence_server_processtype AS processtype,"
@@ -183,7 +193,7 @@ class OrbeonServer(models.Model):
                 "    orbeon_server"
             )
             
-            for (id,active,uuid,port,processtype,configfilename) in cr.fetchall():
+            for (id,active,autostart,uuid,port,processtype,configfilename) in cr.fetchall():
                 # In case there's already a thread running on the UUID, don't start it again (twice) - Hence the `else` on the `for` loop.
                 # This triggers: error(98, 'Address already in use')
                 for thread in threading.enumerate():
@@ -194,7 +204,7 @@ class OrbeonServer(models.Model):
                     # Force clear (uuid) which ensures a clean start
                     cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = '%s'" % (id))
                     
-                    if not active:
+                    if not active or not autostart:
                         return
                     
                     # Can start (thread isn't in use)
@@ -202,9 +212,9 @@ class OrbeonServer(models.Model):
                                      
                     self._start_persistence_server(
                         new_uuid,
-                        persistence_server_port,
-                        persistence_server_processtype,
-                        persistence_server_configfilename
+                        port,
+                        processtype,
+                        configfilename
                     )
 
                     cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
