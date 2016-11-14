@@ -179,6 +179,9 @@ class OrbeonServer(models.Model):
             return ForkingWSGIServer
 
     def _autostart_persistence_servers(self, pool, cr):
+        # Force clear (uuid) which ensures a clean start
+        cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL ")
+        
         try:
             cr.execute(
                 "SELECT "
@@ -190,34 +193,24 @@ class OrbeonServer(models.Model):
                 "    persistence_server_processtype AS processtype,"
                 "    persistence_server_configfilename AS configfilename"
                 "  FROM"
-                "    orbeon_server"
+                "    orbeon_server "
+                "  WHERE "
+                "    persistence_server_autostart = True "
+                "    AND persistence_server_active = True "
             )
             
             for (id,active,autostart,uuid,port,processtype,configfilename) in cr.fetchall():
-                # In case there's already a thread running on the UUID, don't start it again (twice) - Hence the `else` on the `for` loop.
-                # This triggers: error(98, 'Address already in use')
-                for thread in threading.enumerate():
-                    # Don't start if thread/port is already in use.
-                    if thread.getName() == uuid:
-                        break;
-                else:
-                    # Force clear (uuid) which ensures a clean start
-                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = '%s'" % (id))
-                    
-                    if not active or not autostart:
-                        return
-                    
-                    # Can start (thread isn't in use)
-                    new_uuid = self._persistence_server_uuid()
-                                     
-                    self._start_persistence_server(
-                        new_uuid,
-                        port,
-                        processtype,
-                        configfilename
-                    )
+                self._stop_persistence_server(uuid, port)
+                
+                new_uuid = self._persistence_server_uuid()
+                self._start_persistence_server(
+                    new_uuid,
+                    port,
+                    processtype,
+                    configfilename
+                )
 
-                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
+                cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
                 
         except Exception, e:
             _logger.error("Exception: %s" % e)

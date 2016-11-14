@@ -31,8 +31,8 @@
                 <field name="persistence_server_port" string="Port" />
                 <field name="persistence_server_processtype" string="Process-type" />
                 <field name="persistence_server_configfilename" string="Config filename" />
-                <field name="persistence_server_active" string="Active" />
                 <field name="persistence_server_autostart" string="Autostart" />
+                <field name="persistence_server_active" string="Active" />
 	        <field name="persistence_server_uuid" string="UUID (thread)" readonly="1" />
               </group>
             </page>
@@ -51,11 +51,12 @@
     <field name="arch" type="xml">
         <tree>
             <field name="name" />
-            <field name="persistence_server_active" />
-            <field name="persistence_server_uuid" />
             <field name="persistence_server_port" />
             <field name="persistence_server_processtype" />
             <field name="persistence_server_configfilename" />
+            <field name="persistence_server_autostart" />
+            <field name="persistence_server_active" />
+            <field name="persistence_server_uuid" />
         </tree>
     </field>
 </record>
