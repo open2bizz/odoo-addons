@@ -157,7 +157,7 @@ class OrbeonServer(models.Model):
                 uuid,
                 self.persistence_server_port,
                 self.persistence_server_processtype,
-                self.persistence_server_configfilename
+                self.persistence_server_configfilename or ''
             )
             self.persistence_server_uuid = uuid
             return True

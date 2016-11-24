@@ -57,7 +57,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
                 'name': 'server_1',
                 'url': 'http://localhost/orbeon_server_1',
                 'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
-                'persistence_server_port': '100111',
+                'persistence_server_port': '10111',
                 'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
             }
         )

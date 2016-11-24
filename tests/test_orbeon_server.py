@@ -39,7 +39,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -51,7 +51,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -63,7 +63,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'Test Server',
                     'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -75,7 +75,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'Test Server',
                     'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -97,7 +97,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'Test Server',
                     'url': 'http://localhost/orbeon_test_server_2',
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -110,7 +110,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                     'name': 'Test Server',
                     'url': 'http://localhost/orbeon_test_server_2',
                     'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -129,7 +129,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                     'name': 'server_1',
                     'url': 'http://localhost/server_test_create_constraint_unique_name',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -144,7 +144,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                     'name': 'server_test_write_constraint_unique_name',
                     'url': 'http://localhost/server_test_write_constraint_unique_name',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -170,7 +170,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                     'name': 'test_create_constraint_unique_url_server',
                     'url': 'http://localhost/orbeon_server_1',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -185,7 +185,7 @@ class TestOrbeonServer(TestOrbeonCommon):
                     'name': 'server_test_write_constraint_unique_name',
                     'url': 'http://localhost/server_test_write_constraint_unique_url',
                     'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
-                    'persistence_server_port': '100111',
+                    'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
@@ -259,3 +259,11 @@ class TestOrbeonServer(TestOrbeonCommon):
         """Test start persistence-server where persistence_server_active is False"""
         with self.assertRaisesRegexp(ValidationError, "Server with name .* can't start, because marked inactive."):
             self.server_1.sudo().start_persistence_server()
+
+    def test_persistence_server_start_ok_because_active(self):
+        """Test start (active) persistence-server ok/works"""
+        try:
+            self.server_1.sudo().write({'persistence_server_active': True})
+            self.server_1.sudo().start_persistence_server()
+        except Exception as e:
+            self.fail(e)
