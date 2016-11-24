@@ -74,7 +74,8 @@ class OrbeonServer(models.Model):
     )
 
     persistence_server_port = fields.Char(
-        "Port"
+        "Port",
+        required=True,
     )
 
     persistence_server_processtype = fields.Selection(
@@ -120,7 +121,7 @@ class OrbeonServer(models.Model):
 
     def __init__(self, pool, cr):
         res = super(OrbeonServer, self).__init__(pool, cr)
-        self._autostart_persistence_servers(pool, cr)
+        #self._autostart_persistence_servers(pool, cr)
         return res
 
     @api.one
@@ -145,7 +146,10 @@ class OrbeonServer(models.Model):
             raise ValidationError("Server with URL '%s' already exists!" % self.url)
 
     @api.multi
-    def action_start_persistence_server(self, context=None, *args, **kwargs):
+    def start_persistence_server(self, context=None, *args, **kwargs):
+        if not self.persistence_server_active:
+            raise ValidationError("Server with name %s can't start, because marked inactive." % self.name)
+        
         try:
             uuid = self._persistence_server_uuid()
             
@@ -161,7 +165,7 @@ class OrbeonServer(models.Model):
             _logger.error('Exception: %s' % e)
 
     @api.multi
-    def action_stop_persistence_server(self, context=None, *args, **kwargs):
+    def stop_persistence_server(self, context=None, *args, **kwargs):
         self._stop_persistence_server(self.persistence_server_uuid, self.persistence_server_port)
         self.persistence_server_uuid = None
         return True
