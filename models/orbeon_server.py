@@ -121,7 +121,7 @@ class OrbeonServer(models.Model):
 
     def __init__(self, pool, cr):
         res = super(OrbeonServer, self).__init__(pool, cr)
-        #self._autostart_persistence_servers(pool, cr)
+        self._autostart_persistence_servers(pool, cr)
         return res
 
     @api.one
