@@ -4,7 +4,6 @@
     <menuitem
         id="orbeon_base_menu"
         name="Orbeon"
-        parent="base.menu_custom"
         sequence="101" 
         />
 
