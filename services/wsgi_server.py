@@ -209,61 +209,127 @@ class PersistenceLayer(object):
 
     def put_method(self, request):
         """create / write"""
-        
         res = Response("")
+        path = self._get_path_data(request)
+
+        if path['form_type'] == "builder":
+            self._put_builder(request, path)
+        elif path['form_type'] == "runner":
+            self._put_runner(request, path)
+
+    def _put_builder(self, request, path_info):
+        record = []
+        form_id = path_info['form_id']
+
+        # Assumption of a database Pk/sequenced integer.
+        # Orbeon sends a alnum string/hash, which is here handeld by _put_builder_create().
+        if form_id.isdigit():
+            self.put_builder_write(request, path_info)
+        else:
+            self.put_builder_create(request, path_info)
+
+    def _put_builder_write(self, request, path_info):
+        xmlrpc = self._get_xmlrpc(request.headers)
+        record = []
+        form_id = path_info['form_id']
+        form_payload_type = path_info['form_payload_type']
+        form_payload_id = path_info['form_payload_id']
+        
+        record = xmlrpc.search(
+            "orbeon.builder",
+            [[("id","=",form_id)]],
+                    )
+        if len(record) == 0:
+            return
+
+        if form_payload_type != 'data':
+            data = {
+                "xml": str(request.data),
+            }
+            xmlrpc.write(
+                "orbeon.builder",
+                int(form_id),
+                data
+            )
+
+        self._handle_binary_data(request, path_info)
+
+    """
+    TODO
+    - Really test thoroughly (create from Orbeon app, and save multiple times.. what about the from_id??)
+    - Check _handle_binary_data() e.g. images.
+    """
+    def _put_builder_create(self, request, path_info):
+        xmlrpc = self._get_xmlrpc(request.headers)
+        
+        data = {
+            "name": 'TODO',
+            "xml": request.data,
+            "version": 1,
+            "version_comment": "1",
+            "server_id": 5,
+        }
+        xmlrpc.create(
+            "orbeon.builder",
+            [data]
+        )
+
+        self._handle_binary_data(request, path_info)
+
+    # TODO: impement _put_runner_create(), _put_runner_write()
+    def _put_runner(self, request, path_info):
+        record = xmlrpc.search(
+            "orbeon.runner",
+            [[("id","=",form_id)]],
+        )
+        
+        if len(record) == 1:
+            data = {
+                "xml": str(request.data),
+            }
+            
+            xmlrpc.write(
+                "orbeon.runner",
+                int(form_id),
+                data,
+            )
+        elif len(record) == 0:
+            data = {
+                "name": str(form_id),
+                "xml": str(request.data),
+            }
+            xmlrpc.create(
+                    "orbeon.runner",
+                    [data]
+            )
+    
+    def _handle_binary_data(self, request, path_info):
+        form_payload_type = path_info['form_payload_type']
+        form_payload_id = path_info['form_payload_id']
+        
+        if form_payload_type == 'data' and form_payload_id != 'data.xml':
+            ira_data = {
+                "res_id": form_id,
+                "res_model": "orbeon.builder",
+                'name': form_payload_id,
+                'stored_fname': form_payload_id,
+                'datas_fname': form_payload_id,
+                "datas": request.data.encode('base64')
+            }
+            xmlrpc.create(
+                'ir.attachment',
+                [ira_data],
+            )
+
+    def _get_path_data(self, request):
         path = request.path.split("/")
 
-        form_type = path[3]
-        form_id = path[5]
-
-        xmlrpc = self._get_xmlrpc(request.headers)
-        if form_type == "builder":
-            record = xmlrpc.search(
-                        "orbeon.builder",
-                        [[("id","=",form_id)]],
-                        )
-            if len(record) == 1:
-                data = {
-                        "xml": str(request.data),
-                        }
-                xmlrpc.write(
-                        "orbeon.builder",
-                        int(form_id),
-                        data
-                        ) 
-            elif len(record) == 0:
-                data = {
-                        "name": str(form_id),
-                        "xml": str(request.data),
-                        }
-                xmlrpc.create(
-                       "orbeon.builder",
-                       [data]
-                       )
-        elif form_type == "runner":
-            record = xmlrpc.search(
-                    "orbeon.runner",
-                    [[("id","=",form_id)]],
-                    )
-            if len(record) == 1:
-                data = {
-                        "xml": str(request.data),
-                        }
-                xmlrpc.write(
-                        "orbeon.runner",
-                        int(form_id),
-                        data,
-                        )
-            elif len(record) == 0:
-                data = {
-                        "name": str(form_id),
-                        "xml": str(request.data),
-                        }
-                xmlrpc.create(
-                        "orbeon.runner",
-                        [data],
-                        )
-        return res
+        return {
+            'form_type': path[3],
+            'form_payload_type': path[4],
+            'form_id': path[5] if len(path) > 5 else None,
+            'form_payload_id': path[6] if len(path) > 6 else None
+        }
 
     def wsgi_app(self, environ, start_response):
         request = Request(environ)

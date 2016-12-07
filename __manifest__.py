@@ -27,7 +27,7 @@
     "author": "Open2bizz",
     "website": "http://www.oppen2bizz.nl",
     "category": "Tools",
-    "depends": [],
+    "depends": ['document'],
     "data": [
         "security/res_groups.xml",
         "security/ir.model.access.csv",
