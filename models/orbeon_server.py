@@ -184,7 +184,27 @@ class OrbeonServer(models.Model):
         elif processtype == PERSISTENCE_SERVER_FORKING:
             return ForkingWSGIServer
 
+    def _is_installed(self, pool, cr):
+        cr.execute(
+                "SELECT "
+                "    1 "
+                "  FROM"
+                "    ir_module_module "
+                "  WHERE "
+                "    name = 'orbeon' "
+                "    AND state = 'installed' "
+            )
+        
+        return cr.fetchone() is not None
+            
     def _autostart_persistence_servers(self, pool, cr):
+        """These (last resort) SQL could led to API-change breakage.  However,
+        currently funky errors with ORM search/reads on
+        odoo.api.Environment.
+        """
+        if not self._is_installed(pool, cr):
+            return
+        
         try:
             cr.execute(
                 "SELECT "
