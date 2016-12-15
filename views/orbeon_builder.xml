@@ -41,7 +41,9 @@
 				<field name="url" widget="url"></field>
                             </group>
                         </page>
-
+                        <page string="XML">
+                            <field name="xml" />
+                        </page>
                         <page string="Runner Forms">
                             <field name="runner_form_ids" />
                         </page>
