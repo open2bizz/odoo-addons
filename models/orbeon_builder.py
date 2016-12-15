@@ -233,7 +233,8 @@ class OrbeonBuilder(models.Model):
     def get_xml_form_node(self):
         parser = etree.XMLParser(ns_clean=True, encoding='utf-8')
         
-        root = etree.XML(self.xml, parser)
+        # Cast to string, to prevent Unicode error!
+        root = etree.XML(str(self.xml), parser)
 
         form_node = root.xpath(
             "//xf:instance[@id='fr-form-instance']/form",

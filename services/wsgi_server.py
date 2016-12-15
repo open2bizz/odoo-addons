@@ -51,7 +51,9 @@ class OrbeonRequestHandler(object):
             self.handler.set_xmlrpc(db, usr, passwd, url)
 
     def set_path_attrs(self):
-        """Follows the specs of:
+        """Set Request path-components to object attributes"""
+
+        """Follows the spec of:
         https://doc.orbeon.com/form-runner/api/persistence
         """
         self.namespace = self.path[1]
@@ -60,7 +62,7 @@ class OrbeonRequestHandler(object):
         self.data_type = self.path[4]
 
     def set_handler(self):
-        """Set the Orbeon handler, determined by (URL)path-components"""
+        """Set the Orbeon handler, determined by (path-)attrs (i.e. URL path-components)"""
         handler_type = self.get_handler_type()
 
         if handler_type == BUILDER_HANDLER:
@@ -74,17 +76,18 @@ class OrbeonRequestHandler(object):
                             % (self.namespace, self.app))
 
     def get_handler_type(self):
-        if self.namespace == 'crud' and self.app == 'orbeon':
+        """Get Orbeon handler type (class)"""
+        if self.namespace == 'crud' and self.app == 'orbeon' and self.form == 'builder':
             return BUILDER_HANDLER
-        
-        elif self.namespace == 'search' and self.app == 'orbeon' and self.form == 'builder':
-            return BUILDER_HANDLER
-        
-        elif self.namespace == 'crud' and self.app != 'orbeon':
+
+        elif self.namespace == 'crud' and self.form == 'runner':
             return RUNNER_HANDLER
         
         elif self.namespace == 'erp':
             return ODOO_SERVICE_HANDLER
+
+        elif self.namespace == 'search' and self.app == 'orbeon' and self.form == 'builder':
+            return BUILDER_HANDLER
 
     def process(self):
         """Call the handler its HTTP-method equivalent function"""
