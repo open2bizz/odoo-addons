@@ -87,6 +87,8 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'Test Server',
                     'url': 'http://localhost/orbeon_test_server_2',
+                    'persistence_server_port': '10111',
+                    'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
 
