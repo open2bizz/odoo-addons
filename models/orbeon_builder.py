@@ -77,8 +77,7 @@ class OrbeonBuilder(models.Model):
         required=True)
 
     xml = fields.Text(
-        'XML',
-        required=True)
+        'XML')
 
     server_id = fields.Many2one(
         "orbeon.server",
@@ -142,7 +141,7 @@ class OrbeonBuilder(models.Model):
     def create(self, vals):
         vals["editable"] = True
 
-        if 'xml' not in vals and 'server_id' in vals:
+        if 'server_id' in vals:
             orbeon_server = self.env['orbeon.server'].browse(vals['server_id'])
 
             vals['xml'] = orbeon_server.default_builder_xml
@@ -152,7 +151,7 @@ class OrbeonBuilder(models.Model):
             if 'name' in vals:
                 xml.xpath('//form-name')[0].text = vals['name']
 
-            if 'title' in vals:
+            if 'title' in vals and vals['title']:
                 xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
                 xml.xpath('//title')[0].text = vals['title']
                 

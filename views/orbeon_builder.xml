@@ -31,7 +31,8 @@
 
                     <notebook>
                         <page string="Settings">
-                            <group>
+                          <group>
+                            <field name="id" invisible="1"/>
                                 <field name="title" />
                                 <field name="description" />
                                 <field name="state" />
@@ -42,7 +43,7 @@
                             </group>
                         </page>
                         <page string="XML">
-                            <field name="xml" />
+                          <field name="xml" attrs='{"invisible": [("id", "=", False)]}'/>
                         </page>
                         <page string="Runner Forms">
                             <field name="runner_form_ids" />
