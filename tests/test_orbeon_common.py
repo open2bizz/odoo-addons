@@ -19,12 +19,13 @@
 #
 ##############################################################################
 from odoo.tests.common import TransactionCase
+from odoo import fields, models
 
 import logging
 import os
 
 from lxml import etree
-from xmlunittest import XmlTestMixin
+from xmlunittest import XmlTestCase
 
 try:
     from ...test_extensions import TODO
@@ -38,7 +39,22 @@ from ..models import orbeon_runner
 
 _logger = logging.getLogger(__name__)
 
-class TestOrbeonCommon(TransactionCase, XmlTestMixin):
+class OrbeonRunnerUser(models.Model):
+    _name = "orbeon.runner.user"
+    _inherit = "orbeon.runner"
+    _inherits = {'orbeon.runner': 'orbeon_runner_id'}
+
+    _orbeon_res_id_field = 'user_id'
+
+    orbeon_runner_id = fields.Many2one(
+        "orbeon.runner",
+        ondelete="cascade",
+        required=True)
+
+    user_id = fields.Many2one(
+        "res.users")
+
+class TestOrbeonCommon(TransactionCase, XmlTestCase):
     """Common utilities for Orbeon Tests"""
     
     def setUp(self):
@@ -49,7 +65,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
 
         self.server_model = self.env['orbeon.server']
         self.builder_model = self.env['orbeon.builder']
-        self.runner_model = self.env['orbeon.runner']
+        self.runner_model = self.env['orbeon.runner.user']
 
         # server_1
         self.server_1 = self.server_model.sudo().create(
@@ -101,16 +117,25 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
             }
         )
 
-        # self.builder_form_a_v3_new_all = self.builder_model.sudo().create(
-        #     {
-        #         'name': 'form_a',
-        #         'state': orbeon_builder.STATE_NEW,
-        #         'version': 3,
-        #         'version_comment': 'Several controls; also with Odoo directives: nocopy (NC.), ERP-fields',
-        #         'xml': self.xmlFromFile('test_orbeon4.10_builder_form_a_v3_all.xml'),
-        #         'server_id': self.server_1.id,
-        #     }
-        # )
+        res_users_model = self.env['ir.model'].search([('model', '=', 'res.users')], limit=1)
+
+        self.builder_form_c_erp_fields_v1 = self.builder_model.sudo().create(
+            {
+                'name': 'form_c_erp_fields',
+                'title': 'Form C ERP fields',
+                'state': orbeon_builder.STATE_CURRENT, # live (in production)
+                'version': 1,
+                'version_comment': "ERP fields res_user model: name, login, image",
+                'server_id': self.server_1.id,
+                'res_model_id': res_users_model.id
+            }
+        )
+
+        self.builder_form_c_erp_fields_v1.write(
+            {
+                'xml': self.xmlFromFile('test_orbeon4.10_builder_form_c_erp_fields_v1.xml'),
+            }
+        )
 
         # Assume newly created form by Odoo
         self.runner_form_a_v1_new = self.runner_model.sudo().create(
@@ -142,13 +167,32 @@ class TestOrbeonCommon(TransactionCase, XmlTestMixin):
             }
         )
 
-        # self.runner_form_a_v3_all = self.runner_model.sudo().create(
-        #     {
-        #         'builder_id': self.builder_form_a_v1.id,
-        #         'xml': self.xmlFromFile('test_orbeon4.10_runner_form_a_v2_all.xml'),
-        #     }
-        # )
+        self.runner_form_c_erp_fields_v1 = self.runner_model.sudo().create(
+            {
+                'builder_id': self.builder_form_c_erp_fields_v1.id,
+                'user_id': 1
+            }
+        )
 
     def xmlFromFile(self, filename):
         cwd = os.path.dirname(os.path.realpath(__file__))
         return etree.tostring(etree.parse("%s/data/%s" % (cwd, filename)))
+
+    """
+    Overrides xmlunittest to check on empty result of by xpath
+    """
+    def assertXpathValues(self, node, xpath, values, default_ns_prefix='ns'):
+        """Asserts each xpath's value is in the expected values."""
+        super(TestOrbeonCommon, self).assertXpathValues(node, xpath, values, default_ns_prefix)
+        
+        expression = self.build_xpath_expression(node, xpath, default_ns_prefix)
+        results = expression.evaluate(node)
+
+        if len(results) == 0 and len(values) > 0:
+            self.fail('No value found for node %s\n'
+                      'XPath: %s\n'
+                      'Expected values: %s\n'
+                      'Element:\n%s'
+                      % (node.tag, xpath,
+                         ', '.join(values),
+                         etree.tostring(node, pretty_print=True)))

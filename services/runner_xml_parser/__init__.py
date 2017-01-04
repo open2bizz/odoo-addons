@@ -18,5 +18,5 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import persistence_server
-import runner_xml_parser
+from runner_xml_parser import RunnerXmlParser
+from xml_parser_erp_fields import XmlParserERPFields

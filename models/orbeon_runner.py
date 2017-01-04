@@ -23,10 +23,14 @@ from odoo.exceptions import ValidationError
 
 import logging
 
+from lxml import etree
+
 _logger = logging.getLogger(__name__)
 
 from orbeon_builder import STATE_NEW as BUILDER_STATE_NEW
 from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
+
+from ..services import runner_xml_parser
 
 STATE_NEW = 'new'
 STATE_PROGRESS = 'progress'
@@ -36,6 +40,8 @@ STATE_CANCELED = 'canceled'
 class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
     _rec_name = "builder_name"
+
+    _orbeon_res_id_field = None
     
     builder_id = fields.Many2one(
         "orbeon.builder",
@@ -75,6 +81,10 @@ class OrbeonRunner(models.Model):
         'URL',
         compute="_get_url",
         readonly=True)
+
+    @api.model
+    def _get_orbeon_res_id_field(self):
+        return self._orbeon_res_id_field
 
     @api.one
     def _get_builder_name(self, id=None):
@@ -188,10 +198,16 @@ class OrbeonRunner(models.Model):
                 # TODO
                 # preprend the <xml> tag from elsewhere? Via builder-API to get right version?
                 # code: runner.builder_id.get_xml_form_node(with_xml_tag)
-                res['xml'] = '<?xml version="1.0" encoding="utf-8"?>%s' % \
+                runner_xml = '<?xml version="1.0" encoding="utf-8"?>%s' % \
                              runner.builder_id.get_xml_form_node()[0]
-                
             else:
-                res['xml'] = runner.xml
-                
+                runner_xml = runner.xml
+
+            res['xml'] = self.parse_runner_xml(runner_xml, runner)
+
         return res
+
+    def parse_runner_xml(self, xml, runner):
+        parser = runner_xml_parser.RunnerXmlParser(xml, runner)
+        parser.parse()
+        return parser.xml

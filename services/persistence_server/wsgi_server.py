@@ -5,7 +5,9 @@ from werkzeug.wrappers import Request, Response
 from xml.dom.minidom import parseString
 
 from orbeon_handlers import BuilderHandler, RunnerHandler, OdooServiceHandler
-from utils import _log
+from .. import utils
+
+_log = utils._log
 
 BUILDER_HANDLER = 'builder_handler'
 RUNNER_HANDLER = 'runner_handler'

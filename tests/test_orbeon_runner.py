@@ -67,6 +67,25 @@ class TestOrbeonRunner(TestOrbeonCommon):
         runner_2_rec = self.runner_model.orbeon_search_read_data(runner_2_domain, ['xml'])
         self.assertXmlEquivalentOutputs(runner_2_rec['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v2.xml'))
 
+    def test_orbeon_search_read_with_ERP_fieds(self):
+        """Test reading a runner form with ERP-fields (model-object-fields)."""
+
+        domain = [('id', '=', self.runner_form_c_erp_fields_v1.id)]
+        rec = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+        root = self.assertXmlDocument(rec['xml'])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.name'])
+        self.assertXpathValues(root, '//ERP.name/text()', [('Administrator')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.login'])
+        self.assertXpathValues(root, './/ERP.login/text()', [('admin')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.name'])
+        self.assertXpathValues(root, './/ERP.company_id.name/text()', [('YourCompany')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
+        self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
+
     @TODO
     def test_orbeon_search_read_stored_by_orbeon_persistence_with_ERP_fieds(self):
         """Test reading a runner form with ERP-fields, stored by the Orbeon

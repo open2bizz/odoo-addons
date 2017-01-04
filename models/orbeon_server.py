@@ -241,7 +241,7 @@ class OrbeonServer(models.Model):
             _logger.error("Exception: %s" % e)
 
     def _start_persistence_server(self, uuid, port, processtype, configfilename=None):
-        app = services.wsgi_server.create_app(configfilename)
+        app = services.persistence_server.wsgi_server.create_app(configfilename)
         wsgi_server = self._persistence_wsgi_server(processtype)
         wsgi_app_server = wsgi_server(ORBEON_PERSISTENCE_SERVER_INTERFACE, port, app)
 
