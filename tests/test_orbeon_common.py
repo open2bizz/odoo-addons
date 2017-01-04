@@ -188,7 +188,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
         expression = self.build_xpath_expression(node, xpath, default_ns_prefix)
         results = expression.evaluate(node)
 
-        if len(results) == 0:
+        if len(results) == 0 and len(values) > 0:
             self.fail('No value found for node %s\n'
                       'XPath: %s\n'
                       'Expected values: %s\n'
