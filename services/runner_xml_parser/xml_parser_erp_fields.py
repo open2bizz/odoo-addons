@@ -48,7 +48,7 @@ class XmlParserERPFields(object):
         for element in res:
             self.erp_fields[element.tag] = ERPField(element.tag, element)
 
-        _logger.debug('Read fields: %s\n From model: %s' % (self.erp_fields.keys(), self.res_model))
+        _logger.debug('Read ERP-fields: %s\n For model: %s' % (self.erp_fields.keys(), self.res_model))
 
     def load_res_object(self):
         if not self.has_erp_fields():
@@ -76,10 +76,21 @@ class XmlParserERPFields(object):
 
             while len(model_fields) > 1:
                 field = model_fields.pop(0)
-                target_object = target_object[field]
+
+                try:
+                    target_object = target_object[field]
+                except KeyError:
+                    _logger.error('ERP-field %s not in model %s' % (field, self.res_model))
 
             # The last/solely item in model_fields should be the value
-            erp_field_obj.set_element_text(target_object[model_fields[0]])
+            try:
+                field = model_fields[0]
+                field_val = target_object[field]
+            except KeyError:
+                _logger.error('ERP-field %s not in model %s' % (field, self.res_model))
+
+            erp_field_obj.set_element_text(field_val)
+
         return self.xml_root
 
 class ERPField(object):
