@@ -35,6 +35,7 @@
                             <field name="id" invisible="1"/>
                                 <field name="title" />
                                 <field name="description" />
+                                <field name="res_model_id" />
                                 <field name="state" />
                                 <field name="version" />
                                 <field name="version_comment" />

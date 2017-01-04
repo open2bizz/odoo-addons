@@ -90,6 +90,11 @@ class OrbeonBuilder(models.Model):
         "builder_id",
         string="Form runners")
 
+    res_model_id = fields.Many2one(
+        "ir.model",
+        "Model",
+        ondelete='restrict')
+
     editable = fields.Boolean(
         "is editable",
         default=False)
