@@ -13,8 +13,10 @@ class XmlParserERPFields(object):
         self.xml_root = xml_root
 
         self.erp_fields = None
-        self.res_model = self.runner.builder_id.res_model_id.model
         self.res_object = None
+
+        self.res_model = self.runner.builder_id.res_model_id.model
+        self.res_id_field = self.runner.builder_id.runner_res_model_field_id.name
 
         self.init()
 
@@ -54,8 +56,7 @@ class XmlParserERPFields(object):
         if not self.has_erp_fields():
             return
 
-        res_id_field = self.runner._get_orbeon_res_id_field()
-        self.res_object = self.runner.env[self.res_model].browse(self.runner[res_id_field].id)
+        self.res_object = self.runner[self.res_id_field]
 
     def parse(self):
         if not self.has_erp_fields():
