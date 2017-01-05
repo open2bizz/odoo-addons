@@ -39,7 +39,7 @@
       <field name="name">orbeon.runner_form.kanban</field>
       <field name="model">orbeon.runner</field>
       <field name="arch" type="xml">
-        <kanban class="oe_background_grey o_kanban_dashboard">
+        <kanban class="oe_background_grey o_kanban_dashboard" create="false">
           <field name="builder_id" />
           <field name="builder_name" />
           <field name="url"/>
