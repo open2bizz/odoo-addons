@@ -40,16 +40,16 @@ from ..models import orbeon_runner
 _logger = logging.getLogger(__name__)
 
 class OrbeonRunnerUser(models.Model):
-    _name = "orbeon.runner.user"
+    #_name = "orbeon.runner.user"
     _inherit = "orbeon.runner"
-    _inherits = {'orbeon.runner': 'orbeon_runner_id'}
+    #_inherits = {'orbeon.runner': 'orbeon_runner_id'}
 
-    _orbeon_res_id_field = 'user_id'
+    #_orbeon_res_id_field = 'user_id'
 
-    orbeon_runner_id = fields.Many2one(
-        "orbeon.runner",
-        ondelete="cascade",
-        required=True)
+    # orbeon_runner_id = fields.Many2one(
+    #     "orbeon.runner",
+    #     ondelete="cascade",
+    #     required=True)
 
     user_id = fields.Many2one(
         "res.users")
@@ -65,7 +65,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
 
         self.server_model = self.env['orbeon.server']
         self.builder_model = self.env['orbeon.builder']
-        self.runner_model = self.env['orbeon.runner.user']
+        self.runner_model = self.env['orbeon.runner']
 
         # server_1
         self.server_1 = self.server_model.sudo().create(
@@ -117,7 +117,11 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
             }
         )
 
-        res_users_model = self.env['ir.model'].search([('model', '=', 'res.users')], limit=1)
+        res_model_id = self.env['ir.model'].search([('model', '=', 'res.users')], limit=1)
+        runner_res_model_field_id = self.env['ir.model.fields'].search(
+            [('model', '=', 'orbeon.runner'),('name', '=', 'user_id')],
+            limit=1
+        )
 
         self.builder_form_c_erp_fields_v1 = self.builder_model.sudo().create(
             {
@@ -127,7 +131,8 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                 'version': 1,
                 'version_comment': "ERP fields res_user model: name, login, image",
                 'server_id': self.server_1.id,
-                'res_model_id': res_users_model.id
+                'res_model_id': res_model_id.id,
+                'runner_res_model_field_id': runner_res_model_field_id.id
             }
         )
 

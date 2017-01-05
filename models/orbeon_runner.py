@@ -41,8 +41,6 @@ class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
     _rec_name = "builder_name"
 
-    _orbeon_res_id_field = None
-    
     builder_id = fields.Many2one(
         "orbeon.builder",
         string="Form builder",
@@ -81,10 +79,6 @@ class OrbeonRunner(models.Model):
         'URL',
         compute="_get_url",
         readonly=True)
-
-    @api.model
-    def _get_orbeon_res_id_field(self):
-        return self._orbeon_res_id_field
 
     @api.one
     def _get_builder_name(self, id=None):

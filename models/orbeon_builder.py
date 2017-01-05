@@ -61,7 +61,7 @@ class OrbeonBuilder(models.Model):
         default=1)
 
     version_comment = fields.Text(
-        "Version comment",
+        "Version Comment",
         required=True)
     
     state = fields.Selection(
@@ -74,7 +74,13 @@ class OrbeonBuilder(models.Model):
         ],
         "State",
         default=STATE_NEW,
-        required=True)
+        required=True,
+        help="""\
+        - New: In draft and was never published (Current)
+        - Current: Published i.e. live
+        - Modified: Was published, but with modifications
+        - Obsolete: Was published but obsolete"""
+    )
 
     xml = fields.Text(
         'XML')
@@ -92,8 +98,17 @@ class OrbeonBuilder(models.Model):
 
     res_model_id = fields.Many2one(
         "ir.model",
-        "Model",
-        ondelete='restrict')
+        "Resource Model",
+        ondelete='restrict',
+        help="Model as resource this form represents or acts on"
+    )
+
+    runner_res_model_field_id = fields.Many2one(
+        "ir.model.fields",
+        "Runner To Resource Field",
+        ondelete='restrict',
+        help="Runner model field which links to the Resource Model"
+    )
 
     editable = fields.Boolean(
         "is editable",
