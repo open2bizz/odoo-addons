@@ -23,6 +23,10 @@
             <ERP.login/>
             <ERP.company_id.name/>
             <ERP.company_id.currency_id.name/>
+            <ERP.unknown_field/>
+            <ERP.unknown_field_id.name/>
+            <ERP.company_id.unknown_field/>
+            <ERP.company_id.unknown_field_id.name/>
           </section-1>
         </form>
       </xf:instance>
@@ -34,6 +38,10 @@
           <xf:bind id="ERP.login-bind" ref="ERP.login" name="ERP.login"/>
           <xf:bind id="ERP.company_id.name-bind" name="ERP.company_id.name" ref="ERP.company_id.name"/>
           <xf:bind id="ERP.company_id.currency_id.name-bind" name="ERP.company_id.currency_id.name" ref="ERP.company_id.currency_id.name"/>
+          <xf:bind id="ERP.unknown_field-bind" name="ERP.unknown_field" ref="ERP.unknown_field"/>
+          <xf:bind id="ERP.unknown_field_id.name-bind" name="ERP.unknown_field_id.name" ref="ERP.unknown_field_id.name"/>
+          <xf:bind id="ERP.company_id.unknown_field-bind" name="ERP.company_id.unknown_field" ref="ERP.company_id.unknown_fied"/>
+          <xf:bind id="ERP.company_id.unknown_field_id.name-bind" name="ERP.company_id.unknown_field_id.name" ref="ERP.company_id.unknown_fied_id.name"/>
         </xf:bind>
       </xf:bind>
 
@@ -69,17 +77,33 @@
               <hint/>
             </ERP.name>
             <ERP.login>
-              <label>Email address</label>
+              <label>Login</label>
               <hint/>
             </ERP.login>
             <ERP.company_id.name>
-              <label>Company name</label>
+              <label>Company Name</label>
               <hint/>
             </ERP.company_id.name>
             <ERP.company_id.currency_id.name>
-              <label>Company currency</label>
+              <label>Company Currency</label>
               <hint/>
             </ERP.company_id.currency_id.name>
+            <ERP.unknown_field>
+              <label>Unknown_field</label>
+              <hint/>
+            </ERP.unknown_field>
+            <ERP.unknown_field_id.name>
+              <label>Unknown_field_id Name</label>
+              <hint/>
+            </ERP.unknown_field_id.name>
+            <ERP.company_id.unknown_field>
+              <label>Company Unknown_field</label>
+              <hint/>
+            </ERP.company_id.unknown_field>
+            <ERP.company_id.unknown_field_id.name>
+              <label>Company Unknown_field_id Name</label>
+              <hint/>
+            </ERP.company_id.unknown_field_id.name>
           </resource>
         </resources>
       </xf:instance>

@@ -5,6 +5,7 @@ import re
 _logger = logging.getLogger(__name__)
 
 ERP_FIELD_PREFIX = 'ERP'
+UNKNOWN_ERP_FIELD = 'UNKNOWN ERP-FIELD'
 
 class XmlParserERPFields(object):
 
@@ -75,20 +76,35 @@ class XmlParserERPFields(object):
             - ['company_id', 'currency_id', 'name']
             """
 
+            # Mind: hell of an ugly piece of code
+            traversed_fields = []
+            relational_field_error = False
+
             while len(model_fields) > 1:
                 field = model_fields.pop(0)
 
                 try:
                     target_object = target_object[field]
+                    traversed_fields.append(field)
                 except KeyError:
-                    _logger.error('ERP-field %s not in model %s' % (field, self.res_model))
+                    relational_field_error = True
 
-            # The last/solely item in model_fields should be the value
-            try:
-                field = model_fields[0]
-                field_val = target_object[field]
-            except KeyError:
-                _logger.error('ERP-field %s not in model %s' % (field, self.res_model))
+                    if len(traversed_fields) == 0:
+                        _logger.info('[orbeon] ERP-field %s not in model %s' % (field, self.res_model))
+                    else:
+                        # XXX Could this be improved or good enough?
+                        _logger.info('[orbeon] ERP-field %s not in model %s by relation %s' % (field, self.res_model, '.'.join(traversed_fields)))
+
+            if not relational_field_error:
+                # The last/solely item in model_fields should be the value
+                try:
+                    field = model_fields[0]
+                    field_val = target_object[field]
+                except KeyError:
+                    _logger.info('[orbeon] ERP-field %s not in model %s' % (field, self.res_model))
+                    field_val = UNKNOWN_ERP_FIELD
+            else:
+                field_val = UNKNOWN_ERP_FIELD
 
             erp_field_obj.set_element_text(field_val)
 

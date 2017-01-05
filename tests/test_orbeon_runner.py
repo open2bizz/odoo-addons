@@ -24,6 +24,7 @@ from odoo.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon, TODO
 from ..models import orbeon_runner
+from ..services import runner_xml_parser
 
 from psycopg2 import IntegrityError
 from lxml import etree, objectify
@@ -85,6 +86,27 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
         self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
+
+    def test_orbeon_search_read_with_unknown_ERP_fieds(self):
+        """Test reading a runner form with unknown ERP-fields (model-object)."""
+
+        domain = [('id', '=', self.runner_form_c_erp_fields_v1.id)]
+        rec = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+        root = self.assertXmlDocument(rec['xml'])
+
+        unknown_erp_field = runner_xml_parser.xml_parser_erp_fields.UNKNOWN_ERP_FIELD
+
+        self.assertXpathsOnlyOne(root, ['//ERP.unknown_field'])
+        self.assertXpathValues(root, './/ERP.unknown_field/text()', [(unknown_erp_field)])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.unknown_field_id.name'])
+        self.assertXpathValues(root, './/ERP.unknown_field_id.name/text()', [(unknown_erp_field)])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.unknown_field'])
+        self.assertXpathValues(root, './/ERP.company_id.unknown_field/text()', [(unknown_erp_field)])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.unknown_field_id.name'])
+        self.assertXpathValues(root, './/ERP.company_id.unknown_field_id.name/text()', [(unknown_erp_field)])
 
     @TODO
     def test_orbeon_search_read_stored_by_orbeon_persistence_with_ERP_fieds(self):
