@@ -59,14 +59,63 @@ class TestOrbeonRunner(TestOrbeonCommon):
         """Test reading a simple runner form, stored by the Orbeon persistence - with xml
         (field) value.  It should contain it's own stored XML value.
         """
-        runner_1_domain = [('id', '=', self.runner_form_a_v1.id)]
-        runner_1_rec = self.runner_model.orbeon_search_read_data(runner_1_domain, ['xml'])
-        self.assertXmlEquivalentOutputs(runner_1_rec['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v1.xml'))
 
-        runner_2_domain = [('id', '=', self.runner_form_a_v2.id)]
-        runner_2_rec = self.runner_model.orbeon_search_read_data(runner_2_domain, ['xml'])
-        self.assertXmlEquivalentOutputs(runner_2_rec['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v2.xml'))
+        """
+        runner_form_a_v1
+        """
+        domain = [('id', '=', self.runner_form_a_v1.id)]
+        runner = self.runner_model.orbeon_search_read_data(domain, ['xml'])
 
+        self.assertXmlEquivalentOutputs(runner['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v1.xml'))
+
+        root = self.assertXmlDocument(runner['xml'])
+        self.assertXpathValues(root, '//input-control-1/text()', ['text 1'])
+
+        root_with_changes = etree.fromstring(runner['xml'])
+        root_with_changes.xpath('//input-control-1')[0].text = 'this is text 1'
+        xml_with_changes = etree.tostring(root_with_changes)
+
+        # Save directly (bypass Orbeon)
+        self.runner_form_a_v1.sudo().write({
+            'xml': xml_with_changes
+        })
+
+        runner_with_changes = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+
+        root = self.assertXmlDocument(runner_with_changes['xml'])
+        self.assertXpathValues(root, '//input-control-1/text()', ['this is text 1'])
+
+        """
+        runner_form_a_v2
+        """
+        domain = [('id', '=', self.runner_form_a_v2.id)]
+        runner = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+        
+        self.assertXmlEquivalentOutputs(runner['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v2.xml'))
+
+        root = self.assertXmlDocument(runner['xml'])
+        self.assertXpathValues(root, '//input-control-1/text()', ['text 1'])
+        self.assertXpathValues(root, '//input-control-2/text()', ['text 2'])
+        self.assertXpathValues(root, '//date-control-1/text()', ['2016-05-11'])
+
+        root_with_changes = etree.fromstring(runner['xml'])
+        root_with_changes.xpath('//input-control-1')[0].text = 'this is text 1'
+        root_with_changes.xpath('//input-control-2')[0].text = 'this is text 2'
+        root_with_changes.xpath('//date-control-1')[0].text = '2017-01-10'
+        xml_with_changes = etree.tostring(root_with_changes)
+
+        # Save directly (bypass Orbeon)
+        self.runner_form_a_v2.sudo().write({
+            'xml': xml_with_changes
+        })
+
+        runner_with_changes = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+        
+        root = self.assertXmlDocument(runner_with_changes['xml'])
+        self.assertXpathValues(root, '//input-control-1/text()', ['this is text 1'])
+        self.assertXpathValues(root, '//input-control-2/text()', ['this is text 2'])
+        self.assertXpathValues(root, '//date-control-1/text()', ['2017-01-10'])
+        
     def test_orbeon_search_read_with_ERP_fieds(self):
         """Test reading a runner form with ERP-fields (model-object-fields)."""
 
@@ -87,11 +136,11 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
 
     def test_orbeon_search_read_with_ERP_fieds_changed_ERP_object(self):
-        """Test reading a runner form with ERP-fields (model-object-fields)."""
+        """Test reading a runner form with ERP-fields on changed ERP model-object."""
 
         domain = [('id', '=', self.runner_form_c_erp_fields_v1.id)]
 
-        # Update fields in ERP-object and test
+        # Update some fields in ERP-object
         self.user_1.sudo().write({
             'name': 'Dummy',
             'login': 'dummy_login'
@@ -127,13 +176,52 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathsOnlyOne(root, ['//ERP.company_id.unknown_field_id.name'])
         self.assertXpathValues(root, './/ERP.company_id.unknown_field_id.name/text()', [(unknown_erp_field)])
 
-    @TODO
     def test_orbeon_search_read_stored_by_orbeon_persistence_with_ERP_fieds(self):
         """Test reading a runner form with ERP-fields, stored by the Orbeon
         persistence - with xml (field) value.  It should contain it's own
         stored XML value with ERP-field values from the
         model-object-fields.
         """
+
+        domain = [('id', '=', self.runner_form_c_erp_fields_v1.id)]
+        rec = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+
+        # Check initial, if empty
+        root_initial = self.assertXmlDocument(rec['xml'])
+        
+        self.assertXpathValues(root_initial, '//nickname/text()', [])
+        self.assertXpathValues(root_initial, '//notes/text()', [])
+
+        # Change
+        root_with_changes = etree.fromstring(rec['xml'])
+        root_with_changes.xpath('//nickname')[0].text = 'Batman'
+        root_with_changes.xpath('//notes')[0].text = 'Batman has Orbeon superpowers'
+
+        xml_with_changes = etree.tostring(root_with_changes)
+    
+        self.runner_form_c_erp_fields_v1.sudo().write({
+            'xml': xml_with_changes
+        })
+
+        # Test change and whether rest of XML-doc stayed the same
+        self.runner_form_c_erp_fields_v1.refresh()
+        
+        root = self.assertXmlDocument(self.runner_form_c_erp_fields_v1.xml)
+
+        self.assertXpathValues(root, '//nickname/text()', ['Batman'])
+        self.assertXpathValues(root, '//notes/text()', ['Batman has Orbeon superpowers'])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.name'])
+        self.assertXpathValues(root, '//ERP.name/text()', [('Administrator')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.login'])
+        self.assertXpathValues(root, './/ERP.login/text()', [('admin')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.name'])
+        self.assertXpathValues(root, './/ERP.company_id.name/text()', [('YourCompany')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
+        self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
 
     @TODO
     def test_orbeon_search_read_should_merge(self):
@@ -169,7 +257,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         # Original data not
         self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        self.assertXpathValues(root, '//input-control-1/text()', ('antwoord 1'))
+        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
 
         # New controls
         self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
@@ -188,7 +276,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         # Original data not
         self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        self.assertXpathValues(root, '//input-control-1/text()', ('antwoord 1'))
+        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
 
         # New controls
         self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])

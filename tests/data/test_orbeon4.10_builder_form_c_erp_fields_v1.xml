@@ -21,12 +21,14 @@
           <section-1>
             <ERP.name/>
             <ERP.login/>
+            <nickname/>
             <ERP.company_id.name/>
             <ERP.company_id.currency_id.name/>
             <ERP.unknown_field/>
             <ERP.unknown_field_id.name/>
             <ERP.company_id.unknown_field/>
             <ERP.company_id.unknown_field_id.name/>
+            <notes/>
           </section-1>
         </form>
       </xf:instance>
@@ -36,12 +38,14 @@
         <xf:bind id="section-1-bind" name="section-1" ref="section-1">
           <xf:bind id="ERP.name-bind" name="ERP.name" ref="ERP.name"/>
           <xf:bind id="ERP.login-bind" ref="ERP.login" name="ERP.login"/>
+          <xf:bind id="nickname-bind" ref="nickname" name="nickname"/>
           <xf:bind id="ERP.company_id.name-bind" name="ERP.company_id.name" ref="ERP.company_id.name"/>
           <xf:bind id="ERP.company_id.currency_id.name-bind" name="ERP.company_id.currency_id.name" ref="ERP.company_id.currency_id.name"/>
           <xf:bind id="ERP.unknown_field-bind" name="ERP.unknown_field" ref="ERP.unknown_field"/>
           <xf:bind id="ERP.unknown_field_id.name-bind" name="ERP.unknown_field_id.name" ref="ERP.unknown_field_id.name"/>
           <xf:bind id="ERP.company_id.unknown_field-bind" name="ERP.company_id.unknown_field" ref="ERP.company_id.unknown_fied"/>
           <xf:bind id="ERP.company_id.unknown_field_id.name-bind" name="ERP.company_id.unknown_field_id.name" ref="ERP.company_id.unknown_fied_id.name"/>
+          <xf:bind id="notes-bind" ref="notes" name="notes"/>
         </xf:bind>
       </xf:bind>
 
@@ -80,6 +84,10 @@
               <label>Login</label>
               <hint/>
             </ERP.login>
+            <nickname>
+              <label>Nickname</label>
+              <hint/>
+            </nickname>
             <ERP.company_id.name>
               <label>Company Name</label>
               <hint/>
@@ -104,6 +112,10 @@
               <label>Company Unknown_field_id Name</label>
               <hint/>
             </ERP.company_id.unknown_field_id.name>
+            <notes>
+              <label>Notes</label>
+              <hint/>
+            </notes>
           </resource>
         </resources>
       </xf:instance>
@@ -142,6 +154,13 @@
                 </xf:input>
               </xh:td>
               <xh:td>
+                <xf:input id="nickname-control" bind="nickname-bind">
+                  <xf:label ref="$form-resources/nickname/label"/>
+                  <xf:hint ref="$form-resources/nickname/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
                 <xf:input id="ERP.company_id.name-control" bind="ERP.company_id.name-bind">
                   <xf:label ref="$form-resources/ERP.company_id.name/label"/>
                   <xf:hint ref="$form-resources/ERP.company_id.name/hint"/>
@@ -152,6 +171,41 @@
                 <xf:input id="ERP.company_id.currency_id.name-control" bind="ERP.company_id.currency_id.name-bind">
                   <xf:label ref="$form-resources/ERP.company_id.currency_id.name/label"/>
                   <xf:hint ref="$form-resources/ERP.company_id.currency_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.unknown_field-control" bind="ERP.unknown_field-bind">
+                  <xf:label ref="$form-resources/ERP.unknown_field/label"/>
+                  <xf:hint ref="$form-resources/ERP.unknown_field/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.unknown_field_id.name-control" bind="ERP.unknown_field_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.unknown_field_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.unknown_field_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.unknown_field-control" bind="ERP.company_id.unknown_field-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.unkwown_field/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.unknown_field/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.unknown_field_id.name-control" bind="ERP.company_id.unknown_field_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.unkwown_field_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.unknown_field_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="notes-control" bind="notes-bind">
+                  <xf:label ref="$form-resources/notes/label"/>
+                  <xf:hint ref="$form-resources/notes/hint"/>
                   <xf:alert ref="$fr-resources/detail/labels/alert"/>
                 </xf:input>
               </xh:td>
