@@ -33,7 +33,12 @@ class OrbeonRequestHandler(object):
         self.data_type = None
         self.set_path_attrs()
 
-        self.handler = self.set_handler()
+        self.handler_type = None
+        self.set_handler_type()
+
+        self.handler = None
+        self.set_handler()
+        
         self.handler.set_config_by_filename(config_filename)
 
         if len(self.handler.config.sections()) > 0:
@@ -66,35 +71,31 @@ class OrbeonRequestHandler(object):
             self.form = self.path[3]
             self.data_type = self.path[4]
 
+    def set_handler_type(self):
+        """Get Orbeon handler type (class)"""
+        if self.namespace == 'crud' and self.app == 'orbeon' and self.form == 'builder':
+            self.handler_type = BUILDER_HANDLER
+        elif self.namespace == 'crud' and self.form == 'runner':
+            self.handler_type = RUNNER_HANDLER
+        elif self.namespace == 'erp':
+            self.handler_type = ODOO_SERVICE_HANDLER
+        elif self.namespace == 'search' and self.app == 'orbeon' and self.form == 'builder':
+            self.handler_type = BUILDER_HANDLER
+
+        _log('debug', "handler_type => %s" % self.handler_type)
+
     def set_handler(self):
         """Set the Orbeon handler, determined by (path-)attrs (i.e. URL path-components)"""
-        handler_type = self.get_handler_type()
 
-        _log('debug', "handler_type => %s" % handler_type)
-
-        if handler_type == BUILDER_HANDLER:
-            return BuilderHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
-        elif handler_type == RUNNER_HANDLER:
-            return RunnerHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
-        elif handler_type == ODOO_SERVICE_HANDLER:
-            return OdooServiceHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
+        if self.handler_type == BUILDER_HANDLER:
+            self.handler = BuilderHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
+        elif self.handler_type == RUNNER_HANDLER:
+            self.handler = RunnerHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
+        elif self.handler_type == ODOO_SERVICE_HANDLER:
+            self.handler = OdooServiceHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
         else:
             raise Exception("No OrbeonResource handler found for namespace %s and app %s."
                             % (self.namespace, self.app))
-
-    def get_handler_type(self):
-        """Get Orbeon handler type (class)"""
-        if self.namespace == 'crud' and self.app == 'orbeon' and self.form == 'builder':
-            return BUILDER_HANDLER
-
-        elif self.namespace == 'crud' and self.form == 'runner':
-            return RUNNER_HANDLER
-        
-        elif self.namespace == 'erp':
-            return ODOO_SERVICE_HANDLER
-
-        elif self.namespace == 'search' and self.app == 'orbeon' and self.form == 'builder':
-            return BUILDER_HANDLER
 
     def process(self):
         """Call the handler its HTTP-method equivalent function"""
@@ -107,6 +108,8 @@ class OrbeonRequestHandler(object):
             res = self.handler.read()
 
             if self.handler.data_type == 'data' and self.handler.form_data_id == 'data.xml':
+                return Response(res, mimetype="application/xml")
+            elif self.handler_type == ODOO_SERVICE_HANDLER:
                 return Response(res, mimetype="application/xml")
             else:
                 return Response(res)
