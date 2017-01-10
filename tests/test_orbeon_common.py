@@ -40,16 +40,7 @@ from ..models import orbeon_runner
 _logger = logging.getLogger(__name__)
 
 class OrbeonRunnerUser(models.Model):
-    #_name = "orbeon.runner.user"
     _inherit = "orbeon.runner"
-    #_inherits = {'orbeon.runner': 'orbeon_runner_id'}
-
-    #_orbeon_res_id_field = 'user_id'
-
-    # orbeon_runner_id = fields.Many2one(
-    #     "orbeon.runner",
-    #     ondelete="cascade",
-    #     required=True)
 
     user_id = fields.Many2one(
         "res.users")
@@ -172,10 +163,12 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
             }
         )
 
+        self.user_1 = self.env['res.users'].browse(1)
+
         self.runner_form_c_erp_fields_v1 = self.runner_model.sudo().create(
             {
                 'builder_id': self.builder_form_c_erp_fields_v1.id,
-                'user_id': 1
+                'user_id': self.user_1.id
             }
         )
 

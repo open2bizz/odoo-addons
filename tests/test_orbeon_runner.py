@@ -44,8 +44,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
                     'builder_id': self.builder_form_a_v2_current,
                 }
             )
-        
-    
+
     def test_orbeon_search_read_new_notstored_by_orbeon_persistence(self):
         """Test reading a new runner form, where xml (field) is empty - isn't stored yet (by
         Orbeon persistence).  It should contain the xml value from the
@@ -87,6 +86,26 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
         self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
 
+    def test_orbeon_search_read_with_ERP_fieds_changed_ERP_object(self):
+        """Test reading a runner form with ERP-fields (model-object-fields)."""
+
+        domain = [('id', '=', self.runner_form_c_erp_fields_v1.id)]
+
+        # Update fields in ERP-object and test
+        self.user_1.sudo().write({
+            'name': 'Dummy',
+            'login': 'dummy_login'
+        })
+
+        rec = self.runner_model.orbeon_search_read_data(domain, ['xml'])
+        root = self.assertXmlDocument(rec['xml'])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.name'])
+        self.assertXpathValues(root, '//ERP.name/text()', [('Dummy')])
+
+        self.assertXpathsOnlyOne(root, ['//ERP.login'])
+        self.assertXpathValues(root, './/ERP.login/text()', [('dummy_login')])
+    
     def test_orbeon_search_read_with_unknown_ERP_fieds(self):
         """Test reading a runner form with unknown ERP-fields (model-object)."""
 
