@@ -2,8 +2,13 @@ import ConfigParser
 import os
 import dicttoxml
 
+from xml.dom.minidom import parseString
+
 from xmlrpc_service import XMLRPCService
 from xmlgen import XmlGenerator
+from .. import utils
+
+_log = utils._log
 
 class OrbeonHandlerBase(object):
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
@@ -250,8 +255,6 @@ class OdooServiceHandler(OrbeonHandlerBase):
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
         super(OdooServiceHandler, self).__init__(app, form, data_type, path, args, data)
 
-        self.form_doc_id = path[5]
-
     """
     Orbeon Service URL support
     ==========================
@@ -296,7 +299,6 @@ class OdooServiceHandler(OrbeonHandlerBase):
             records = self.xmlrpc.search_read(model, [domain], [label])
             xml = dicttoxml.dicttoxml(records)
             dom = parseString(xml)
-
             _log('debug', dom.toprettyxml())
             return xml
         except Exception, e:

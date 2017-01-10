@@ -2,7 +2,6 @@
 import base64
 import dicttoxml
 from werkzeug.wrappers import Request, Response
-from xml.dom.minidom import parseString
 
 from orbeon_handlers import BuilderHandler, RunnerHandler, OdooServiceHandler
 from .. import utils
@@ -24,6 +23,8 @@ class OrbeonRequestHandler(object):
         self.path = request.path.split("/")
         self.args = request.args
         self.data = request.data
+
+        _log("debug", "path => %s" % self.path)
 
         """Attrs extracted from the request its path"""
         self.namespace = None
@@ -59,13 +60,17 @@ class OrbeonRequestHandler(object):
         https://doc.orbeon.com/form-runner/api/persistence
         """
         self.namespace = self.path[1]
-        self.app = self.path[2]
-        self.form = self.path[3]
-        self.data_type = self.path[4]
+
+        if len(self.path) > 2:
+            self.app = self.path[2]
+            self.form = self.path[3]
+            self.data_type = self.path[4]
 
     def set_handler(self):
         """Set the Orbeon handler, determined by (path-)attrs (i.e. URL path-components)"""
         handler_type = self.get_handler_type()
+
+        _log('debug', "handler_type => %s" % handler_type)
 
         if handler_type == BUILDER_HANDLER:
             return BuilderHandler(self.app, self.form, self.data_type, self.path, self.args, self.data)
