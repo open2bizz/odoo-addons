@@ -35,6 +35,6 @@
         "views/project_type.xml",
         "views/project.xml",
     ],
-    "application": False,
+    "application": True,
     "installable": True,
 }
