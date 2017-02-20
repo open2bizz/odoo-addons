@@ -25,7 +25,7 @@
     "description": 'Orbeon Forms integration interface',
     "version": "0.1",
     "author": "Open2bizz",
-    "website": "http://www.oppen2bizz.nl",
+    "website": "http://www.open2bizz.nl",
     "category": "Tools",
     "depends": ['document'],
     "data": [
