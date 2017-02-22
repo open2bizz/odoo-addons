@@ -77,7 +77,7 @@ class ProjectOrbeonProject(models.Model):
         name = self.name
         
         return {
-            "name": "%s Forms"%name,
+            "name": _("Forms"),
             "type": "ir.actions.act_window",
             "res_model": "orbeon.runner",
             "view_type": "kanban",
