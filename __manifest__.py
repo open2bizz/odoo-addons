@@ -36,5 +36,6 @@
         "views/orbeon_runner.xml",
         "views/base.xml",
         ],
-    "application": False,
+    "application": True,
+    "installable": True,
 }
