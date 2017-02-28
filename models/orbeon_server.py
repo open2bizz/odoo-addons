@@ -91,8 +91,9 @@ class OrbeonServer(models.Model):
 
     persistence_server_configfilename = fields.Char(
         "Config-filename",
-        help="If specified, the Odoo connection is setup with its config. "
-        "If blank, the Orbeon HTTP-Headers will be used"
+        help="If specified, the Odoo connection is setup with its config, "
+        "from file in directory: services/persistence_server. "
+        "If blank, the Orbeon HTTP-Headers will be used."
     )
 
     persistence_server_active = fields.Boolean(
