@@ -21,21 +21,18 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
+from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
+from ..services import runner_xml_parser
+
 import logging
 
-from lxml import etree
-
 _logger = logging.getLogger(__name__)
-
-from orbeon_builder import STATE_NEW as BUILDER_STATE_NEW
-from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
-
-from ..services import runner_xml_parser
 
 STATE_NEW = 'new'
 STATE_PROGRESS = 'progress'
 STATE_COMPLETE = 'complete'
 STATE_CANCELED = 'canceled'
+
 
 class OrbeonRunner(models.Model):
     _name = "orbeon.runner"
@@ -55,7 +52,7 @@ class OrbeonRunner(models.Model):
         "Builder version",
         compute="_get_builder_version",
         readonly=True)
-    
+
     state = fields.Selection(
         [
             (STATE_NEW, "New"),
@@ -107,7 +104,6 @@ class OrbeonRunner(models.Model):
     @api.onchange('builder_id')
     def _get_url(self):
         for rec in self:
-            
             if isinstance(rec.id, models.NewId) and not rec.builder_id.id:
                 return rec.url
 
@@ -118,9 +114,8 @@ class OrbeonRunner(models.Model):
             if isinstance(rec.id, models.NewId):
                 url = "%s/new" % base_url
             else:
-                #runner_id = rec.id
                 get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
-                path_mode = get_mode.get(rec.state ,'view')
+                path_mode = get_mode.get(rec.state, 'view')
                 url = "%s/%s/%i" % (base_url, path_mode, rec.id)
 
             rec.url = url
@@ -141,15 +136,15 @@ class OrbeonRunner(models.Model):
 
     @api.multi
     def write(self, vals):
-        if self.is_merged == False:
+        if self.is_merged is False:
             vals['is_merged'] = True
 
         if vals.get('builder_id', False) and vals['builder_id'] != self.builder_id:
             raise ValidationError("Changing the builder is not allowed.")
-        
+
         res = super(OrbeonRunner, self).write(vals)
         return res
-    
+
     @api.multi
     def duplicate_runner_form(self):
         alter = {}
@@ -159,30 +154,18 @@ class OrbeonRunner(models.Model):
         # XXX maybe useless if merge_xml_current_builder() returns None?
         alter["xml"] = self.merge_xml_current_builder()
 
-        res = super(OrbeonRunner, self).copy(alter)        
-        
+        super(OrbeonRunner, self).copy(alter)
+
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_current_builder(self):
         # No merge required if the runner's builder already is currrent
         if (self.builder_id.state == BUILDER_STATE_CURRENT):
             return self.xml
 
-        orbeon_server = self.env['orbeon.builder']
-        current_builder = orbeon_builder.search(
-            [('name', '=', self.builder_id.name),
-             ('state', '=', BUILDER_STATE_CURRENT)],
-            limit=1,
-            order='version DESC')
-
-        return self.merge_xml_builder(current_builder.id)
-
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_builder(self, builder_id):
-        builder_name = self.builder_id.name
-        builder = self.browse(builder_id)
-
         # TODO implement
-        return self.xml
+        pass
 
     @api.model
     def orbeon_search_read_builder(self, domain=None, fields=None):

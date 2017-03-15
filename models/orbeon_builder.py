@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 from lxml import etree
@@ -33,6 +33,7 @@ STATE_NEW = 'new'
 STATE_MODIFIED = 'modified'
 STATE_OBSOLETE = 'obsolete'
 STATE_TEMPLATE = 'template'
+
 
 class OrbeonBuilder(models.Model):
     _name = "orbeon.builder"
@@ -49,7 +50,7 @@ class OrbeonBuilder(models.Model):
         "Title",
         help="Form title in the current language"
     )
-    
+
     description = fields.Text(
         "Description",
         help="Form description in the current language")
@@ -63,7 +64,7 @@ class OrbeonBuilder(models.Model):
     version_comment = fields.Text(
         "Version Comment",
         required=True)
-    
+
     state = fields.Selection(
         [
             (STATE_NEW, "New"),
@@ -119,35 +120,35 @@ class OrbeonBuilder(models.Model):
         Validate name according to the RFC3986 Path (Section 3.3) section
         """
         if re.search(r"\?|\#|\/|:", self.name):
-            raise ValidationError('Name should not contain following characters: question mark ("?"), '\
+            raise ValidationError('Name should not contain following characters: question mark ("?"), '
                                   'pound ("#"), slash ("/"), colon (":")?')
-        
+
     @api.one
-    @api.constrains("name","state")
+    @api.constrains("name", "state")
     def constraint_one_current(self):
         """Per name there can be only 1 record with
         state current at a time.
         """
         cur_record = self.search([
-            ("name","=",self.name), 
-            ("state","=",STATE_CURRENT)
+            ("name", "=", self.name),
+            ("state", "=", STATE_CURRENT)
             ])
         if len(cur_record) > 1:
             raise ValidationError("%s already has a record with status 'current'.\
                     Only one builder form can be current at a time." % self.name)
 
     @api.one
-    @api.constrains("name","version")
+    @api.constrains("name", "version")
     def constraint_one_version(self):
         """Per name there can be only 1 record with
         same version at a time.
         """
-        
+
         domain = [('name', '=', self.name)]
         name_version_grouped = self.read_group(domain, ['version'], ['version'])
 
         if name_version_grouped[0]['version_count'] > 1:
-            raise ValidationError("%s already has a record with version: %d" \
+            raise ValidationError("%s already has a record with version: %d"
                                   % (self.name, self.version))
 
     @api.model
@@ -167,7 +168,7 @@ class OrbeonBuilder(models.Model):
             if 'title' in vals and vals['title']:
                 xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
                 xml.xpath('//title')[0].text = vals['title']
-                
+
             vals['xml'] = etree.tostring(xml)
 
         res = super(OrbeonBuilder, self).create(vals)
@@ -175,8 +176,8 @@ class OrbeonBuilder(models.Model):
         # TODO store URL, because computation could casue performance issues
         # update_vals = {}
         # update_vals["url"] = res._get_url()
-        #super(OrbeonBuilder, self).write(update_vals)
-        
+        # super(OrbeonBuilder, self).write(update_vals)
+
         return res
 
     @api.one
@@ -184,7 +185,7 @@ class OrbeonBuilder(models.Model):
     def copy_reversion(self):
         # Get last version for builder-forms by name
         builder = self.search([('name', '=', self.name)], limit=1, order='version DESC')
-        
+
         alter = {}
         alter["state"] = STATE_NEW
         alter["version"] = builder.version + 1
@@ -195,12 +196,14 @@ class OrbeonBuilder(models.Model):
     @api.multi
     def duplicate_builder_form(self):
         res = self.copy_reversion()
-        
-        form_view = self.env["ir.ui.view"]\
-                .search([("name","=","orbeon.builder_form.form")])[0]
-        tree_view = self.env["ir.ui.view"]\
-                .search([("name","=","orbeon.builder_form.tree")])[0]
-        name = self.name
+
+        form_view = self.env["ir.ui.view"].search(
+            [("name", "=", "orbeon.builder_form.form")]
+        )[0]
+
+        tree_view = self.env["ir.ui.view"].search(
+            [("name", "=", "orbeon.builder_form.tree")]
+        )[0]
 
         return {
             "name": self.name,
@@ -232,10 +235,10 @@ class OrbeonBuilder(models.Model):
             builder_id = self._origin.id
         else:
             builder_id = self.id
-        
+
         builder_url = "%s/%s" % (self.server_id.url, "fr/orbeon/builder")
         get_mode = {STATE_NEW: 'edit'}
-        url = "%s/%s/%i" % (builder_url, get_mode.get(self.state ,'view'), builder_id)
+        url = "%s/%s/%i" % (builder_url, get_mode.get(self.state, 'view'), builder_id)
 
         self.url = url
 
@@ -253,7 +256,7 @@ class OrbeonBuilder(models.Model):
     @api.one
     def get_xml_form_node(self):
         parser = etree.XMLParser(ns_clean=True, encoding='utf-8')
-        
+
         # Cast to string, to prevent Unicode error!
         root = etree.XML(self.xml.encode('utf-8'), parser)
 

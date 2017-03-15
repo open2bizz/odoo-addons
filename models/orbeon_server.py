@@ -34,8 +34,9 @@ PERSISTENCE_SERVER_SINGLE_THREADED = 'SINGLE_THREADED'
 PERSISTENCE_SERVER_MULTI_THREADED = 'MULTI_THREADED'
 PERSISTENCE_SERVER_FORKING = 'FORKING'
 
+
 class OrbeonThreadedWSGIServer(threading.Thread):
-    
+
     def __init__(self, name, server, stopper):
         super(OrbeonThreadedWSGIServer, self).__init__(name=name)
 
@@ -51,6 +52,7 @@ class OrbeonThreadedWSGIServer(threading.Thread):
                 self.server.serve_forever()
             except:
                 pass
+
 
 class OrbeonServer(models.Model):
     _name = "orbeon.server"
@@ -136,13 +138,13 @@ class OrbeonServer(models.Model):
 
     @api.constrains("name")
     def constraint_unique_name(self):
-        cur_record = self.search([("name","=",self.name)])
+        cur_record = self.search([("name", "=", self.name)])
         if len(cur_record) > 1:
             raise ValidationError("Server with name '%s' already exists!" % self.name)
 
     @api.constrains("url")
     def constraint_unique_url(self):
-        cur_record = self.search([("url","=",self.url)])
+        cur_record = self.search([("url", "=", self.url)])
         if len(cur_record) > 1:
             raise ValidationError("Server with URL '%s' already exists!" % self.url)
 
@@ -150,10 +152,10 @@ class OrbeonServer(models.Model):
     def start_persistence_server(self, context=None, *args, **kwargs):
         if not self.persistence_server_active:
             raise ValidationError("Server with name %s can't start, because marked inactive." % self.name)
-        
+
         try:
             uuid = self._persistence_server_uuid()
-            
+
             self._start_persistence_server(
                 uuid,
                 self.persistence_server_port,
@@ -195,9 +197,9 @@ class OrbeonServer(models.Model):
                 "    name = 'orbeon' "
                 "    AND state = 'installed' "
             )
-        
+
         return cr.fetchone() is not None
-            
+
     def _autostart_persistence_servers(self, pool, cr):
         """These (last resort) SQL could led to API-change breakage.  However,
         currently funky errors with ORM search/reads on
@@ -205,7 +207,7 @@ class OrbeonServer(models.Model):
         """
         if not self._is_installed(pool, cr):
             return
-        
+
         try:
             cr.execute(
                 "SELECT "
@@ -222,8 +224,8 @@ class OrbeonServer(models.Model):
                 "    persistence_server_autostart = True "
                 "    AND persistence_server_active = True "
             )
-            
-            for (id,active,autostart,uuid,port,processtype,configfilename) in cr.fetchall():
+
+            for (id, active, autostart, uuid, port, processtype, configfilename) in cr.fetchall():
                 # Stop
                 self._stop_persistence_server(uuid, port)
                 cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = %s", (id,))
@@ -237,7 +239,7 @@ class OrbeonServer(models.Model):
                     configfilename
                 )
                 cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
-                
+
         except Exception, e:
             _logger.error("Exception: %s" % e)
 
@@ -253,14 +255,14 @@ class OrbeonServer(models.Model):
             server=wsgi_app_server,
             stopper=stopper
         )
-        
+
         t.setDaemon(True)
         _logger.info('Starting HTTP (werkzeug) %s (thread: %s) on port %s', ORBEON_PERSISTENCE_SERVER_PREFIX, uuid, port)
         t.start()
-        
+
     def _stop_persistence_server(self, uuid, port):
         for thread in threading.enumerate():
-            if thread.getName() == uuid: # TODO uuid
+            if thread.getName() == uuid:  # TODO uuid
                 thread.stopper.set()
                 _logger.info("Stopping HTTP (werkzeug) %s (thread: %s) on port %s", ORBEON_PERSISTENCE_SERVER_PREFIX, uuid, port)
                 thread.server.server_close()
