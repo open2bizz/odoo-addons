@@ -103,13 +103,6 @@ class OrbeonBuilder(models.Model):
         help="Model as resource this form represents or acts on"
     )
 
-    runner_res_model_field_id = fields.Many2one(
-        "ir.model.fields",
-        "Runner To Resource Field",
-        ondelete='restrict',
-        help="Runner model field which links to the Resource Model"
-    )
-
     editable = fields.Boolean(
         "is editable",
         default=False)

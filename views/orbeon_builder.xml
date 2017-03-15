@@ -35,7 +35,6 @@
                   <field name="title" />
                   <field name="description" />
                   <field name="res_model_id" />
-                  <field name="runner_res_model_field_id" />
                   <field name="state" />
                   <field name="version" />
                   <field name="version_comment" />

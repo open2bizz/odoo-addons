@@ -109,10 +109,6 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
         )
 
         res_model_id = self.env['ir.model'].search([('model', '=', 'res.users')], limit=1)
-        runner_res_model_field_id = self.env['ir.model.fields'].search(
-            [('model', '=', 'orbeon.runner'),('name', '=', 'user_id')],
-            limit=1
-        )
 
         self.builder_form_c_erp_fields_v1 = self.builder_model.sudo().create(
             {
@@ -122,8 +118,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                 'version': 1,
                 'version_comment': "ERP fields res_user model: name, login, image",
                 'server_id': self.server_1.id,
-                'res_model_id': res_model_id.id,
-                'runner_res_model_field_id': runner_res_model_field_id.id
+                'res_model_id': res_model_id.id
             }
         )
 
@@ -168,7 +163,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
         self.runner_form_c_erp_fields_v1 = self.runner_model.sudo().create(
             {
                 'builder_id': self.builder_form_c_erp_fields_v1.id,
-                'user_id': self.user_1.id
+                'res_id': self.user_1.id
             }
         )
 
