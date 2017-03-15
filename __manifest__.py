@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    "name": "orbeon",
+    "name": "Orbeon Forms",
     "summary": 'Orbeon Forms integration interface',
     "description": 'Orbeon Forms integration interface',
     "version": "1.0",
