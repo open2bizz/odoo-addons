@@ -11,11 +11,11 @@
           </header>
           <sheet>
             <div class="oe_button_box" name="button_box">
-              <button name="duplicate_builder_form" type="object"
+              <button name="duplicate_builder_form" type="object" attrs="{'invisible':[('id','=',False)]}"
                   string="Copy" class="oe_stat_button" icon="fa-clone" />
-              <button name="open_orbeon_builder_form" type="object" attrs="{'invisible':[('state','!=','new')]}"
+              <button name="open_orbeon_builder_form" type="object" attrs="{'invisible':['|', ('state','!=','new'), ('id','=',False)]}"
                       string="Edit" class="oe_stat_button" icon="fa-edit" />
-              <button name="open_orbeon_builder_form" type="object" attrs="{'invisible':[('state','=','new')]}"
+              <button name="open_orbeon_builder_form" type="object" attrs="{'invisible':['|', ('state','=','new'), ('id','=',False)]}"
                       string="View" class="oe_stat_button" icon="fa-eye" />
             </div>
 

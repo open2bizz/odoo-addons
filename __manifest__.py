@@ -21,8 +21,8 @@
 
 {
     "name": "Orbeon Forms",
-    "summary": 'Orbeon Forms integration interface',
-    "description": 'Orbeon Forms integration interface',
+    "summary": 'Integrate Orbeon Forms with Odoo',
+    "description": 'Orbeon Forms integration',
     "version": "1.0",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
