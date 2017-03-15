@@ -26,6 +26,7 @@
     "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
+    "license": "AGPL v3",
     "category": "Tools",
     "depends": ['document'],
     "data": [
