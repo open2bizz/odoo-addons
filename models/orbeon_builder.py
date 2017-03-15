@@ -224,6 +224,15 @@ class OrbeonBuilder(models.Model):
             "context": {}
         }
 
+    @api.multi
+    def open_orbeon_builder_form(self):
+        return {
+            "name": 'Orbeon',
+            "type": "ir.actions.act_url",
+            "target": "new",
+            'url': self.url
+        }
+
     @api.onchange('state', 'server_id')
     def _get_url(self):
         if hasattr(self, '_origin') and not isinstance(self._origin.id, models.NewId):
