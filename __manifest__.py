@@ -20,12 +20,13 @@
 ##############################################################################
 
 {
-    "name": "project_orbeon",
-    'summary': 'Add Orbeon Forms to Project(s)',
+    "name": "Orbeon Forms",
+    'summary': 'Orbeon Forms on Projects',
     "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
-    "category": "Tools",
+    "license": "AGPL v3",
+    "category": "Project",
     "depends": [
         "project",
         "project_project_type",
