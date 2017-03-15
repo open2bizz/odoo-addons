@@ -23,7 +23,7 @@
     "name": "orbeon",
     "summary": 'Orbeon Forms integration interface',
     "description": 'Orbeon Forms integration interface',
-    "version": "0.1",
+    "version": "1.0",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL v3",
