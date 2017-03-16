@@ -30,24 +30,24 @@ _logger = logging.getLogger(__name__)
 
 STATE_CURRENT = 'current'
 STATE_NEW = 'new'
-STATE_MODIFIED = 'modified'
 STATE_OBSOLETE = 'obsolete'
-STATE_TEMPLATE = 'template'
 
 
 class OrbeonBuilder(models.Model):
     _name = "orbeon.builder"
+    _order = 'res_model_id DESC, name ASC, version ASC'
 
     name = fields.Char(
         "Name",
         required=True,
-        help="""\
+        help="""
         Identifies this specific form (e.g. "health-record" or "claim").
-        This name shows in the URL, so we recommend you use only lowercases characters.""",
+        This name can be used in APIs, so we recommend you use only lowercases characters.""",
     )
 
     title = fields.Char(
         "Title",
+        required=True,
         help="Form title in the current language"
     )
 
@@ -69,9 +69,7 @@ class OrbeonBuilder(models.Model):
         [
             (STATE_NEW, "New"),
             (STATE_CURRENT, "Current"),
-            (STATE_MODIFIED, "Modified"),
             (STATE_OBSOLETE, "Obsolete"),
-            (STATE_TEMPLATE, "Template"),
         ],
         "State",
         default=STATE_NEW,
@@ -79,7 +77,6 @@ class OrbeonBuilder(models.Model):
         help="""\
         - New: In draft and was never published (Current)
         - Current: Published i.e. live
-        - Modified: Was published, but with modifications
         - Obsolete: Was published but obsolete"""
     )
 
@@ -103,10 +100,6 @@ class OrbeonBuilder(models.Model):
         ondelete='restrict',
         help="Model as resource this form represents or acts on"
     )
-
-    editable = fields.Boolean(
-        "is editable",
-        default=False)
 
     url = fields.Text(
         'URL',
@@ -153,8 +146,6 @@ class OrbeonBuilder(models.Model):
 
     @api.model
     def create(self, vals):
-        vals["editable"] = True
-
         if 'server_id' in vals:
             orbeon_server = self.env['orbeon.server'].browse(vals['server_id'])
 
@@ -173,16 +164,11 @@ class OrbeonBuilder(models.Model):
 
         res = super(OrbeonBuilder, self).create(vals)
 
-        # TODO store URL, because computation could casue performance issues
-        # update_vals = {}
-        # update_vals["url"] = res._get_url()
-        # super(OrbeonBuilder, self).write(update_vals)
-
         return res
 
     @api.one
     @api.returns('self', lambda value: value)
-    def copy_reversion(self):
+    def copy_as_new_version(self):
         # Get last version for builder-forms by name
         builder = self.search([('name', '=', self.name)], limit=1, order='version DESC')
 
@@ -194,8 +180,8 @@ class OrbeonBuilder(models.Model):
         return res
 
     @api.multi
-    def duplicate_builder_form(self):
-        res = self.copy_reversion()
+    def new_version_builder_form(self):
+        res = self.copy_as_new_version()
 
         form_view = self.env["ir.ui.view"].search(
             [("name", "=", "orbeon.builder_form.form")]

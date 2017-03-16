@@ -145,16 +145,15 @@ class OrbeonRunner(models.Model):
         res = super(OrbeonRunner, self).write(vals)
         return res
 
-    @api.multi
-    def duplicate_runner_form(self):
-        alter = {}
-        alter["state"] = STATE_NEW
-        alter["is_merged"] = False
-
-        # XXX maybe useless if merge_xml_current_builder() returns None?
-        alter["xml"] = self.merge_xml_current_builder()
-
-        super(OrbeonRunner, self).copy(alter)
+    # TODO
+    # @api.multi
+    # def duplicate_runner_form(self):
+    #     alter = {}
+    #     alter["state"] = STATE_NEW
+    #     alter["is_merged"] = False
+    #     # XXX maybe useless if merge_xml_current_builder() returns None?
+    #     alter["xml"] = self.merge_xml_current_builder()
+    #     super(OrbeonRunner, self).copy(alter)
 
     # TODO: check whether and which @api decorator is needed here
     def merge_xml_current_builder(self):

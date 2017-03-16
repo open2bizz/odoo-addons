@@ -34,7 +34,6 @@
       </field>
     </record>
 
-    <!-- Runner form kanban (example: odoo/addons/hr/hr_dashboard.xml) -->
     <record id="orbeon_runner_form_kanban" model="ir.ui.view">
       <field name="name">orbeon.runner_form.kanban</field>
       <field name="model">orbeon.runner</field>
@@ -45,7 +44,7 @@
           <field name="url"/>
           <templates>
             <t t-name="kanban-box">
-              <div>   <!-- t-attf-class="#{kanban_color(record.color.raw_value)}"> -->
+              <div>
                 <div class="o_kanban_card_header">
 
                   <div class="o_kanban_card_header_title">
@@ -55,9 +54,7 @@
                       <field name="builder_version"/>
                     </div>
                   </div>
-                  <!-- <div class="o_kanban_manage_button_section"> -->
-                  <!--   <a class="o_kanban_manage_toggle_button" href="#">More <i class="fa fa-caret-down"/></a> -->
-                  <!-- </div> -->
+
                 </div>
                 <div class="container o_kanban_card_content o_visible">
                   <div class="row">
@@ -68,14 +65,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- <div class="container o_kanban_card_manage_pane o_invisible"> -->
-                <!--   <div t-if="widget.editable" class="o_kanban_card_manage_settings row"> -->
-                <!--     <div class="col-xs-4 text-right"> -->
-                <!--       <a type="edit">Settings</a> -->
-                <!--     </div> -->
-                <!--   </div> -->
-                <!-- </div> -->
 
               </div>
             </t>

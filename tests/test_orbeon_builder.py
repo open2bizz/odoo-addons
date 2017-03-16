@@ -379,7 +379,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(builder_version_1.version, 1)
 
         # duplicate and update version to 1
-        self.builder_form_a_v1.duplicate_builder_form()
+        self.builder_form_a_v1.new_version_builder_form()
         domain_filter = [('name', '=', self.builder_form_a_v1.name), ('version', '=', 2)]
         builder_version_2 = self.builder_model.search(domain_filter)
 
@@ -418,7 +418,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(builder_current.state, orbeon_builder.STATE_CURRENT)
 
         # duplicate and update version to 1
-        self.builder_form_a_v2_current.duplicate_builder_form()
+        self.builder_form_a_v2_current.new_version_builder_form()
         domain_filter = [('name', '=', self.builder_form_a_v2_current.name), ('version', '=', self.builder_form_a_v2_current.version + 1)]
         builder_current_duplicated = self.builder_model.search(domain_filter)
 
@@ -429,7 +429,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 }
             )
 
-    def test_create_allow_duplicate_by_unique_name_and_version(self):
+    def test_create_allow_new_version_by_unique_name_and_version(self):
         """Test create allow duplicate builder names with unique version, where state IS NOT current"""
 
         # Create a 3rd version of OrbeonBuilder form with name: form_a
@@ -438,7 +438,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 {
                     'name': self.builder_form_a_v2_current.name,
                     'title': self.builder_form_a_v2_current.title,
-                    'version_comment': 'test_create_allow_duplicate_by_unique_name_and_version',
+                    'version_comment': 'test_create_allow_new_version_by_unique_name_and_version',
                     'server_id': self.server_1.id,
                     'version': 3
                 }
@@ -446,17 +446,17 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         except Exception as e:
             self.fail(e)
 
-    def test_write_allow_duplicate_by_unique_name_and_version(self):
-        """Test write allow duplicate builder names with unique version, where state IS NOT current"""
+    def test_write_allow_new_version_by_unique_name_and_version(self):
+        """Test write allow new_version builder names with unique version, where state IS NOT current"""
 
         # First create a unique 1st version of a OrbeonBuilder form
         # Then update the name (and version = 3), to name of an existing OrbeonBuilder form: form_a
         try:
             record = self.builder_model.sudo().create(
                 {
-                    'name': 'test_write_allow_duplicate_by_unique_name_and_version',
+                    'name': 'test_write_allow_new_version_by_unique_name_and_version',
                     'title': self.builder_form_a_v2_current.title,
-                    'version_comment': 'test_write_allow_duplicate_by_unique_name_and_version',
+                    'version_comment': 'test_write_allow_new_version_by_unique_name_and_version',
                     'server_id': self.server_1.id,
                 }
             )
@@ -559,8 +559,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         
         self.assertXmlEquivalentOutputs(rec['xml'], self.xmlFromFile('test_orbeon4.10_builder_form_a_v2.xml'))
 
-    def test_duplicate_builder_form(self):
-        """Test make duplicate (copy) of builder form"""
+    def test_new_version_builder_form(self):
+        """Test make new_version (copy) of builder form"""
         name_filter = [('name', '=', self.builder_form_a_v1.name)]
 
         # form_a has already 2 versions, created from TestOrbeonCommon.setUp()
@@ -586,7 +586,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(current_version_filter), 1)
 
         # version 3: copy from builder_current (builder_form_a_v2_current)
-        self.builder_form_a_v2_current.duplicate_builder_form()
+        self.builder_form_a_v2_current.new_version_builder_form()
         
         version_3_filter = list(name_filter)
         version_3_filter.append(('version', '=', 3))
@@ -598,7 +598,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(name_filter), 3)
 
         # version 4: copy from builder_version_1 (builder_form_a_v1)
-        self.builder_form_a_v1.duplicate_builder_form()
+        self.builder_form_a_v1.new_version_builder_form()
         
         version_4_filter = list(name_filter)
         version_4_filter.append(('version', '=', 4))
@@ -610,7 +610,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(name_filter), 4)
 
         # version 5: copy from builder_current (builder_form_a_v2_current)
-        self.builder_form_a_v2_current.duplicate_builder_form()
+        self.builder_form_a_v2_current.new_version_builder_form()
         
         version_5_filter = list(name_filter)
         version_5_filter.append(('version', '=', 5))
@@ -621,8 +621,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(version_5_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 5)
 
-        # version 6: copy from builder_version_4 (duplicated/create above)
-        builder_version_4.duplicate_builder_form()
+        # version 6: copy from builder_version_4 (new_versioned/create above)
+        builder_version_4.new_version_builder_form()
         
         version_6_filter = list(name_filter)
         version_6_filter.append(('version', '=', 6))
