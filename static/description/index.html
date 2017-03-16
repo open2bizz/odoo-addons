@@ -1,0 +1,184 @@
+<!--
+# Orbeon (Web) Forms in Odoo
+
+Harness the power of Orbeon Forms integration with Odoo
+
+# Enjoy complete flexibility
+
+Build web forms for the Enterprise in Orbeon.
+
+# Configuration
+
+# Example
+  project_orbeon
+
+# Permissions
+
+-->
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Orbeon Forms integration</h2>
+    <h3 class="oe_slogan">The power of Orbeon Forms managed and integrated by Odoo!</h3>
+
+    <div class="oe_span12">
+      <p class="text-justify">
+        <a href="http://www.orbeon.com" target="_blank">Orbeon Forms</a> is a solution to build and deploy web forms.
+      </p>
+      <div class="oe_picture oe_screenshot">
+        <img style="width: 100%;" src="intro.png">
+      </div>
+      <div class="oe_centeralign oe_mt64 oe_mb32">
+        <a href="https://www.youtube.com/watch?v=FmF6aXgD0uE" target="_blank" class="oe_button oe_big oe_tacky">Watch the video</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Manage Form Builder designs</h2>
+    <h3 class="oe_slogan">This means a lot!</h3>
+
+    <p class="lead oe_mt32 oe_mb32 text-center">Basic actions</p>
+
+    <div class="oe_row oe_spaced">
+      <div class="oe_span4">
+        <h4 class="oe_mb16 text-center">List</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_list.png" width="100%"> <!-- height="100"> -->
+
+        <p class="text-justify">
+          List Form Builder design records.
+        </p>
+      </div>
+      
+      <div class="oe_span4">
+        <h4 class="oe_mb16 text-center">Create and Update</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_create.png" width="100%"> <!-- height="100"> -->
+        <p class="text-justify">
+          Create and update Form Builder design records.
+        </p>
+      </div>
+      
+      <div class="oe_span4">
+        <h4 class="oe_mb16 text-center">Delete</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_delete.png" width="100%"> <!-- height="100"> -->
+        <p class="text-justify">
+          Delete Form Builder designs.<br/>Which also checks whether no filled-in (Runner) Forms exist yet.
+        </p>
+      </div>
+    </div>
+
+    <div class="oe_row oe_spaced">
+      <p class="text-justify">
+      <p class="lead oe_mt32 oe_mb32 text-center">Advanced actions</p>
+      </p>
+      
+      <div class="oe_span4">
+        <img class="oe_picture oe_screenshot" src="form_builder_copy_new_version.png" height="100">
+        <h4 class="oe_mb16 text-center"><b>COPY TO NEW VERSION</b></h4>
+        <p class="text-justify">
+          Copy as a new (unpublished) version.<br/>
+          This eases and kickstarts the development of a new version of a Form Builder design.
+          While a deployed/published version can still be live.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="oe_row oe_spaced">
+  <h2 class="oe_slogan" style="color:#875A7B;">Open the Orbeon Form Builder from Odoo</h2>
+  <h3 class="oe_slogan">It's just that easy</h3>
+
+  <div class="oe_row oe_spaced">
+    <div class="oe_span6">
+      <h4 class="oe_mb16 text-center"><b>Click button to open in Orbeon</h4>
+      <img class="oe_picture oe_screenshot" src="form_builder_click_open_in_orbeon.png" width="100%">
+    </div>
+
+    <div class="oe_row oe_spaced">
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center"><b>The Form Builder design in Orbeon</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_clicked_open_in_orbeon.png" width="100%">
+      </div>
+    </div>
+  </div>
+</div>
+  
+<section class="oe_container">
+  <div class="oe_padded">
+    <h2 class="oe_slogan" style="color:#875A7B;">Deploy Form Builder designs</h2>
+    <h3 class="oe_slogan">A status-change deploys (publishes) or inactivates a Form</h3>
+    <p class="text-justify">
+      A Form Builder design starts in a design (new) state.
+      It's not published immediately, so it's Form (Runner) isn't accessible to any user.
+      Publishing the form is just a regular status change on the Odoo statusbar.
+      After publishing users can access and fill-in the Form (Runner).
+    </p>
+  </div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_padded">
+    <h2 class="oe_slogan" style="color:#875A7B;">Integrate Forms with Odoo Apps</h2>
+    <h3 class="oe_slogan">Attach a Form Builder design to an App's model</h3>
+    <p class="text-justify">
+      <strong>Following example explains this feature:</strong>
+      <ul>
+        <li>Attach a Form Builder Design attached to the Project model</li>
+        <li>The Form is available and belongs to a specific Project. So it can be filled-in.</li>
+      </ul>
+      By technical means, this ensures a filled-in (Runner) Form belongs to the attached model-record.
+      <strong>TODO: Describe how to attach (just Resource Model/ir.model)</strong>
+    </p>
+
+    <h3 class="oe_slogan">ERP-field(s) in the Form Builder design</h3>
+    <p class="text-justify">
+      <strong>TODO: Describe and screenshot of ERP-field (ERP.lastname). Even relations (ERP.company_id.name)</strong>
+    </p>
+    
+    <h3 class="oe_slogan">Benefit from the integration in the Form</h3>
+    <p class="text-justify">
+      <strong>TODO: Describe and screenshot of Form Runner</strong>
+    </p>    
+  </div>
+</section>
+
+<section class="oe_container">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Form Server</h2>
+    <h3 class="oe_slogan">Control the Orbeon Server in Odoo</h3>
+    <div class="oe_span6">
+      <p class='oe_mt32 text-justify'>
+        Add quick notes or attach files to any task and stay connected to your team. Forget endless follow-up meetings to keep track of projects. Communicate through the chatter, write in a shared, real time pad or use live chat - all in a single interface!
+      </p>
+    </div>
+    <div class="oe_span6">
+      <img class="oe_picture oe_screenshot" src="project_sc_03.png">
+    </div>
+  </div>
+</section>
+
+<section class="oe_container oe_dark">
+  <div class="oe_row oe_spaced">
+    <h2 class="oe_slogan" style="color:#875A7B;">Installation and configuration</h2>
+    <h3 class="oe_slogan">A bit of system adminsitration is required</h3>
+    <div class="oe_span12">
+      <h4>Orbeon Forms</h4>
+      <p class="oe_mt16 oe_mb32 text-justify">
+        Orbeon Forms is a Java (web)application and requires some installation. It has extensive documentation.<br/>
+        <a href="http://docs.orbeon.com/installation" target="_blank" class="oe_button oe_big oe_mt8">Orbeon Installation Docs</a>
+      </p>
+      <h4 class="mt_64">This Odoo/Orbeon App</h4>
+      <p class="oe_mt16 text-justify">
+        The documentation (configuration etc.) and repository of this App can be found on GitHub:<br/>
+        <a href="http://github.com/open2bizz/orbeon" target="_blank" class="oe_button oe_big oe_mt8"><i class="fa fa-github"/> Odoo Orbeon App</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="oe_container oe_separator">
+</section>
