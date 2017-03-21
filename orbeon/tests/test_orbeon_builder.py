@@ -21,7 +21,9 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError, ValidationError
 
-from test_orbeon_common import TestOrbeonCommon, TODO
+from test_orbeon_common import TestOrbeonCommon
+from utils import TODO
+
 from ..models import orbeon_builder
 from ..models import orbeon_runner
 

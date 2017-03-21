@@ -27,23 +27,12 @@ import os
 from lxml import etree
 from xmlunittest import XmlTestCase
 
-try:
-    from ...test_extensions import TODO
-except:
-    def TODO(self):
-        pass
-
 from ..models import orbeon_server
 from ..models import orbeon_builder
 from ..models import orbeon_runner
 
 _logger = logging.getLogger(__name__)
 
-class OrbeonRunnerUser(models.Model):
-    _inherit = "orbeon.runner"
-
-    user_id = fields.Many2one(
-        "res.users")
 
 class TestOrbeonCommon(TransactionCase, XmlTestCase):
     """Common utilities for Orbeon Tests"""

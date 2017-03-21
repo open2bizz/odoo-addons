@@ -21,7 +21,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
 
-from test_orbeon_common import TestOrbeonCommon, TODO
+from test_orbeon_common import TestOrbeonCommon
 from ..models import orbeon_server
 
 from psycopg2 import IntegrityError
