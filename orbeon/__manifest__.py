@@ -26,9 +26,12 @@
     "version": "1.0",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
-    "license": "AGPL v3",
+    "license": "AGPL-3",
     "category": "Tools",
-    "depends": ['document'],
+    "depends": [],
+    'external_dependencies': {
+        'python': ['dicttoxml', 'xmlunittest']
+    },
     "data": [
         "security/res_groups.xml",
         "security/ir.model.access.csv",
