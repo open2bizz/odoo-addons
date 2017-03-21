@@ -47,8 +47,8 @@ class OrbeonBuilder(models.Model):
 
     title = fields.Char(
         "Title",
-        required=True,
-        help="Form title in the current language"
+        help="Form title in the current language",
+        default="Untitled Form"
     )
 
     description = fields.Text(
