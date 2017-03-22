@@ -17,25 +17,23 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-##############################################################################
 
-{
-    "name": "Orbeon Forms on Projects",
-    'summary': 'Orbeon Forms on Projects',
-    "version": "0.1",
-    "author": "Open2bizz",
-    "website": "http://www.open2bizz.nl",
-    "license": "AGPL-3",
-    "category": "Project",
-    "depends": [
-        "project",
-        "project_project_type",
-        "orbeon",
-    ],
-    "data": [
-        "views/project_type.xml",
-        "views/project.xml",
-    ],
-    "application": True,
-    "installable": True,
-}
+##############################################################################
+from odoo import fields, models
+
+
+class OrbeonRunner(models.Model):
+    _inherit = "orbeon.runner"
+
+    project_id = fields.Many2one(
+        "project.project"
+    )
+
+# class OrbeonBuilder(models.Model):
+#     _inherit = "orbeon.builder"
+
+#     # TODO update project-type linked builder-forms (state=current,obsolete
+#     @api.multi
+#     def write(self, vals):
+#         if 'state' in vals and vals['state'] == 'current':
+#             project_type = self.env["project.type"]

@@ -24,15 +24,8 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class ProjectProjectTypeOrbeon(models.Model):
-    _inherit = "project.type"
-    
-    orbeon_builder_form_ids = fields.Many2many(
-        "orbeon.builder",
-        string="Orbeon Builder Forms",
-    )
 
-class ProjectOrbeonProject(models.Model):
+class Project(models.Model):
     _inherit = "project.project"
 
     orbeon_runner_form_ids = fields.One2many(
@@ -48,34 +41,30 @@ class ProjectOrbeonProject(models.Model):
 
     @api.one
     def _get_orbeon_runner_forms_count(self):
-        self.orbeon_runner_forms_count = self.env["orbeon.runner"]\
-                                             .search_count([("project_id","=",self.id)])
+        self.orbeon_runner_forms_count = self.env["orbeon.runner"].search_count([("project_id", "=", self.id)])
 
     @api.model
     def create(self, vals):
-        res = super(ProjectOrbeonProject, self).create(vals)
+        res = super(Project, self).create(vals)
         runner = self.env["orbeon.runner"]
 
         for builder in res.type_id.orbeon_builder_form_ids:
-            runner_obj = runner.create({
+            runner.create({
                 'builder_id': builder.id,
                 'name': builder.name,
                 'project_id': res.id,
             })
-        
+
         return res
 
     @api.multi
-    def action_project_orbeon_runner_forms(self, context=None, *args, **kwargs):
-        tree_view = self.env["ir.ui.view"]\
-                        .search([("name","=","orbeon.runner_form.tree")])[0]
+    def action_orbeon_runner_forms(self, context=None, *args, **kwargs):
+        tree_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.tree")])[0]
 
-        kanban_view = self.env["ir.ui.view"]\
-                       .search([("name","=","orbeon.runner_form.kanban")])[0]
+        kanban_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.kanban")])[0]
 
         runner_form_ids = [runner_form.id for runner_form in self.orbeon_runner_form_ids]
-        name = self.name
-        
+
         return {
             "name": _("Forms"),
             "type": "ir.actions.act_window",
@@ -83,26 +72,9 @@ class ProjectOrbeonProject(models.Model):
             "view_type": "kanban",
             "view_mode": "kanban, tree",
             "views": [
-                [kanban_view.id,"kanban"],
-                [tree_view.id,"tree"],
+                [kanban_view.id, "kanban"],
+                [tree_view.id, "tree"],
             ],
             "target": "current",
-            "domain": [("id","in",runner_form_ids)],
+            "domain": [("id", "in", runner_form_ids)],
         }
-
-class ProjectOrbeonOrbeonRunner(models.Model):
-    _inherit = "orbeon.runner"
-
-    project_id = fields.Many2one(
-        "project.project",
-        #string="Orbeon Runner Forms",
-    )
-
-# class project_orbeon_orbeon_builder(models.Model):
-#     _inherit = "orbeon.builder"
-
-#     # TODO update project-type linked builder-forms (state=current,obsolete
-#     @api.multi
-#     def write(self, vals):
-#         if 'state' in vals and vals['state'] == 'current':
-#             project_type = self.env["project.type"]

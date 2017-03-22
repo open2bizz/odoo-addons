@@ -17,5 +17,15 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 ##############################################################################
-import project_orbeon
+from odoo import fields, models
+
+
+class ProjectType(models.Model):
+    _inherit = "project.type"
+
+    orbeon_builder_form_ids = fields.Many2many(
+        "orbeon.builder",
+        string="Orbeon Builder Forms",
+    )

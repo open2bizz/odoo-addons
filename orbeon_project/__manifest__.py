@@ -20,26 +20,22 @@
 ##############################################################################
 
 {
-    "name": "Orbeon Forms",
-    "summary": 'Integrate Orbeon Forms with Odoo',
-    "description": 'Orbeon Forms integration',
+    "name": "Orbeon Forms on Projects",
+    'summary': 'Orbeon Forms on Projects',
     "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
-    "category": "Tools",
-    "depends": [],
-    'external_dependencies': {
-        'python': ['dicttoxml', 'xmlunittest']
-    },
+    "category": "Project",
+    "depends": [
+        "project",
+        "project_type",
+        "orbeon",
+    ],
     "data": [
-        "security/res_groups.xml",
-        "security/ir.model.access.csv",
-        "views/orbeon_server.xml",
-        "views/orbeon_builder.xml",
-        "views/orbeon_runner.xml",
-        "views/base.xml",
-        ],
+        "views/project_type.xml",
+        "views/project.xml",
+    ],
     "application": True,
     "installable": True,
 }

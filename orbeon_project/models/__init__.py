@@ -18,28 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
-{
-    "name": "Orbeon Forms",
-    "summary": 'Integrate Orbeon Forms with Odoo',
-    "description": 'Orbeon Forms integration',
-    "version": "0.1",
-    "author": "Open2bizz",
-    "website": "http://www.open2bizz.nl",
-    "license": "AGPL-3",
-    "category": "Tools",
-    "depends": [],
-    'external_dependencies': {
-        'python': ['dicttoxml', 'xmlunittest']
-    },
-    "data": [
-        "security/res_groups.xml",
-        "security/ir.model.access.csv",
-        "views/orbeon_server.xml",
-        "views/orbeon_builder.xml",
-        "views/orbeon_runner.xml",
-        "views/base.xml",
-        ],
-    "application": True,
-    "installable": True,
-}
+import project_type
+import project
+import orbeon_runner
