@@ -14,9 +14,6 @@
       <blockquote class="text-justify oe_quote" cite="http://www.orbeon.com">
         <a href="http://www.orbeon.com" target="_blank">"<strong>Orbeon Forms</strong></a> is your solution to build and deploy web forms."
       </blockquote>
-      <p class="text-justify">
-        Enjoy complete flexibility in building great Web Forms, fully integrated in Odoo.
-      </p>
       <div class="oe_picture oe_screenshot">
         <img style="width: 100%;" src="intro.png">
       </div>
@@ -72,8 +69,8 @@
       </p>
       
       <div class="oe_span4">
-        <img class="oe_picture oe_screenshot" src="form_builder_copy_new_version.png" height="100">
-        <h4 class="oe_mb16 text-center">COPY TO NEW VERSION</h4>
+        <h4 class="oe_mb16 text-center">Copy to new version</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_copy_new_version.png" width="100%">
         <p class="text-justify">
           Copy as a new (unpublished) version.<br/>
           This eases and kickstarts the development of a new version of a Form Builder design.
@@ -133,43 +130,91 @@
 
 <section class="oe_container oe_dark">
   <div class="oe_padded">
-    <h2 class="oe_slogan" style="color:#875A7B;">Integrate Forms with Odoo Apps</h2>
-    <h3 class="oe_slogan">Attach a Form Builder design to an App's model</h3>
+    <h2 class="oe_slogan" style="color:#875A7B;">Attach Orbeon Forms to Odoo Apps</h2>
+    <h3 class="oe_slogan">Brought to you in a usable and configurable way</h3>
     <p class="text-justify">
-      <strong>Following example explains a use-case of this feature:</strong>
-      <ul>
-        <li>Attach a Form Builder Design attached to the Project model</li>
-        <li>The Form is available and belongs to a specific Project. So it can be filled-in.</li>
-      </ul>
-      By technical means, this ensures a filled-in (Runner) Form belongs to the attached model-record.
-      <strong>TODO: Describe and screenshot(s) how to attach (just Resource Model/ir.model)
-      </strong>
+      This enables Apps to configure Form Builder design(s) - e.g. on a Project Type or Sale Order state. Which result in Forms (Runners) attached to the specific App obejct(s) e.g. Project with Forms.
+      <strong>Following Apps are ready:</strong>
     </p>
+      
+    <div class="oe_row oe_spaced">
+      <div class="oe_span6">      
+        <h4 class="oe_mb16">Project</h4>
+        <img class="oe_picture oe_screenshot" src="orbeon_project_kanban.png" width="100%">
+        <a href="https://www.odoo.com/apps/modules/10.0/orbeon_project" target="_blank" class="oe_button oe_mt8">In Odoo Apps</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <h3 class="oe_slogan">ERP-field(s) in the Form Builder design</h3>
-    <p class="text-justify">
-      <strong>TODO: Describe and screenshot of ERP-field (ERP.lastname). Even relations (ERP.company_id.name)</strong>
-    </p>
+<section class="oe_container">
+  <div class="oe_padded">
+    <h2 class="oe_slogan" style="color:#875A7B;">Show Odoo data in the Orbeon Form</h2>
+    <h3 class="oe_slogan">The friendly "ERP field" deals with this almighty power.</h3>
+
+    <img class="oe_picture oe_screenshot" src="form_runner_with_erpfields.png" width="100%">
     
-    <h3 class="oe_slogan">Benefit from the integration in the Form</h3>
-    <p class="text-justify">
-      <strong>TODO: Describe and screenshot of Form Runner</strong>
-    </p>    
+    <div class="oe_row oe_spaced">
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center">Form Builder design with "ERP field"</h4>
+        <img class="oe_picture oe_screenshot" src="form_builder_erpfield_configure.png" width="100%">
+      </div>
+      
+      <div class="oe_row oe_spaced">
+        <div class="oe_span6">
+          <h4 class="oe_mb16 text-center">Form (Runner) shows data from Odoo</h4>
+          <img class="oe_picture oe_screenshot" src="form_runner_erpfield_power.png" width="100%">
+        </div>
+      </div>
+    </div>
+    
   </div>
 </section>
 
 <section class="oe_container">
   <div class="oe_row oe_spaced">
-    <h2 class="oe_slogan" style="color:#875A7B;">Form Server</h2>
-    <h3 class="oe_slogan">Control the interface between Orbeon and Odoo</h3>
-    <div class="oe_span6">
-      <p class='oe_mt32 text-justify'>
-        Add quick notes or attach files to any task and stay connected to your team. Forget endless follow-up meetings to keep track of projects. Communicate through the chatter, write in a shared, real time pad or use live chat - all in a single interface!
-      </p>
+    <h2 class="oe_slogan" style="color:#875A7B;">Connect Orbeon and Odoo</h2>
+    <h3 class="oe_slogan">Orbeon under control in Odoo</h3>
+
+    <p class="text-justify">
+      <em>In Odoo</em>, setup and manage "so-called" Orbeon Persistence Servers.
+      These are WSGI/Web servers (at some port), which enable the bi-directional connection between Orbeon and Odoo.
+    </p>
+    
+    <div class="oe_row oe_spaced">
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center">List</h4>
+        <img class="oe_picture oe_screenshot" src="form_server_list.png" width="100%">
+        <p class="text-justify">
+          List Orbeon Server connection records.
+        </p>
+      </div>
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center">Create and Update</h4>
+        <img class="oe_picture oe_screenshot" src="form_server_edit.png" width="100%">
+        <p class="text-justify">
+          Manage settings of the Orbeon Server interface in Odoo.
+        </p>
+      </div>
     </div>
-    <div class="oe_span6">
-      <img class="oe_picture oe_screenshot" src="project_sc_03.png">
+    
+    <div class="oe_row oe_spaced">
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center">Start the connection</h4>
+        <img class="oe_picture oe_screenshot" src="form_server_control_start.png" width="100%">
+        <p class="text-justify">
+          Start the Odoo/Orbeon Server connection in Odoo.
+        </p>
+      </div>
+      <div class="oe_span6">
+        <h4 class="oe_mb16 text-center">Stop the connection</h4>
+        <img class="oe_picture oe_screenshot" src="form_server_control_stop.png" width="100%">
+        <p class="text-justify">
+          Stop the Odoo/Orbeon Server connection in Odoo.
+        </p>
+      </div>      
     </div>
+    
   </div>
 </section>
 
@@ -186,7 +231,7 @@
       <h4 class="mt_64">This Odoo/Orbeon App</h4>
       <p class="oe_mt16 text-justify">
         The documentation (configuration etc.) and repository of this App can be found on GitHub:<br/>
-        <a href="http://github.com/open2bizz/orbeon" target="_blank" class="oe_button oe_big oe_mt8"><i class="fa fa-github"/> Odoo Orbeon App</a>
+        <a href="http://github.com/open2bizz/odoo-orbeon" target="_blank" class="oe_button oe_big oe_mt8"><i class="fa fa-github"/> Odoo Orbeo</a>
       </p>
     </div>
   </div>
