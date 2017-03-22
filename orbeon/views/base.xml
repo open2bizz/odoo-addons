@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <menuitem
-        id="orbeon_base_menu"
-        name="Orbeon"
-        sequence="101" 
-        />
+    <data>
+        <menuitem id="orbeon_base_menu"
+                  name="Orbeon"
+                  sequence="101"/>
 
-    <menuitem
-        id="orbeon_builder_menu"
-        name="Builder Forms"
-        parent="orbeon_base_menu"
-        action="orbeon_builder_form_action"
-        sequence="20"
-        />
+        <menuitem id="orbeon_builder_menu"
+                  name="Builder Forms"
+                  parent="orbeon_base_menu"
+                  action="orbeon_builder_form_action"
+                  sequence="20"/>
+        
+        <menuitem id="orbeon_runner_menu"
+                  name="Runner Forms"
+                  parent="orbeon_base_menu"
+                  action="orbeon_runner_form_action"
+                  sequence="30" />
 
-    <menuitem
-        id="orbeon_runner_menu"
-        name="Runner Forms"
-        parent="orbeon_base_menu"
-        action="orbeon_runner_form_action"
-        sequence="30"
-        />
-
-    <menuitem
-        id="orbeon_server_menu"
-        name="Server"
-        parent="orbeon_base_menu"
-        action="orbeon_server_action"
-        sequence="40"
-        />
-  </data>
+        <menuitem id="orbeon_server_menu"
+                  name="Server"
+                  parent="orbeon_base_menu"
+                  action="orbeon_server_action"
+                  sequence="40"/>
+    </data>
 </odoo>

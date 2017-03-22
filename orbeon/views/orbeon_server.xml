@@ -1,87 +1,87 @@
 <?xml version="1.0"?>
 <odoo>
-<data>
+    <data>
 
-  <record id="orbeon_server_form" model="ir.ui.view">
-    <field name="name">orbeon.server.form</field>
-    <field name="model">orbeon.server</field>
-    <field name="arch" type="xml">
-      <form string="Orbeon Server">
-        <sheet>
-          <div class="oe_title">
-            <h1><field name="name" string="Name" /></h1>
-	    <div class="oe_button_box" name="button_box">
-	    <button class="btn btn-primary" icon="fa-play" string="Start persistence"
-		    name="start_persistence_server" type="object" 
-                    attrs="{'invisible':['|', ('persistence_server_uuid','!=',False), ('persistence_server_active', '=', False)]}" />
-            <button class="btn btn-primary" icon="fa-stop" string="Stop persistence"
-		    name="stop_persistence_server" type="object"
-                    attrs="{'invisible':[('persistence_server_uuid','=',False)]}" />
-            </div>
-          </div>
+        <record id="orbeon_server_form" model="ir.ui.view">
+            <field name="name">orbeon.server.form</field>
+            <field name="model">orbeon.server</field>
+            <field name="arch" type="xml">
+                <form string="Orbeon Server">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1><field name="name" string="Name" /></h1>
+	                    <div class="oe_button_box" name="button_box">
+	                        <button class="btn btn-primary" icon="fa-play" string="Start persistence"
+		                        name="start_persistence_server" type="object" 
+                                        attrs="{'invisible':['|', ('persistence_server_uuid','!=',False), ('persistence_server_active', '=', False)]}" />
+                                <button class="btn btn-primary" icon="fa-stop" string="Stop persistence"
+		                        name="stop_persistence_server" type="object"
+                                        attrs="{'invisible':[('persistence_server_uuid','=',False)]}" />
+                            </div>
+                        </div>
 
-          <notebook>
-            <page string="Configuration">
-              <group string="Orbeon Server">
-                <field name="url" widget="url" string="URL" />
-                <field name="summary_url" widget="url" string="Summary URL" />
-                <field name="description"/>
-              </group>
-              <group string="Orbeon Persistence Server">
-                <field name="persistence_server_port" string="Port" />
-                <field name="persistence_server_processtype" string="Process-type" />
-                <field name="persistence_server_configfilename" string="Config filename" />
-                <field name="persistence_server_autostart" string="Autostart" />
-                <field name="persistence_server_active" string="Active" />
-	        <field name="persistence_server_uuid" string="UUID (thread)" readonly="1" />
-              </group>
-            </page>
-            <page string="Default Builder XML">
-              <field name="default_builder_xml"/>
-            </page>
-          </notebook>
-        </sheet>
-      </form>
-    </field>
-  </record>
+                        <notebook>
+                            <page string="Configuration">
+                                <group string="Orbeon Server">
+                                    <field name="url" widget="url" string="URL" />
+                                    <field name="summary_url" widget="url" string="Summary URL" />
+                                    <field name="description"/>
+                                </group>
+                                <group string="Orbeon Persistence Server">
+                                    <field name="persistence_server_port" string="Port" />
+                                    <field name="persistence_server_processtype" string="Process-type" />
+                                    <field name="persistence_server_configfilename" string="Config filename" />
+                                    <field name="persistence_server_autostart" string="Autostart" />
+                                    <field name="persistence_server_active" string="Active" />
+	                            <field name="persistence_server_uuid" string="UUID (thread)" readonly="1" />
+                                </group>
+                            </page>
+                            <page string="Default Builder XML">
+                                <field name="default_builder_xml"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-<record id="orbeon_server_tree" model="ir.ui.view">
-    <field name="name">orbeon.server.tree</field>
-    <field name="model">orbeon.server</field>
-    <field name="arch" type="xml">
-        <tree>
-            <field name="name" />
-            <field name="persistence_server_port" />
-            <field name="persistence_server_processtype" />
-            <field name="persistence_server_configfilename" />
-            <field name="persistence_server_autostart" />
-            <field name="persistence_server_active" />
-            <field name="persistence_server_uuid" />
-        </tree>
-    </field>
-</record>
+        <record id="orbeon_server_tree" model="ir.ui.view">
+            <field name="name">orbeon.server.tree</field>
+            <field name="model">orbeon.server</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                    <field name="persistence_server_port" />
+                    <field name="persistence_server_processtype" />
+                    <field name="persistence_server_configfilename" />
+                    <field name="persistence_server_autostart" />
+                    <field name="persistence_server_active" />
+                    <field name="persistence_server_uuid" />
+                </tree>
+            </field>
+        </record>
 
-<record id="orbeon_server_action" model="ir.actions.act_window">
-    <field name="name">Orbeon Server</field>
-    <field name="type">ir.actions.act_window</field>
-    <field name="res_model">orbeon.server</field>
-    <field name="view_type">form</field>
-    <field name="view_mode">tree,form</field>
-</record>
+        <record id="orbeon_server_action" model="ir.actions.act_window">
+            <field name="name">Orbeon Server</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">orbeon.server</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-<record id="orbeon_server_action_tree" model="ir.actions.act_window.view">
-    <field name="act_window_id" ref="orbeon_server_action" />
-    <field name="sequence" eval="1" />
-    <field name="view_mode">tree</field>
-    <field name="view_id" ref="orbeon_server_tree" />
-</record>
+        <record id="orbeon_server_action_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="orbeon_server_action" />
+            <field name="sequence" eval="1" />
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="orbeon_server_tree" />
+        </record>
 
-<record id="orbeon_server_action_form" model="ir.actions.act_window.view">
-    <field name="act_window_id" ref="orbeon_server_action" />
-    <field name="sequence" eval="2" />
-    <field name="view_mode">form</field>
-    <field name="view_id" ref="orbeon_server_form" />
-</record>
+        <record id="orbeon_server_action_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="orbeon_server_action" />
+            <field name="sequence" eval="2" />
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="orbeon_server_form" />
+        </record>
 
-</data>
+    </data>
 </odoo>

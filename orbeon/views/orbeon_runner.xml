@@ -1,98 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
-    <record id="orbeon_runner_form_form" model="ir.ui.view">
-      <field name="name">orbeon.runner_form.form</field>
-      <field name="model">orbeon.runner</field>
-      <field name="arch" type="xml">
-        <form>
-          <header>
-            <field
-                name="state"
-                widget="statusbar"
-                />
-          </header>
-          <sheet>
-            <group>
-              <field name="id" invisible="1"/>
-              <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
-              <field name="url" widget="url"/>
-            </group>
-          </sheet>
-        </form>
-      </field>
-    </record>
+    <data>
+        <record id="orbeon_runner_form_form" model="ir.ui.view">
+            <field name="name">orbeon.runner_form.form</field>
+            <field name="model">orbeon.runner</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field
+name="state"
+widget="statusbar"
+/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="id" invisible="1"/>
+                            <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
+                            <field name="url" widget="url"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
 
-    <record id="orbeon_runner_form_tree" model="ir.ui.view">
-      <field name="name">orbeon.runner_form.tree</field>
-      <field name="model">orbeon.runner</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="builder_id" />
-          <field name="url"/>
-        </tree>
-      </field>
-    </record>
+        <record id="orbeon_runner_form_tree" model="ir.ui.view">
+            <field name="name">orbeon.runner_form.tree</field>
+            <field name="model">orbeon.runner</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="builder_id" />
+                    <field name="url"/>
+                </tree>
+            </field>
+        </record>
 
-    <record id="orbeon_runner_form_kanban" model="ir.ui.view">
-      <field name="name">orbeon.runner_form.kanban</field>
-      <field name="model">orbeon.runner</field>
-      <field name="arch" type="xml">
-        <kanban class="oe_background_grey o_kanban_dashboard" create="false">
-          <field name="builder_id" />
-          <field name="builder_name" />
-          <field name="url"/>
-          <templates>
-            <t t-name="kanban-box">
-              <div>
-                <div class="o_kanban_card_header">
+        <record id="orbeon_runner_form_kanban" model="ir.ui.view">
+            <field name="name">orbeon.runner_form.kanban</field>
+            <field name="model">orbeon.runner</field>
+            <field name="arch" type="xml">
+                <kanban class="oe_background_grey o_kanban_dashboard" create="false">
+                    <field name="builder_id" />
+                    <field name="builder_name" />
+                    <field name="url"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div>
+                                <div class="o_kanban_card_header">
 
-                  <div class="o_kanban_card_header_title">
-                    <div class="o_primary"><field name="builder_name"/></div>
-                    <div class="o_secondary">
-                      <t class="badge"><i class="fa fa-fw fa-at"/></t>
-                      <field name="builder_version"/>
-                    </div>
-                  </div>
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary"><field name="builder_name"/></div>
+                                        <div class="o_secondary">
+                                            <t class="badge"><i class="fa fa-fw fa-at"/></t>
+                                            <field name="builder_version"/>
+                                        </div>
+                                    </div>
 
-                </div>
-                <div class="container o_kanban_card_content o_visible">
-                  <div class="row">
-                    <div class="col-xs-6 o_kanban_primary_left">
-                      <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
-                    </div>
-                    <div class="col-xs-6 o_kanban_primary_right">
-                    </div>
-                  </div>
-                </div>
+                                </div>
+                                <div class="container o_kanban_card_content o_visible">
+                                    <div class="row">
+                                        <div class="col-xs-6 o_kanban_primary_left">
+                                            <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
+                                        </div>
+                                        <div class="col-xs-6 o_kanban_primary_right">
+                                        </div>
+                                    </div>
+                                </div>
 
-              </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
 
-    <record id="orbeon_runner_form_action" model="ir.actions.act_window">
-      <field name="name">Orbeon Runner Forms</field>
-      <field name="type">ir.actions.act_window</field>
-      <field name="res_model">orbeon.runner</field>
-      <field name="view_type">form</field>
-      <field name="view_mode">tree,form</field>
-    </record>
+        <record id="orbeon_runner_form_action" model="ir.actions.act_window">
+            <field name="name">Orbeon Runner Forms</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">orbeon.runner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
 
-    <record id="orbeon_runner_form_action_tree" model="ir.actions.act_window.view">
-      <field name="act_window_id" ref="orbeon_runner_form_action" />
-      <field name="sequence" eval="1" />
-      <field name="view_mode">tree</field>
-      <field name="view_id" ref="orbeon_runner_form_tree" />
-    </record>
+        <record id="orbeon_runner_form_action_tree" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="orbeon_runner_form_action" />
+            <field name="sequence" eval="1" />
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="orbeon_runner_form_tree" />
+        </record>
 
-    <record id="orbeon_runner_form_action_form" model="ir.actions.act_window.view">
-      <field name="act_window_id" ref="orbeon_runner_form_action" />
-      <field name="sequence" eval="2" />
-      <field name="view_mode">form</field>
-      <field name="view_id" ref="orbeon_runner_form_form" />
-    </record>
-  </data>
+        <record id="orbeon_runner_form_action_form" model="ir.actions.act_window.view">
+            <field name="act_window_id" ref="orbeon_runner_form_action" />
+            <field name="sequence" eval="2" />
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="orbeon_runner_form_form" />
+        </record>
+    </data>
 </odoo>
