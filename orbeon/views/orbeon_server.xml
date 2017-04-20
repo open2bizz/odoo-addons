@@ -12,10 +12,12 @@
                             <h1><field name="name" string="Name" /></h1>
 	                    <div class="oe_button_box" name="button_box">
 	                        <button class="btn btn-primary" icon="fa-play" string="Start persistence"
-		                        name="start_persistence_server" type="object" 
+                                        name="start_persistence_server" type="object"
+                                        groups="orbeon.orbeon_admin"
                                         attrs="{'invisible':['|', ('persistence_server_uuid','!=',False), ('persistence_server_active', '=', False)]}" />
                                 <button class="btn btn-primary" icon="fa-stop" string="Stop persistence"
 		                        name="stop_persistence_server" type="object"
+                                        groups="orbeon.orbeon_admin"
                                         attrs="{'invisible':[('persistence_server_uuid','=',False)]}" />
                             </div>
                         </div>
