@@ -308,11 +308,9 @@ class OrbeonServer(models.Model):
                 xml = etree.tostring(xml_root)
 
                 # First delete all related builder templates
-                self.env['orbeon.builder.template'].search([
-                    ('form_name', '=', form_name),
-                    ('server_id', '=', self.id),
-                    ('fetched_from_orbeon', '=', True)
-                ]).unlink()
+                self.builder_template_ids.filtered(
+                    lambda r: r.fetched_from_orbeon and r.form_name == form_name
+                ).unlink()
 
                 self.env['orbeon.builder.template'].create({
                     'server_id': self.id,
