@@ -38,7 +38,6 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'url': 'http://localhost/orbeon_test_server_2',
-                    'default_builder_xml': self.server_1.default_builder_xml,
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -50,7 +49,6 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'url': 'http://localhost/orbeon_test_server_2',
-                    'default_builder_xml': self.server_1.default_builder_xml,
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -62,7 +60,6 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
-                    'default_builder_xml': self.server_1.default_builder_xml,
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -74,31 +71,6 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_model.sudo().create(
                 {
                     'name': 'Test Server',
-                    'default_builder_xml': self.server_1.default_builder_xml,
-                    'persistence_server_port': '10111',
-                    'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
-                }
-            )
-
-    def test_create_missing_required_default_builder_xml(self):
-        """Test create with missing, but required, default_builder_xml"""
-        with self.assertRaisesRegexp(IntegrityError, 'column "default_builder_xml" violates not-null'):
-            self.server_model.sudo().create(
-                {
-                    'name': 'Test Server',
-                    'url': 'http://localhost/orbeon_test_server_2',
-                    'persistence_server_port': '10111',
-                    'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
-                }
-            )
-
-    def test_write_missing_required_default_builder_xml(self):
-        """Test write with missing, but required, default_builder_xml"""
-        with self.assertRaisesRegexp(IntegrityError, 'column "default_builder_xml" violates not-null'):
-            self.server_model.sudo().create(
-                {
-                    'name': 'Test Server',
-                    'url': 'http://localhost/orbeon_test_server_2',
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -111,7 +83,6 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'Test Server',
                     'url': 'http://localhost/orbeon_test_server_2',
-                    'default_builder_xml': self.server_1.default_builder_xml,
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -130,7 +101,6 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'server_1',
                     'url': 'http://localhost/server_test_create_constraint_unique_name',
-                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -145,14 +115,13 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'server_test_write_constraint_unique_name',
                     'url': 'http://localhost/server_test_write_constraint_unique_name',
-                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
             )
         except Exception as e:
             self.fail(e)
-        
+
         with self.assertRaisesRegexp(ValidationError, 'Server with name .* already exists'):
             self.server_1.sudo().write(
                 {
@@ -171,7 +140,6 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'test_create_constraint_unique_url_server',
                     'url': 'http://localhost/orbeon_server_1',
-                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -186,7 +154,6 @@ class TestOrbeonServer(TestOrbeonCommon):
                 {
                     'name': 'server_test_write_constraint_unique_name',
                     'url': 'http://localhost/server_test_write_constraint_unique_url',
-                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                     'persistence_server_port': '10111',
                     'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
                 }
@@ -229,16 +196,6 @@ class TestOrbeonServer(TestOrbeonCommon):
             self.server_1.sudo().write(
                 {
                     'description': 'test_write_successful_server',
-                }
-            )
-        except Exception as e:
-            self.fail(e)
-
-        # write: default_builder_xml
-        try:
-            self.server_1.sudo().write(
-                {
-                    'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_form_a_v2.xml')
                 }
             )
         except Exception as e:

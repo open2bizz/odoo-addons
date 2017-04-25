@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+##############################################################################
+#
+#    open2bizz
+#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU Affero General Public License as
+#    published by the Free Software Foundation, either version 3 of the
+#    License, or (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU Affero General Public License for more details.
+#
+#    You should have received a copy of the GNU Affero General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
+from odoo import models, fields, api
+
+from lxml import etree
+
+import logging
+_logger = logging.getLogger(__name__)
+
+
+class OrbeonBuilderTemplate(models.Model):
+    _name = "orbeon.builder.template"
+    _rec_name = "name"
+
+    name = fields.Char(
+        "Name",
+        compute="_set_name",
+        store=True,
+        readonly=True
+    )
+
+    server_id = fields.Many2one(
+        "orbeon.server",
+        "Server",
+        required=True,
+        ondelete='cascade'
+    )
+
+    application_name = fields.Char(
+        "Application Name",
+        required=True
+    )
+
+    form_name = fields.Char(
+        "Form Name",
+        required=True
+    )
+
+    xml = fields.Text(
+        'XML'
+    )
+
+    fetched_from_orbeon = fields.Boolean(
+        "Fetched from Orbeon",
+        default=False,
+        help="Template was fetched from Orbeon"
+    )
+
+    @api.depends('server_id', 'application_name', 'form_name')
+    def _set_name(self):
+        self.name = "%s (%s)" % (self.form_name, self.application_name)

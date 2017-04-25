@@ -23,7 +23,7 @@
                         </div>
 
                         <notebook>
-                            <page string="Configuration">
+                            <page name="configuration" string="Configuration">
                                 <group string="Orbeon Server">
                                     <field name="url" widget="url" string="URL" />
                                     <field name="summary_url" widget="url" string="Summary URL" />
@@ -38,8 +38,13 @@
 	                            <field name="persistence_server_uuid" string="UUID (thread)" readonly="1" />
                                 </group>
                             </page>
-                            <page string="Default Builder XML">
-                                <field name="default_builder_xml"/>
+                            <page name="maintenance" string="Maintenance">
+                                <group>
+                                    <field name="builder_templates_created"/>
+                                </group>
+                            </page>
+                            <page name="builder_templates" string="Builder Template Forms">
+                                <field name="builder_template_ids"/>
                             </page>
                         </notebook>
                     </sheet>

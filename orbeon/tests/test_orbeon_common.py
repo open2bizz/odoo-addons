@@ -45,6 +45,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
 
         self.server_model = self.env['orbeon.server']
         self.builder_model = self.env['orbeon.builder']
+        self.builder_template_model = self.env['orbeon.builder.template']
         self.runner_model = self.env['orbeon.runner']
 
         # server_1
@@ -52,13 +53,21 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
             {
                 'name': 'server_1',
                 'url': 'http://localhost/orbeon_server_1',
-                'default_builder_xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                 'persistence_server_port': '10111',
                 'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
             }
         )
 
-        # builder_1 (version 1): xml = default_builder_xml
+        self.builder_template_form_1 = self.builder_template_model.sudo().create(
+            {
+                'server_id': self.server_1.id,
+                'application_name': 'orbeon',
+                'form_name': 'form_a',
+                'xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
+                'fetched_from_orbeon': False
+            }
+        )
+
         self.builder_form_a_v1 = self.builder_model.sudo().create(
             {
                 'name': 'form_a',
@@ -67,6 +76,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                 # version: 1
                 'version_comment': '1 input',
                 'server_id': self.server_1.id,
+                'builder_template_id': self.builder_template_form_1.id
             }
         )
 
@@ -78,6 +88,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                 'version': 2,
                 'version_comment': '2 inputs, 1 date',
                 'server_id': self.server_1.id,
+                'builder_template_id': self.builder_template_form_1.id
             }
         )
 
@@ -90,10 +101,11 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
             {
                 'name': 'form_b',
                 'title': 'Form B',
-                'state': orbeon_builder.STATE_CURRENT, # live (in production)
+                'state': orbeon_builder.STATE_CURRENT,  # live (in production)
                 'version': 1,
                 'version_comment': 'no runner forms, just/only a builder form',
                 'server_id': self.server_1.id,
+                'builder_template_id': self.builder_template_form_1.id
             }
         )
 
@@ -103,11 +115,12 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
             {
                 'name': 'form_c_erp_fields',
                 'title': 'Form C ERP fields',
-                'state': orbeon_builder.STATE_CURRENT, # live (in production)
+                'state': orbeon_builder.STATE_CURRENT,  # live (in production)
                 'version': 1,
                 'version_comment': "ERP fields res_user model: name, login, image",
                 'server_id': self.server_1.id,
-                'res_model_id': res_model_id.id
+                'res_model_id': res_model_id.id,
+                'builder_template_id': self.builder_template_form_1.id
             }
         )
 

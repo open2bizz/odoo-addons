@@ -54,6 +54,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': form_title,
                     'version_comment': 'version 1',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id
                     # 'state': 'new' # which is the default
                     # 'version': 1 # which is the default
                 }
@@ -76,7 +77,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         xml_form_name.text = default_form_name
         xml_title.text = default_form_title
 
-        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.server_1.default_builder_xml)
+        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.builder_template_form_1.xml)
 
         # create 2
         try:
@@ -88,6 +89,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'server_id': self.server_1.id,
                     'state': orbeon_builder.STATE_NEW,
                     'version': 2,
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
         except Exception as e:
@@ -108,7 +110,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         xml_form_name.text = default_form_name
         xml_title.text = default_form_title
 
-        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.server_1.default_builder_xml)
+        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.builder_template_form_1.xml)
 
         # create 3
         try:
@@ -139,8 +141,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         xml_xh_title.text = default_form_title
         xml_form_name.text = default_form_name
         xml_title.text = default_form_title
-            
-        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.server_1.default_builder_xml)
+
+        self.assertXmlEquivalentOutputs(etree.tostring(xml), self.builder_template_form_1.xml)
 
     def test_write_successful(self):
         """Test write several successful"""
@@ -192,20 +194,21 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         except Exception as e:
             self.fail(e)
 
-    def test_create_with_default_builder_xml_from_server(self):
-        """Test create with Default Builder XML from server (via: Many2one server_id)"""
+    def test_create_with_builder_template_xml_from_server(self):
+        """Test create with Builder Template XML"""
 
         record = self.builder_model.sudo().create(
             {
                 'name': 'test-builder-1',
                 'title': 'Test Builder 1',
                 'version_comment': 'version 1',
-                'server_id': self.server_1.id
+                'server_id': self.server_1.id,
+                'builder_template_id': self.builder_form_a_v1.xml
             }
         )
 
-        self.assertXmlEquivalentOutputs(record.xml, self.builder_form_a_v1.server_id.default_builder_xml)
-        
+        self.assertXmlEquivalentOutputs(record.xml, self.builder_form_a_v1.xml)
+
     def test_create_name_required(self):
         """Test create with a missing, but required, name"""
         with self.assertRaisesRegexp(IntegrityError, 'column "name" violates not-null'):
@@ -339,7 +342,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertTrue(field.readonly)
 
     @TODO
-    def test_crreate_version_increment_in_sequence(self):
+    def test_create_version_increment_in_sequence(self):
         """Test create version increments by 1 (in sequence)"""
 
     @TODO
@@ -499,20 +502,24 @@ class TestOrbeonBuilder(TestOrbeonCommon):
     def test_write_server_id_unknown(self):
         """Test write with an unknown (non-existing record) server"""
 
+    @TODO
+    def test_unlink_builder_template_dont_cascade_unlink(self):
+        """Test unlink the builder_template(_id) and the builder shouldn't be unlinked"""
+
     def test_write_xml_successful(self):
         """Test write XML successful"""
 
         try:
             self.builder_form_a_v1.sudo().write(
                 {
-                    'xml': '<?xml version="1.0"?><odoo></odoo>'                    
+                    'xml': '<?xml version="1.0"?><odoo></odoo>'
                 }
             )
         except Exception as e:
             self.fail(e)
 
         with self.assertRaises(AssertionError):
-            self.assertXmlEquivalentOutputs(self.builder_form_a_v1.xml, self.builder_form_a_v1.server_id.default_builder_xml)
+            self.assertXmlEquivalentOutputs(self.builder_form_a_v1.xml, self.builder_form_a_v1.builder_template_id.xml)
 
     def test_delete_contains_runner_forms(self):
         """Test delete with references to orbeon.runner(forms)"""
@@ -531,19 +538,19 @@ class TestOrbeonBuilder(TestOrbeonCommon):
     def test_orbeon_search_read_new_notstored_by_orbeon_persistence(self):
         """Test reading a new Builder form, where xml (field) is empty - isn't stored yet (by
         Orbeon persistence).  It should contain the xml value from the
-        <form>node in it's linked orbeon_server.default_builder_xml (field)
+        <form>node in it's linked builder_template_id.xml (field)
         """
         domain = [('id', '=', self.builder_form_a_v1.id)]
         rec = self.builder_model.orbeon_search_read_data(domain, ['xml', 'name', 'title'])
 
-        xml_model = self.builder_form_a_v1.server_id.default_builder_xml
+        xml_model = self.builder_form_a_v1.builder_template_id.xml
         root_xml_model = etree.fromstring(xml_model)
         root_xml_model.xpath('//form-name')[0].text = rec['name']
         root_xml_model.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = rec['title']
         root_xml_model.xpath('//title')[0].text = rec['title']
 
         self.assertXmlEquivalentOutputs(rec['xml'], etree.tostring(root_xml_model))
-        
+
         xml_file = self.xmlFromFile('test_orbeon4.10_builder_default.xml')
         root_xml_file = etree.fromstring(xml_file)
         root_xml_file.xpath('//form-name')[0].text = rec['name']        

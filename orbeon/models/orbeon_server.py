@@ -21,10 +21,12 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-from .. import services
-
 import threading
+import urllib2
 import logging
+
+from lxml import etree
+from .. import services
 _logger = logging.getLogger(__name__)
 
 ORBEON_PERSISTENCE_SERVER_PREFIX = 'orbeon.persistence.server'
@@ -116,10 +118,16 @@ class OrbeonServer(models.Model):
         store=True
     )
 
-    default_builder_xml = fields.Text(
-        "Default Builder XML",
-        help="Boilerplate XML (copied from the Orbeon<VERSION> server)",
-        required=True
+    builder_template_ids = fields.One2many(
+        "orbeon.builder.template",
+        "server_id",
+        string="Builder Form templates"
+    )
+
+    builder_templates_created = fields.Boolean(
+        "Builder Form Templates Created",
+        default=False,
+        help="Whether Builder Form Templates had been created. Unset to delete and re-create Builder Template Forms."
     )
 
     def __init__(self, pool, cr):
@@ -163,6 +171,9 @@ class OrbeonServer(models.Model):
                 self.persistence_server_configfilename or ''
             )
             self.persistence_server_uuid = uuid
+
+            self.create_orbeon_builder_templates()
+
             return True
         except Exception, e:
             _logger.error('Exception: %s' % e)
@@ -262,8 +273,57 @@ class OrbeonServer(models.Model):
 
     def _stop_persistence_server(self, uuid, port):
         for thread in threading.enumerate():
-            if thread.getName() == uuid:  # TODO uuid
+            if thread.getName() == uuid:
                 thread.stopper.set()
                 _logger.info("Stopping HTTP (werkzeug) %s (thread: %s) on port %s", ORBEON_PERSISTENCE_SERVER_PREFIX, uuid, port)
                 thread.server.server_close()
                 thread.join()
+
+    @api.multi
+    def create_orbeon_builder_templates(self):
+        if self.builder_templates_created:
+            return
+
+        # XXX Once the listing (HTTP) request doesn't fail (HTTP 500),
+        # this can be changed to a loop through all Orbeon example forms.
+        #
+        # Accorrding to https://doc.orbeon.com/form-runner/api/persistence/forms-metadata.html
+        # HTTP GET on: /fr/service/persistence/form
+        form_names = ['contact', 'controls']
+
+        for form_name in form_names:
+            try:
+                url = "%s/fr/service/persistence/crud/orbeon/%s/form/form.xhtml" % (self.url, form_name)
+                request = urllib2.Request(url)
+                result = urllib2.urlopen(request)
+                data = result.read()
+
+                parser = etree.XMLParser(recover=True, encoding='utf-8')
+                xml_root = etree.XML(data, parser)
+
+                # TODO FIXME: multiple titles nodes (by language)
+                app_name = xml_root.xpath('//metadata/application-name')[0].text
+                form_name = xml_root.xpath('//metadata/form-name')[0].text
+
+                xml = etree.tostring(xml_root)
+
+                # First delete all related builder templates
+                self.env['orbeon.builder.template'].search([
+                    ('form_name', '=', form_name),
+                    ('server_id', '=', self.id),
+                    ('fetched_from_orbeon', '=', True)
+                ]).unlink()
+
+                self.env['orbeon.builder.template'].create({
+                    'server_id': self.id,
+                    'application_name': app_name,
+                    'form_name': form_name,
+                    'xml': xml,
+                    'fetched_from_orbeon': True
+                })
+
+                self.builder_templates_created = True
+            except Exception, e:
+                _logger.error(
+                    "%s - Orbeon request: %s" % (e, url)
+                )

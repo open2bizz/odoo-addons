@@ -35,10 +35,11 @@
     "data": [
         "security/res_groups.xml",
         "security/ir.model.access.csv",
-        "views/orbeon_server.xml",
+        "views/base.xml",
+        "views/orbeon_builder_template.xml",
         "views/orbeon_builder.xml",
         "views/orbeon_runner.xml",
-        "views/base.xml",
+        "views/orbeon_server.xml",
         ],
     "application": True,
     "installable": True,

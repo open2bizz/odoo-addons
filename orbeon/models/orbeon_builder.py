@@ -89,6 +89,14 @@ class OrbeonBuilder(models.Model):
         required=True,
         ondelete='restrict')
 
+    builder_template_id = fields.Many2one(
+        "orbeon.builder.template",
+        "Builder Form Template",
+        domain="[('server_id.id', '=', server_id)]",
+        ondelete='set null',
+        help="By default some Builder Form Templates are shipped by the Orbeon Server."
+    )
+
     runner_form_ids = fields.One2many(
         "orbeon.runner",
         "builder_id",
@@ -147,18 +155,16 @@ class OrbeonBuilder(models.Model):
     @api.model
     def create(self, vals):
         if 'server_id' in vals:
-            orbeon_server = self.env['orbeon.server'].browse(vals['server_id'])
+            template = self.env['orbeon.builder.template'].browse(vals['builder_template_id'])
+            xml = etree.fromstring(template.xml)
 
-            vals['xml'] = orbeon_server.default_builder_xml
-
-            xml = etree.fromstring(orbeon_server.default_builder_xml)
+            xml.xpath('//application-name')[0].text = 'odoo'
 
             if 'name' in vals:
                 xml.xpath('//form-name')[0].text = vals['name']
 
             if 'title' in vals and vals['title']:
-                xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
-                xml.xpath('//title')[0].text = vals['title']
+                xml.xpath('//metadata/title')[0].text = vals['title']
 
             vals['xml'] = etree.tostring(xml)
 

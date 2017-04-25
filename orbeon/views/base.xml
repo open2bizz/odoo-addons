@@ -10,17 +10,24 @@
                   parent="orbeon_base_menu"
                   action="orbeon_builder_form_action"
                   sequence="20"/>
+
+        <menuitem id="orbeon_builder_template_menu"
+                  name="Builder Form Templates"
+                  parent="orbeon_base_menu"
+                  action="orbeon_builder_template_action"
+                  sequence="30"/>
         
         <menuitem id="orbeon_runner_menu"
                   name="Runner Forms"
                   parent="orbeon_base_menu"
                   action="orbeon_runner_form_action"
-                  sequence="30" />
+                  sequence="40" />
 
         <menuitem id="orbeon_server_menu"
                   name="Server"
                   parent="orbeon_base_menu"
                   action="orbeon_server_action"
-                  sequence="40"/>
+                  sequence="50"/>
+
     </data>
 </odoo>

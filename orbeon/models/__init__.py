@@ -20,4 +20,5 @@
 ##############################################################################
 import orbeon_server
 import orbeon_builder
+import orbeon_builder_template
 import orbeon_runner
