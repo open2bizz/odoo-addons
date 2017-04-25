@@ -15,9 +15,9 @@ ODOO_SERVICE_HANDLER = 'odoo_service_handler'
 class OrbeonRequestHandler(object):
     """Orbeon (HTTP) request handler"""
     
-    def __init__(self, request, config_filename=None):
+    def __init__(self, request, configfile_path=None):
         _log("debug", "request => %s" % request)
-        _log("debug", "config_filename => %s" % config_filename)
+        _log("debug", "configfile_path => %s" % configfile_path)
 
         self.request = request
         self.path = request.path.split("/")
@@ -38,24 +38,24 @@ class OrbeonRequestHandler(object):
 
         self.handler = None
         self.set_handler()
-        
-        self.handler.set_config_by_filename(config_filename)
+
+        self.handler.set_config_by_file_path(configfile_path)
 
         if len(self.handler.config.sections()) > 0:
             self.handler.set_xmlrpc_by_config()
         else:
             url = "http://%s:%s" % (
-                request_headers.get("Openerp-Server"),
-                request_headers.get("Openerp-Port"),
+                request.headers.get("Openerp-Server"),
+                request.headers.get("Openerp-Port"),
             )
-            db = request_headers.get("Openerp-Database")
+            db = request.headers.get("Openerp-Database")
 
             # get authorization parameters
-            b64str = request_headers.get("Authorization").replace("Basic ","")
+            b64str = request.headers.get("Authorization").replace("Basic ", "")
             auth_str = base64.b64decode(b64str)
             auth = auth_str.split(":")
-            usr, pwd = (auth[0], auth[1])
-            
+            usr, passwd = (auth[0], auth[1])
+
             self.handler.set_xmlrpc(db, usr, passwd, url)
 
     def set_path_attrs(self):
@@ -121,11 +121,11 @@ class OrbeonRequestHandler(object):
         #     return self.handler.delete()
 
 class OrbeonPersistenceApp(object):
-    def __init__(self, config_filename=None):
-        self.config_filename = config_filename
+    def __init__(self, configfile_path=None):
+        self.configfile_path = configfile_path
 	
     def dispatch_request(self, request):
-        orbeon_request = OrbeonRequestHandler(request, self.config_filename)
+        orbeon_request = OrbeonRequestHandler(request, self.configfile_path)
         return orbeon_request.process()
 
     def wsgi_app(self, environ, start_response):
@@ -136,6 +136,6 @@ class OrbeonPersistenceApp(object):
     def __call__(self, environ, start_response):
         return self.wsgi_app(environ, start_response)
 
-def create_app(config_filename=None):
-    app = OrbeonPersistenceApp(config_filename)
+def create_app(configfile_path=None):
+    app = OrbeonPersistenceApp(configfile_path)
     return app

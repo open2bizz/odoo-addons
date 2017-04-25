@@ -24,13 +24,10 @@ class OrbeonHandlerBase(object):
         self.config = None
         self.xmlrpc = None
 
-    def set_config_by_filename(self, config_filename):
+    def set_config_by_file_path(self, configfile_path):
         """Set config object by config_filename"""
         config = ConfigParser.ConfigParser()
-        file_path = os.path.dirname(os.path.realpath(__file__))
-        path = os.path.join(file_path, config_filename)
-
-        config.read(path)
+        config.read(configfile_path)
         
         if len(config.sections()) > 0:
             self.config = config

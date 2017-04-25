@@ -93,10 +93,10 @@ class OrbeonServer(models.Model):
         required=True
     )
 
-    persistence_server_configfilename = fields.Char(
-        "Config-filename",
+    persistence_server_configfile_path = fields.Char(
+        "Config-file path",
         help="If specified, the Odoo connection is setup with its config, "
-        "from file in directory: services/persistence_server. "
+        "from file in given path. "
         "If blank, the Orbeon HTTP-Headers will be used."
     )
 
@@ -168,7 +168,7 @@ class OrbeonServer(models.Model):
                 uuid,
                 self.persistence_server_port,
                 self.persistence_server_processtype,
-                self.persistence_server_configfilename or ''
+                self.persistence_server_configfile_path or ''
             )
             self.persistence_server_uuid = uuid
 
@@ -228,7 +228,7 @@ class OrbeonServer(models.Model):
                 "    persistence_server_uuid AS uuid,"
                 "    persistence_server_port AS port,"
                 "    persistence_server_processtype AS processtype,"
-                "    persistence_server_configfilename AS configfilename"
+                "    persistence_server_configfile_path AS configfile_path"
                 "  FROM"
                 "    orbeon_server "
                 "  WHERE "
@@ -236,7 +236,7 @@ class OrbeonServer(models.Model):
                 "    AND persistence_server_active = True "
             )
 
-            for (id, active, autostart, uuid, port, processtype, configfilename) in cr.fetchall():
+            for (id, active, autostart, uuid, port, processtype, configfile_path) in cr.fetchall():
                 # Stop
                 self._stop_persistence_server(uuid, port)
                 cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = %s", (id,))
@@ -247,15 +247,15 @@ class OrbeonServer(models.Model):
                     new_uuid,
                     port,
                     processtype,
-                    configfilename
+                    configfile_path
                 )
                 cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
 
         except Exception, e:
             _logger.error("Exception: %s" % e)
 
-    def _start_persistence_server(self, uuid, port, processtype, configfilename=None):
-        app = services.persistence_server.wsgi_server.create_app(configfilename)
+    def _start_persistence_server(self, uuid, port, processtype, configfile_path=None):
+        app = services.persistence_server.wsgi_server.create_app(configfile_path)
         wsgi_server = self._persistence_wsgi_server(processtype)
         wsgi_app_server = wsgi_server(ORBEON_PERSISTENCE_SERVER_INTERFACE, port, app)
 
