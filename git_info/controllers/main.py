@@ -23,7 +23,6 @@ import subprocess
 
 from datetime import datetime
 from pytz import timezone
-from functools32 import lru_cache
 
 from odoo import http
 from odoo.http import request
@@ -40,7 +39,6 @@ class GitInfoWebSettingsDashboard(WebSettingsDashboard):
 
         return res
 
-    @lru_cache()
     def get_git_info(self):
         """Returns a numeric identifier of the latest git changeset.
         The result is the timestamp of the changeset, in timezone of current user,

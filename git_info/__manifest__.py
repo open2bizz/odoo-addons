@@ -29,9 +29,6 @@
     "license": "AGPL-3",
     "category": "Tools",
     "depends": ['web'],
-    'external_dependencies': {
-        'python': ['functools32']
-    },
     "data": [],
     'qweb': [
         "static/src/xml/base.xml",
