@@ -80,6 +80,7 @@ class OrbeonRunner(models.Model):
     res_model = fields.Char(
         "Resource Model",
         compute="_get_res_model",
+        readonly=True,
         store=True)
 
     res_id = fields.Integer(

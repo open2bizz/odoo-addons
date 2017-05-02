@@ -56,7 +56,6 @@ class Project(models.Model):
             runner.create({
                 'builder_id': builder.id,
                 'name': builder.name,
-                'res_model': self._name,
                 'res_id': res.id,
             })
 
