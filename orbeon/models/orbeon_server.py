@@ -232,8 +232,7 @@ class OrbeonServer(models.Model):
                 "  FROM"
                 "    orbeon_server "
                 "  WHERE "
-                "    persistence_server_autostart = True "
-                "    AND persistence_server_active = True "
+                "    persistence_server_active = True "
             )
 
             for (id, active, autostart, uuid, port, processtype, configfile_path) in cr.fetchall():
@@ -242,14 +241,15 @@ class OrbeonServer(models.Model):
                 cr.execute("UPDATE orbeon_server SET persistence_server_uuid = NULL WHERE id = %s", (id,))
 
                 # Start
-                new_uuid = self._persistence_server_uuid()
-                self._start_persistence_server(
-                    new_uuid,
-                    port,
-                    processtype,
-                    configfile_path
-                )
-                cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
+                if autostart:
+                    new_uuid = self._persistence_server_uuid()
+                    self._start_persistence_server(
+                        new_uuid,
+                        port,
+                        processtype,
+                        configfile_path
+                    )
+                    cr.execute("UPDATE orbeon_server SET persistence_server_uuid = %s WHERE id = %s", (str(new_uuid), id))
 
         except Exception, e:
             _logger.error("Exception: %s" % e)
