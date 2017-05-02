@@ -30,7 +30,8 @@ class Project(models.Model):
 
     orbeon_runner_form_ids = fields.One2many(
         "orbeon.runner",
-        "project_id",
+        "res_id",
+        domain=[('res_model', '=', 'project.project')],
         string="Orbeon Runner Forms",
     )
 
@@ -41,7 +42,10 @@ class Project(models.Model):
 
     @api.one
     def _get_orbeon_runner_forms_count(self):
-        self.orbeon_runner_forms_count = self.env["orbeon.runner"].search_count([("project_id", "=", self.id)])
+        self.orbeon_runner_forms_count = self.env["orbeon.runner"].search_count([
+            ("res_id", "=", self.id),
+            ("res_model", "=", 'project.project'),
+        ])
 
     @api.model
     def create(self, vals):
@@ -52,7 +56,8 @@ class Project(models.Model):
             runner.create({
                 'builder_id': builder.id,
                 'name': builder.name,
-                'project_id': res.id,
+                'res_model': self._name,
+                'res_id': res.id,
             })
 
         return res
