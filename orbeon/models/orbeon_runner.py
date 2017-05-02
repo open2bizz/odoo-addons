@@ -79,14 +79,14 @@ class OrbeonRunner(models.Model):
 
     res_model = fields.Char(
         "Resource Model",
-        _compute="_get_resource_model",
-        readonly=True)
+        compute="_get_res_model",
+        store=True)
 
     res_id = fields.Integer(
         "Record ID",
         ondelete='restrict',
-        help="Database ID of the record in res_model to which this applies"
-    )
+        readonly=True,
+        help="Database ID of the record in res_model to which this applies")
 
     @api.one
     def _get_builder_name(self, id=None):
@@ -96,9 +96,9 @@ class OrbeonRunner(models.Model):
     def _get_builder_version(self, id=None):
         self.builder_version = self.builder_id.version
 
-    @api.one
+    @api.depends('builder_id')
     def _get_res_model(self):
-        self.res_model = self.builder_id.res_model_id.name
+        self.res_model = self.builder_id.res_model_id.model
 
     @api.multi
     @api.onchange('builder_id')

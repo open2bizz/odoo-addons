@@ -52,7 +52,7 @@
       <!-- Metadata -->
       <xf:instance xxf:readonly="true" id="fr-form-metadata" xxf:exclude-result-prefixes="#all">
         <metadata>
-          <application-name>test</application-name>
+          <application-name>odoo</application-name>
           <form-name>test-builder-1</form-name>
           <title xml:lang="en">Test Builder 1</title>
           <description xml:lang="en"/>

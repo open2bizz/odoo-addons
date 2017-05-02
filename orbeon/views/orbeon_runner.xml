@@ -17,6 +17,8 @@
                             <field name="id" invisible="1"/>
                             <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
                             <field name="url" widget="url"/>
+                            <field name="res_model" />
+                            <field name="res_id" />
                         </group>
                     </sheet>
                 </form>
@@ -30,6 +32,8 @@
                 <tree>
                     <field name="builder_id" />
                     <field name="url"/>
+                    <field name="res_model" />
+                    <field name="res_id" />
                 </tree>
             </field>
         </record>

@@ -120,6 +120,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': form_title,
                     'version_comment': 'version 1',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id,
                     'state': orbeon_builder.STATE_CURRENT,
                     'version': 3,
                 }
@@ -203,11 +204,11 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 'title': 'Test Builder 1',
                 'version_comment': 'version 1',
                 'server_id': self.server_1.id,
-                'builder_template_id': self.builder_form_a_v1.xml
+                'builder_template_id': self.builder_template_form_1.id
             }
         )
 
-        self.assertXmlEquivalentOutputs(record.xml, self.builder_form_a_v1.xml)
+        self.assertXmlEquivalentOutputs(record.xml, self.builder_template_form_1.xml)
 
     def test_create_name_required(self):
         """Test create with a missing, but required, name"""
@@ -215,7 +216,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
             self.builder_model.sudo().create(
                 {
                     'version_comment': 'version 1',
-                    'server_id': self.server_1.id
+                    'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
 
@@ -255,7 +257,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     {
                         'name': name,
                         'version_comment': 'version 1',
-                        'server_id': self.server_1.id
+                        'server_id': self.server_1.id,
+                        'builder_template_id': self.builder_template_form_1.id
                     }
                 )
         
@@ -298,6 +301,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'name': 'test_create_title_notrequired',
                     'version_comment': 'some version',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
         except Exception as e:
@@ -321,7 +325,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
             self.builder_model.sudo().create(
                 {
                     'name': 'test_create_version_comment_required',
-                    'server_id': self.server_1.id
+                    'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
 
@@ -371,6 +376,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'name': self.builder_form_a_v1.name,
                     'version_comment': 'version 1',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id,
                     'version': 1,
                 }
             )
@@ -409,6 +415,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'name': builder_current.name,
                     'version_comment': 'version foobar',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id,
                     'version': builder_current.version + 1,
                     'state': orbeon_builder.STATE_CURRENT,
                 }
@@ -445,6 +452,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': self.builder_form_a_v2_current.title,
                     'version_comment': 'test_create_allow_new_version_by_unique_name_and_version',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id,
                     'version': 3
                 }
             )
@@ -463,11 +471,11 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     'title': self.builder_form_a_v2_current.title,
                     'version_comment': 'test_write_allow_new_version_by_unique_name_and_version',
                     'server_id': self.server_1.id,
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
 
             record.write({'name': self.builder_form_a_v1.name, 'version': 3})
-            
         except Exception as e:
             self.fail(e)
 
@@ -478,7 +486,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 {
                     'name': 'test_create_server_id_required',
                     'version_comment': 'version 1',
-                    'xml': '<?xml version="1.0"?><odoo></odoo>'
+                    'xml': '<?xml version="1.0"?><odoo></odoo>',
+                    'builder_template_id': self.builder_template_form_1.id
                 }
             )
 

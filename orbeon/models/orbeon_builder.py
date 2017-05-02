@@ -158,13 +158,20 @@ class OrbeonBuilder(models.Model):
             template = self.env['orbeon.builder.template'].browse(vals['builder_template_id'])
             xml = etree.fromstring(template.xml)
 
-            xml.xpath('//application-name')[0].text = 'odoo'
+            if len(xml.xpath('//application-name')) > 0:
+                xml.xpath('//application-name')[0].text = 'odoo'
 
-            if 'name' in vals:
+            if 'name' in vals and len(xml.xpath('//form-name')) > 0:
                 xml.xpath('//form-name')[0].text = vals['name']
 
             if 'title' in vals and vals['title']:
                 xml.xpath('//metadata/title')[0].text = vals['title']
+
+                if len(xml.xpath('//title')) > 0:
+                    xml.xpath('//title')[0].text = vals['title']
+
+                if len(xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
+                    xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
 
             vals['xml'] = etree.tostring(xml)
 

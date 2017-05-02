@@ -55,6 +55,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                 'url': 'http://localhost/orbeon_server_1',
                 'persistence_server_port': '10111',
                 'persistence_server_processtype': orbeon_server.PERSISTENCE_SERVER_SINGLE_THREADED,
+                'builder_templates_created': True
             }
         )
 
