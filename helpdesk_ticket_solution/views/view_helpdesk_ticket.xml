@@ -21,8 +21,7 @@
                             <div class="oe_edit_only">
                                 Use template
                                 <field name="default_solution"
-                                    nolabel="1" class="oe_inline"
-                                    options="{'no_create': True}" />
+                                    nolabel="1" class="oe_inline" />
                             </div>
                         </page>
                     </notebook>
