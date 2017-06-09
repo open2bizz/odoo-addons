@@ -41,4 +41,4 @@ class HelpdeskTicket(models.Model):
         if self.default_solution:
             update_data = self.default_solution.get_update_default_data(self.solution)
             if update_data['update']:
-                self.handshake = update_data['data']
+                self.solution = update_data['data']
