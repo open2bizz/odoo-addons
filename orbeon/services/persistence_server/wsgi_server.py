@@ -39,9 +39,10 @@ class OrbeonRequestHandler(object):
         self.handler = None
         self.set_handler()
 
-        self.handler.set_config_by_file_path(configfile_path)
+        if configfile_path is not None:
+            self.handler.set_config_by_file_path(configfile_path)
 
-        if len(self.handler.config.sections()) > 0:
+        if self.handler.config is not None and len(self.handler.config.sections()) > 0:
             self.handler.set_xmlrpc_by_config()
         else:
             url = "http://%s:%s" % (
