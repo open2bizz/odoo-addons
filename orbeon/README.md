@@ -47,20 +47,31 @@ Property | Explanation
 
 **Configuration example:**
 
+This is the most easy configuration. All Orbeon applications and services are handled over to Odoo.
+
   ``` xml
   <property 
       as="xs:string"
-      name="oxf.fr.persistence.provider.odoo.*.form"
-      value="odoo"/>
-      
-  <property 
-      as="xs:string"
-      name="oxf.fr.persistence.provider.odoo.*.data"
+      name="oxf.fr.persistence.provider.*.*.*"
       value="odoo"/>
   
   <property as="xs:anyURI"
       name="oxf.fr.persistence.odoo.uri"
       value="http://localhost:8090"/>
+  ```
+
+**It's recommended to set the following property**
+
+The following property enables Odoo to install several sample forms from Orbeon - as "Builder Templates".
+This eases creating the first Builder Form, by copying the Form Definition by the choosen Builder Template.
+
+
+  ``` xml
+  <property
+      as="xs:string"
+      processor-name="oxf:page-flow"
+      name="service-public-methods"
+      value="GET HEAD"/>
   ```
 
 ### 2. Odoo - Orbeon App
