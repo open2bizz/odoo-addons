@@ -60,11 +60,12 @@ This is the most easy configuration. All Orbeon applications and services are ha
       value="http://localhost:8090"/>
   ```
 
-**It's recommended to set the following property**
+**It's recommended to set the following property:**
 
 The following property enables Odoo to install several sample forms from Orbeon - as "Builder Templates".
 This eases creating the first Builder Form, by copying the Form Definition by the choosen Builder Template.
 
+**! No security risk had been found yet. It seems all other (except the samples) Builder and Runner Forms, stored in Odoo, won't be exposed by this setting.**
 
   ``` xml
   <property
