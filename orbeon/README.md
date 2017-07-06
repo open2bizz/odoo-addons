@@ -122,4 +122,5 @@ password: orbeon
 #### 2.6 Start the Odoo Orbeon Server
 
 If everyting is setup correctly, you're now able to use Orbeon Forms via Odoo.
-In case of failures or questions, first check the *Odoo server log* or the *Java Webserver log*.
+
+In case of failure or questions, first check the *Odoo server log* or the *Java Webserver log*.
