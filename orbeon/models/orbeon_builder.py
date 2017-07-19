@@ -92,7 +92,6 @@ class OrbeonBuilder(models.Model):
     builder_template_id = fields.Many2one(
         "orbeon.builder.template",
         "Builder Form Template",
-        domain="[('server_id.id', '=', server_id)]",
         ondelete='set null',
         help="By default some Builder Form Templates are shipped by the Orbeon Server."
     )
