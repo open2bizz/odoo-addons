@@ -40,13 +40,15 @@ class OrbeonBuilderTemplate(models.Model):
     server_id = fields.Many2one(
         "orbeon.server",
         "Server",
-        required=True,
+        required=False,
         ondelete='cascade'
     )
 
-    application_name = fields.Char(
-        "Application Name",
-        required=True
+    module_id = fields.Many2one(
+        "ir.module.module",
+        "Module",
+        required=False,
+        ondelete='cascade'
     )
 
     form_name = fields.Char(
@@ -64,6 +66,6 @@ class OrbeonBuilderTemplate(models.Model):
         help="Template was fetched from Orbeon"
     )
 
-    @api.depends('server_id', 'application_name', 'form_name')
+    @api.depends('server_id', 'module_id', 'form_name')
     def _set_name(self):
-        self.name = "%s (%s)" % (self.form_name, self.application_name)
+        self.name = "%s (%s)" % (self.form_name, self.module_id.name)

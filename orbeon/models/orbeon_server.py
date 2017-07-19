@@ -302,7 +302,6 @@ class OrbeonServer(models.Model):
                 xml_root = etree.XML(data, parser)
 
                 # TODO FIXME: multiple titles nodes (by language)
-                app_name = xml_root.xpath('//metadata/application-name')[0].text
                 form_name = xml_root.xpath('//metadata/form-name')[0].text
 
                 xml = etree.tostring(xml_root)
@@ -314,7 +313,7 @@ class OrbeonServer(models.Model):
 
                 self.env['orbeon.builder.template'].create({
                     'server_id': self.id,
-                    'application_name': app_name,
+                    'module_id': self.env['ir.model.data'].xmlid_to_res_id('base.module_orbeon'),
                     'form_name': form_name,
                     'xml': xml,
                     'fetched_from_orbeon': True

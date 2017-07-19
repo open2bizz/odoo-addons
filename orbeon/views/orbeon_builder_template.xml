@@ -16,7 +16,7 @@
                             <page string="General" name="general">
                                 <group>
                                     <field name="form_name" string="Form Name" />
-                                    <field name="application_name" />
+                                    <field name="module_id" />
                                     <field name="server_id" />
                                     <field name="fetched_from_orbeon" readonly="1" />
                                 </group>
@@ -36,7 +36,7 @@
             <field name="arch" type="xml">
                 <tree create="false">
                     <field name="form_name" />
-                    <field name="application_name" />
+                    <field name="module_id" />
                     <field name="server_id" />
                     <field name="fetched_from_orbeon" />
                 </tree>

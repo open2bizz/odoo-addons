@@ -62,7 +62,7 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
         self.builder_template_form_1 = self.builder_template_model.sudo().create(
             {
                 'server_id': self.server_1.id,
-                'application_name': 'orbeon',
+                'module_id': self.env['ir.model.data'].xmlid_to_res_id('base.orbeon'),
                 'form_name': 'form_a',
                 'xml': self.xmlFromFile('test_orbeon4.10_builder_default.xml'),
                 'fetched_from_orbeon': False
