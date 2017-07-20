@@ -48,6 +48,7 @@ class OrbeonBuilderTemplate(models.Model):
         "ir.module.module",
         "Module",
         required=False,
+        readonly=True,
         ondelete='cascade'
     )
 
