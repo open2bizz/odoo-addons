@@ -27,14 +27,14 @@
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
-    "category": "Tools",
+    "category": "Extra Tools",
     "depends": [],
     'external_dependencies': {
         'python': ['dicttoxml', 'xmlunittest']
     },
     "data": [
         "security/res_groups.xml",
-        "security/ir.model.access.csv",
+        "security/ir_model_access.xml",
         "views/orbeon_builder_template.xml",
         "views/orbeon_builder.xml",
         "views/orbeon_runner.xml",

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Orbeon Server -->
+        <record id="access_orbeon_server_admin" model="ir.model.access">
+            <field name="name">orbeon.server.orbeon_admin</field>
+            <field name="model_id" ref="orbeon.model_orbeon_server"/>
+            <field name="group_id" ref="orbeon.orbeon_admin"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_orbeon_server_user" model="ir.model.access">
+            <field name="name">orbeon.server.orbeon_user</field>
+            <field name="model_id" ref="orbeon.model_orbeon_server"/>
+            <field name="group_id" ref="orbeon.orbeon_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Orbeon Builder Template -->
+        <record id="access_orbeon_builder_template_admin" model="ir.model.access">
+            <field name="name">orbeon.builder.template.orbeon_admin</field>
+            <field name="model_id" ref="orbeon.model_orbeon_builder_template"/>
+            <field name="group_id" ref="orbeon.orbeon_admin"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_orbeon_builder_template_user" model="ir.model.access">
+            <field name="name">orbeon.builder.template.orbeon_user</field>
+            <field name="model_id" ref="orbeon.model_orbeon_builder_template"/>
+            <field name="group_id" ref="orbeon.orbeon_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Orbeon Builder -->
+        <record id="access_orbeon_builder_admin" model="ir.model.access">
+            <field name="name">orbeon.builder.orbeon_admin</field>
+            <field name="model_id" ref="orbeon.model_orbeon_builder"/>
+            <field name="group_id" ref="orbeon.orbeon_admin"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_orbeon_builder_user" model="ir.model.access">
+            <field name="name">orbeon.builder.orbeon_user</field>
+            <field name="model_id" ref="orbeon.model_orbeon_builder"/>
+            <field name="group_id" ref="orbeon.orbeon_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <!-- Orbeon Runner -->
+        <record id="access_orbeon_runner_admin" model="ir.model.access">
+            <field name="name">orbeon.runner.orbeon_admin</field>
+            <field name="model_id" ref="orbeon.model_orbeon_runner"/>
+            <field name="group_id" ref="orbeon.orbeon_admin"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+        <record id="access_orbeon_runner_user" model="ir.model.access">
+            <field name="name">orbeon.runenr.orbeon_user</field>
+            <field name="model_id" ref="orbeon.model_orbeon_runner"/>
+            <field name="group_id" ref="orbeon.orbeon_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+    </data>
+</odoo>
