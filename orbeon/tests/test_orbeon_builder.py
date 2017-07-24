@@ -512,6 +512,16 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         """Test write with an unknown (non-existing record) server"""
 
     @TODO
+    def test_validate_create_xml_provided_both_template_and_xml(self):
+        """Test create with both provided 'Orbeon Builder Template' and XML"""
+        # Function validate_create_xml() in orbeon.builder
+
+    @TODO
+    def test_validate_create_xml_missing_both_template_and_xml(self):
+        """Test create with missing 'Orbeon Builder Template' and XML"""
+        # Function validate_create_xml() in orbeon.builder
+
+    @TODO
     def test_unlink_builder_template_dont_cascade_unlink(self):
         """Test unlink the builder_template(_id) and the builder shouldn't be unlinked"""
 

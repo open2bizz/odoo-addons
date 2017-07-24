@@ -151,29 +151,39 @@ class OrbeonBuilder(models.Model):
             raise ValidationError("%s already has a record with version: %d"
                                   % (self.name, self.version))
 
+    def validate_create_xml(self, vals):
+        if vals.get('builder_template_id', False) and vals.get('xml', False):
+            raise ValidationError("Provide either a \"Builder Form Template\" or XML. Both not allowed.")
+
+        if not vals.get('builder_template_id', False) and not vals.get('xml', False):
+            raise ValidationError("Missing either a \"Builder Form Template\" or XML")
+
     @api.model
     def create(self, vals):
-        if 'server_id' in vals:
+        self.validate_create_xml(vals)
+
+        if vals.get('builder_template_id', False):
             template = self.env['orbeon.builder.template'].browse(vals['builder_template_id'])
             xml = etree.fromstring(template.xml)
+        elif 'xml' in vals:
+            xml = etree.fromstring(vals['xml'])
 
-            if len(xml.xpath('//application-name')) > 0:
-                xml.xpath('//application-name')[0].text = 'odoo'
+        if len(xml.xpath('//application-name')) > 0:
+            xml.xpath('//application-name')[0].text = 'odoo'
 
-            if 'name' in vals and len(xml.xpath('//form-name')) > 0:
-                xml.xpath('//form-name')[0].text = vals['name']
+        if 'name' in vals and len(xml.xpath('//form-name')) > 0:
+            xml.xpath('//form-name')[0].text = vals['name']
 
-            if 'title' in vals and vals['title']:
-                xml.xpath('//metadata/title')[0].text = vals['title']
+        if 'title' in vals and vals['title']:
+            xml.xpath('//metadata/title')[0].text = vals['title']
 
-                if len(xml.xpath('//title')) > 0:
-                    xml.xpath('//title')[0].text = vals['title']
+            if len(xml.xpath('//title')) > 0:
+                xml.xpath('//title')[0].text = vals['title']
 
-                if len(xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
-                    xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
+            if len(xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
+                xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
 
-            vals['xml'] = etree.tostring(xml)
-
+        vals['xml'] = etree.tostring(xml)
         res = super(OrbeonBuilder, self).create(vals)
 
         return res
