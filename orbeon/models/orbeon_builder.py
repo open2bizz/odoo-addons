@@ -201,7 +201,6 @@ class OrbeonBuilder(models.Model):
         alter["state"] = STATE_NEW
         alter["version"] = builder.version + 1
         alter["builder_template_id"] = False
-        alter["xml"] = self.xml
         res = super(OrbeonBuilder, self).copy(alter)
 
         return res
