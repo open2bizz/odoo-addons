@@ -55,6 +55,8 @@ class OrbeonBuilder(models.Model):
         "Description",
         help="Form description in the current language")
 
+    parent_id = fields.Many2one('orbeon.builder', string='Parent')
+
     version = fields.Integer(
         "Version",
         required=True,
@@ -195,8 +197,11 @@ class OrbeonBuilder(models.Model):
         builder = self.search([('name', '=', self.name)], limit=1, order='version DESC')
 
         alter = {}
+        alter["parent_id"] = self.id
         alter["state"] = STATE_NEW
         alter["version"] = builder.version + 1
+        alter["builder_template_id"] = False
+        alter["xml"] = self.xml
         res = super(OrbeonBuilder, self).copy(alter)
 
         return res
