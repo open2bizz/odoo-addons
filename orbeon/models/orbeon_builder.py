@@ -37,6 +37,8 @@ class OrbeonBuilder(models.Model):
     _name = "orbeon.builder"
     _order = 'res_model_id DESC, name ASC, version ASC'
 
+    _rec_name = 'complete_name'
+
     name = fields.Char(
         "Name",
         required=True,
@@ -55,7 +57,17 @@ class OrbeonBuilder(models.Model):
         "Description",
         help="Form description in the current language")
 
-    parent_id = fields.Many2one('orbeon.builder', string='Parent')
+    complete_name = fields.Char(
+        "Full Name",
+        compute='_compute_complete_name',
+        store=True
+    )
+
+    parent_id = fields.Many2one(
+        'orbeon.builder',
+        string='Parent Version',
+        readonly=True
+    )
 
     version = fields.Integer(
         "Version",
@@ -115,6 +127,11 @@ class OrbeonBuilder(models.Model):
         'URL',
         compute="_get_url",
         readonly=True)
+
+    @api.one
+    @api.depends('name', 'version')
+    def _compute_complete_name(self):
+        self.complete_name = "%s @ %s" % (self.name, self.version)
 
     @api.one
     @api.constrains('name')
@@ -194,8 +211,14 @@ class OrbeonBuilder(models.Model):
     @api.one
     @api.returns('self', lambda value: value)
     def copy_as_new_version(self):
-        # Get last version for builder-forms by name
-        builder = self.search([('name', '=', self.name)], limit=1, order='version DESC')
+        """Get last version for builder-forms by traversing-up on parent_id"""
+
+        builder = self
+
+        while builder.parent_id:
+            builder = builder.parent_id
+
+        builder = self.search([('id', 'child_of', builder.id)], limit=1, order='id DESC')
 
         alter = {}
         alter["parent_id"] = self.id
@@ -248,8 +271,12 @@ class OrbeonBuilder(models.Model):
             'url': self.url
         }
 
-    @api.onchange('state', 'server_id')
+    @api.one
     def _get_url(self):
+        self.ensure_one()
+        if isinstance(self.id, models.NewId):
+            return {}
+
         if hasattr(self, '_origin') and not isinstance(self._origin.id, models.NewId):
             builder_id = self._origin.id
         else:
