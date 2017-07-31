@@ -486,7 +486,6 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 {
                     'name': 'test_create_server_id_required',
                     'version_comment': 'version 1',
-                    'xml': '<?xml version="1.0"?><odoo></odoo>',
                     'builder_template_id': self.builder_template_form_1.id
                 }
             )
@@ -594,7 +593,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         # form_a has already 2 versions, created from TestOrbeonCommon.setUp()
         self.assertEquals(self.builder_model.search_count(name_filter), 2)
 
-        # version 1: just check
+        # version 1, 2: just check
         version_1_filter = list(name_filter)
         version_1_filter.append(('version', '=', 1))
 
@@ -613,9 +612,9 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(builder_current.state, orbeon_builder.STATE_CURRENT)
         self.assertEquals(self.builder_model.search_count(current_version_filter), 1)
 
-        # version 3: copy from builder_current (builder_form_a_v2_current)
+        # version 3: COPY from builder_current (builder_form_a_v2_current)
         self.builder_form_a_v2_current.new_version_builder_form()
-        
+
         version_3_filter = list(name_filter)
         version_3_filter.append(('version', '=', 3))
         builder_version_3 = self.builder_model.search(version_3_filter)
@@ -625,9 +624,9 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(version_3_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 3)
 
-        # version 4: copy from builder_version_1 (builder_form_a_v1)
-        self.builder_form_a_v1.new_version_builder_form()
-        
+        # version 4: COPY from builder_version_1 (builder_form_a_v1)
+        builder_version_3.new_version_builder_form()
+
         version_4_filter = list(name_filter)
         version_4_filter.append(('version', '=', 4))
         builder_version_4 = self.builder_model.search(version_4_filter)
@@ -637,9 +636,9 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(version_4_filter), 1)
         self.assertEquals(self.builder_model.search_count(name_filter), 4)
 
-        # version 5: copy from builder_current (builder_form_a_v2_current)
-        self.builder_form_a_v2_current.new_version_builder_form()
-        
+        # version 5: COPY from builder_current (builder_form_a_v2_current)
+        builder_version_4.new_version_builder_form()
+
         version_5_filter = list(name_filter)
         version_5_filter.append(('version', '=', 5))
         builder_version_5 = self.builder_model.search(version_5_filter)
@@ -650,8 +649,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         self.assertEquals(self.builder_model.search_count(name_filter), 5)
 
         # version 6: copy from builder_version_4 (new_versioned/create above)
-        builder_version_4.new_version_builder_form()
-        
+        builder_version_5.new_version_builder_form()
+
         version_6_filter = list(name_filter)
         version_6_filter.append(('version', '=', 6))
         builder_version_6 = self.builder_model.search(version_6_filter)
@@ -664,13 +663,13 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         # Only 1 version where state is 'current'
         state_current_filter = list(name_filter)
         state_current_filter.append(('state', '=', orbeon_builder.STATE_CURRENT))
-        
+
         self.assertEquals(self.builder_model.search_count(state_current_filter), 1)
 
         # 5 versions where state is 'new'
         state_new_filter = list(name_filter)
         state_new_filter.append(('state', '=', orbeon_builder.STATE_NEW))
-        
+
         self.assertEquals(self.builder_model.search_count(state_new_filter), 5)
 
     def test_url_is_readonly(self):

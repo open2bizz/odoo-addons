@@ -84,8 +84,9 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
         self.builder_form_a_v2_current = self.builder_model.sudo().create(
             {
                 'name': 'form_a',
+                'parent_id': self.builder_form_a_v1.id,
                 'title': 'Form A',
-                'state': orbeon_builder.STATE_CURRENT, # live (in production)
+                'state': orbeon_builder.STATE_CURRENT,  # live (in production)
                 'version': 2,
                 'version_comment': '2 inputs, 1 date',
                 'server_id': self.server_1.id,
