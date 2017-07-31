@@ -95,6 +95,7 @@ class OrbeonBuilder(models.Model):
         "orbeon.builder.template",
         "Builder Form Template",
         ondelete='set null',
+        copy=False,
         help="By default some Builder Form Templates are shipped by the Orbeon Server."
     )
 
