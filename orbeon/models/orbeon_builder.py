@@ -137,7 +137,7 @@ class OrbeonBuilder(models.Model):
     @api.constrains('name')
     def constaint_check_name(self):
         if re.search(r"[^a-zA-Z0-9_-]", self.name) is not None:
-            raise ValidationError('Use ASCII letters, digits, "-" or "_"')
+            raise ValidationError('Name is invalid. Use ASCII letters, digits, "-" or "_"')
 
     @api.one
     @api.constrains("name", "state")

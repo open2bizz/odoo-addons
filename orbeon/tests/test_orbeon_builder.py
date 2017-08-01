@@ -251,7 +251,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         ]
 
         for name in invalid_names:
-            with self.assertRaisesRegexp(ValidationError, 'Use ASCII letters, digits, "-" or "_"'):
+            with self.assertRaisesRegexp(ValidationError, 'Name is invalid. Use ASCII letters, digits, "-" or "_"'):
                 self.builder_model.sudo().create(
                     {
                         'name': name,
@@ -281,7 +281,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         ]
 
         for name in invalid_names:
-            with self.assertRaisesRegexp(ValidationError, 'Use ASCII letters, digits, "-" or "_"'):
+            with self.assertRaisesRegexp(ValidationError, 'Name is invalid. Use ASCII letters, digits, "-" or "_"'):
                 self.builder_form_a_v1.sudo().write(
                     {
                         'name': name,
