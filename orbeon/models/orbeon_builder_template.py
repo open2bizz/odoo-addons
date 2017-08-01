@@ -19,8 +19,9 @@
 #
 ##############################################################################
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
-from lxml import etree
+import re
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -70,3 +71,9 @@ class OrbeonBuilderTemplate(models.Model):
     @api.depends('server_id', 'module_id', 'form_name')
     def _set_name(self):
         self.name = "%s (%s)" % (self.form_name, self.module_id.name)
+
+    @api.one
+    @api.constrains('form_name')
+    def constaint_check_name(self):
+        if re.search(r"[^a-zA-Z0-9_-]", self.form_name) is not None:
+            raise ValidationError('Name is invalid. Use ASCII letters, digits, "-" or "_"')

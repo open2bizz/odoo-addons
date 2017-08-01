@@ -231,7 +231,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                 }
             )
 
-    def test_create_invalid_name_check_path_rfc3986(self):
+    def test_create_invalid_name(self):
         """Test create with name containing illegal chararacters"""
 
         invalid_names = [
@@ -261,7 +261,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                     }
                 )
 
-    def test_write_name_check_path_rfc3986(self):
+    def test_write_invalid_name(self):
         """Test write with name containing illegal chararacters"""
 
         invalid_names = [

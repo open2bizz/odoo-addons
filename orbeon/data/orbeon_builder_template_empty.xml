@@ -3,7 +3,7 @@
     <data noupdate="0">
         <record id="orbeon_builder_template_default" model="orbeon.builder.template">
             <field name="module_id" ref="base.module_orbeon"/>
-	    <field name="form_name">empty form</field>
+	    <field name="form_name">empty_form</field>
             <field name="xml" type="xml">
                 <xh:html xmlns:xh="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms"
                          xmlns:xs="http://www.w3.org/2001/XMLSchema"
