@@ -136,12 +136,8 @@ class OrbeonBuilder(models.Model):
     @api.one
     @api.constrains('name')
     def constaint_check_name(self):
-        """
-        Validate name according to the RFC3986 Path (Section 3.3) section
-        """
-        if re.search(r"\?|\#|\/|:", self.name):
-            raise ValidationError('Name should not contain following characters: question mark ("?"), '
-                                  'pound ("#"), slash ("/"), colon (":")?')
+        if re.search(r"[^a-zA-Z0-9_-]", self.name) is not None:
+            raise ValidationError('Use ASCII letters, digits, "-" or "_"')
 
     @api.one
     @api.constrains("name", "state")

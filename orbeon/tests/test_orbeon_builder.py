@@ -232,12 +232,11 @@ class TestOrbeonBuilder(TestOrbeonCommon):
             )
 
     def test_create_invalid_name_check_path_rfc3986(self):
-        """Test create with name containing illegal chararacters; according to
-        RFC3986 Path-component.  This because name will/could be used in
-        the URL as path-component when openening the Orbeon Runner Form
-        """
+        """Test create with name containing illegal chararacters"""
 
         invalid_names = [
+            'test form',
+            'Test Form',
             '/testform',
             'test/form',
             'test/form/',
@@ -252,7 +251,7 @@ class TestOrbeonBuilder(TestOrbeonCommon):
         ]
 
         for name in invalid_names:
-            with self.assertRaisesRegexp(ValidationError, 'Name should not contain following characters.'):
+            with self.assertRaisesRegexp(ValidationError, 'Use ASCII letters, digits, "-" or "_"'):
                 self.builder_model.sudo().create(
                     {
                         'name': name,
@@ -261,14 +260,13 @@ class TestOrbeonBuilder(TestOrbeonCommon):
                         'builder_template_id': self.builder_template_form_1.id
                     }
                 )
-        
-    def test_write_name_check_path_rfc3986(self):
-        """Test write with name containing illegal chararacters; according to
-        RFC3986 Path-component.  This because name will/could be used in
-        the URL as path-component when openening the Orbeon Runner Form
-        """
 
-        names = [
+    def test_write_name_check_path_rfc3986(self):
+        """Test write with name containing illegal chararacters"""
+
+        invalid_names = [
+            'test form',
+            'Test Form',
             '/testform',
             'test/form',
             'test/form/',
@@ -282,8 +280,8 @@ class TestOrbeonBuilder(TestOrbeonCommon):
             'test-1#form',
         ]
 
-        for name in names:
-            with self.assertRaisesRegexp(ValidationError, 'Name should not contain following characters.'):
+        for name in invalid_names:
+            with self.assertRaisesRegexp(ValidationError, 'Use ASCII letters, digits, "-" or "_"'):
                 self.builder_form_a_v1.sudo().write(
                     {
                         'name': name,
