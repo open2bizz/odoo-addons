@@ -52,7 +52,7 @@
                                 <div class="o_kanban_card_header">
 
                                     <div class="o_kanban_card_header_title">
-                                        <div class="o_primary"><field name="builder_name"/></div>
+                                        <div class="o_primary"><field name="builder_title"/></div>
                                         <div class="o_secondary">
                                             <t class="badge"><i class="fa fa-fw fa-at"/></t>
                                             <field name="builder_version"/>
