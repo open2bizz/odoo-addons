@@ -35,7 +35,10 @@ STATE_CANCELED = 'canceled'
 
 
 class OrbeonRunner(models.Model):
-    _name = "orbeon.runner"
+    _name = 'orbeon.runner'
+    _inherit = ['mail.thread']
+    _description = 'Orbeon Runner'
+
     _rec_name = "builder_name"
 
     builder_id = fields.Many2one(
@@ -211,4 +214,9 @@ class OrbeonRunner(models.Model):
     def parse_runner_xml(self, xml, runner):
         parser = runner_xml_parser.RunnerXmlParser(xml, runner)
         parser.parse()
+
+        if runner.builder_id.debug_mode:
+            for error in parser.errors:
+                runner.message_post(body=error.message, content_subtype='plaintext')
+
         return parser.xml

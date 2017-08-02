@@ -28,18 +28,25 @@
                         </div>
 
                         <notebook>
-                            <page name="settings" string="Settings">
+                            <page name="general" string="General">
                                 <group>
                                     <field name="id" invisible="1"/>
                                     <field name="title" />
                                     <field name="description" />
                                     <field name="res_model_id" />
+                                </group>
+                                <group string="Version">
                                     <field name="version" />
                                     <field name="version_comment" />
                                     <field name="parent_id" />
+                                    <field name="builder_template_id" />
+                                </group>
+                            </page>
+                            <page name="settings" string="Settings">
+                                <group>
                                     <field name="server_id" />
                                     <field name="url" widget="url"></field>
-                                    <field name="builder_template_id" />
+                                    <field name="debug_mode" />
                                 </group>
                             </page>
                             <page name="xml" string="XML">
@@ -50,6 +57,10 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
                 </form>
             </field>
         </record>

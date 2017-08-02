@@ -7,7 +7,13 @@ _logger = logging.getLogger(__name__)
 ERP_FIELD_PREFIX = 'ERP'
 UNKNOWN_ERP_FIELD = 'UNKNOWN ERP-FIELD'
 
-class XmlParserERPFields(object):
+
+class XMLParserERPFieldsException(Exception):
+    def __init__(self, msg):
+        self.message = "[ERROR: ERP-Field] %s" % msg
+
+
+class XmlParserBase(object):
 
     def __init__(self, runner, xml_root):
         self.runner = runner
@@ -17,9 +23,14 @@ class XmlParserERPFields(object):
         self.res_object = None
         self.res_model = self.runner.builder_id.res_model_id.model
 
-        self.init()
+        self.errors = []
 
-    def init(self):
+
+class XmlParserERPFields(XmlParserBase):
+
+    def __init__(self, runner, xml_root):
+        super(XmlParserERPFields, self).__init__(runner, xml_root)
+
         self.load_erp_fields()
 
         if not self.has_erp_fields():
@@ -58,6 +69,7 @@ class XmlParserERPFields(object):
         self.res_object = self.runner.env[self.runner.builder_id.res_model_id.model].browse(self.runner.res_id)
 
     def parse(self):
+        # TODO Refactor this beast into smaller functions
         if not self.has_erp_fields():
             return
 
@@ -74,39 +86,73 @@ class XmlParserERPFields(object):
             - ['company_id', 'currency_id', 'name']
             """
 
-            # Mind: hell of an ugly piece of code
+            # All handled (seen) fields
+            all_fields = []
+            # All traversed (parent) fields
             traversed_fields = []
             relational_field_error = False
 
             while len(model_fields) > 1:
                 field = model_fields.pop(0)
+                all_fields.append(field)
 
                 try:
                     target_object = target_object[field]
                     traversed_fields.append(field)
+
                 except KeyError:
                     relational_field_error = True
+                    msg = "not in model %s" % self.res_model
+                    error = self._exception_erpfield(all_fields, msg)
 
-                    if len(traversed_fields) == 0:
-                        _logger.info('[orbeon] ERP-field %s not in model %s' % (field, self.res_model))
-                    else:
-                        # XXX Could this be improved or good enough?
-                        _logger.info('[orbeon] ERP-field %s not in model %s by relation %s' % (field, self.res_model, '.'.join(traversed_fields)))
+                    self.errors.append(error)
+                    _logger.info('[orbeon] %s' % error.message)
+
+            # Add last model_field
+            all_fields.append(model_fields[0])
 
             if not relational_field_error:
-                # The last/solely item in model_fields should be the value
                 try:
+                    # The last/solely item in model_fields should be the value
                     field = model_fields[0]
                     field_val = target_object[field]
+
                 except KeyError:
-                    _logger.info('[orbeon] ERP-field %s not in model %s' % (field, self.res_model))
-                    field_val = UNKNOWN_ERP_FIELD
+                    msg = "not in model %s" % self.res_model
+                    error = self._exception_erpfield(all_fields, msg)
+
+                    if self.runner.builder_id.debug_mode:
+                        field_val = error.message
+                    else:
+                        field_val = UNKNOWN_ERP_FIELD
+
+                    _logger.info('[orbeon] %s' % error.message)
+                    self.errors.append(error)
+
+                except Exception as e:
+                    error = self._exception_erpfield(all_fields, e.message)
+
+                    if self.runner.builder_id.debug_mode:
+                        field_val = error.message
+                    else:
+                        field_val = UNKNOWN_ERP_FIELD
+
+                    _logger.info('[orbeon] %s' % error.message)
+                    self.errors.append(error)
             else:
-                field_val = UNKNOWN_ERP_FIELD
+                # Brought here by the `while (loop)` above.
+                # where relational_field_error was set True.
+                if self.runner.builder_id.debug_mode:
+                    field_val = error.message
+                else:
+                    field_val = UNKNOWN_ERP_FIELD
 
             erp_field_obj.set_element_text(field_val)
 
-        return self.xml_root
+    def _exception_erpfield(self, fields_chain, msg):
+        msg_exception = "ERP.%s (DETAILS: %s)" % ((".".join(fields_chain), msg))
+        return XMLParserERPFieldsException(msg_exception)
+
 
 class ERPField(object):
 

@@ -34,9 +34,11 @@ STATE_OBSOLETE = 'obsolete'
 
 
 class OrbeonBuilder(models.Model):
-    _name = "orbeon.builder"
-    _order = 'res_model_id DESC, name ASC, version ASC'
+    _name = 'orbeon.builder'
+    _inherit = ['mail.thread']
+    _description = 'Orbeon Builder'
 
+    _order = 'res_model_id DESC, name ASC, version ASC'
     _rec_name = 'complete_name'
 
     name = fields.Char(
@@ -127,6 +129,12 @@ class OrbeonBuilder(models.Model):
         'URL',
         compute="_get_url",
         readonly=True)
+
+    debug_mode = fields.Boolean(
+        'Debug Mode',
+        default=False,
+        help="Shows debug info (by field) in Orbeon Runner Form.\r\nAdds debug-info as messages (by field) on the Runner record."
+    )
 
     @api.one
     @api.depends('name', 'version')

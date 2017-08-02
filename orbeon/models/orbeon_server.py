@@ -57,7 +57,10 @@ class OrbeonThreadedWSGIServer(threading.Thread):
 
 
 class OrbeonServer(models.Model):
-    _name = "orbeon.server"
+    _name = 'orbeon.server'
+    _inherit = ['mail.thread']
+    _description = 'Orbeon Server'
+
     _rec_name = "url"
 
     name = fields.Char(

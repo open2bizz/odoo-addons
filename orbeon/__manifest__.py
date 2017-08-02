@@ -28,7 +28,7 @@
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
     "category": "Extra Tools",
-    "depends": [],
+    "depends": ['base', 'mail'],
     'external_dependencies': {
         'python': ['dicttoxml', 'xmlunittest']
     },
