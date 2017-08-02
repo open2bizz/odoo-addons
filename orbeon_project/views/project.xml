@@ -10,7 +10,7 @@
 	            <page string="Orbeon Runner Forms">
 	                <field name="orbeon_runner_form_ids">
 	                    <tree>
-		                <field name="builder_name" />
+		                <field name="builder_title" string="Title"/>
 		                <field name="state" />
 		                <button name="orbeon_runner_form" string="Form" type="object"
 			                icon="fa-external-link" />

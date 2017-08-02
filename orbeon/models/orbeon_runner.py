@@ -44,13 +44,18 @@ class OrbeonRunner(models.Model):
         ondelete='restrict')
 
     builder_name = fields.Char(
-        "Builder name",
+        "Builder Name",
         compute="_get_builder_name",
         readonly=True)
 
     builder_version = fields.Integer(
-        "Builder version",
+        "Builder Version",
         compute="_get_builder_version",
+        readonly=True)
+
+    builder_title = fields.Char(
+        "Builder Title",
+        compute="_get_builder_title",
         readonly=True)
 
     state = fields.Selection(
@@ -96,6 +101,10 @@ class OrbeonRunner(models.Model):
     @api.one
     def _get_builder_version(self, id=None):
         self.builder_version = self.builder_id.version
+
+    @api.one
+    def _get_builder_title(self, id=None):
+        self.builder_title = "%s (%s)" % (self.builder_id.title, self.builder_id.version)
 
     @api.depends('builder_id')
     def _get_res_model(self):
