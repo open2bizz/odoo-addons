@@ -40,7 +40,7 @@
                   sequence="10" />
 
         <menuitem id="orbeon_settings_menu"
-                  name="Runner"
+                  name="Settings"
                   parent="orbeon_base_menu"
                   groups="orbeon.orbeon_admin"
                   sequence="30"/>
