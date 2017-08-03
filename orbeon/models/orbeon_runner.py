@@ -216,7 +216,7 @@ class OrbeonRunner(models.Model):
         parser.parse()
 
         if runner.builder_id.debug_mode:
-            for error in parser.errors:
-                runner.message_post(body=error.message, content_subtype='plaintext')
+            message = "\r\n".join([e.message for e in parser.errors])
+            runner.message_post(body=message, content_subtype='plaintext')
 
         return parser.xml
