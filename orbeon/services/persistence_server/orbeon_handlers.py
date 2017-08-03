@@ -1,5 +1,4 @@
 import ConfigParser
-import os
 import dicttoxml
 
 from xml.dom.minidom import parseString
@@ -10,10 +9,11 @@ from .. import utils
 
 _log = utils._log
 
+
 class OrbeonHandlerBase(object):
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
         self.model = None
-        
+
         self.app = app
         self.form = form
         self.data_type = data_type
@@ -28,14 +28,14 @@ class OrbeonHandlerBase(object):
         """Set config object by config_filename"""
         config = ConfigParser.ConfigParser()
         config.read(configfile_path)
-        
+
         if len(config.sections()) > 0:
             self.config = config
 
     def set_xmlrpc(self, db, usr, passwd, url):
         """Set XML-RPC service connection object"""
         self.xmlrpc = XMLRPCService(db, usr, passwd, url)
-    
+
     def set_xmlrpc_by_config(self):
         """Set XML-RPC by config (e.g. config-file)"""
         url = "%s:%s" % (
@@ -84,12 +84,13 @@ class OrbeonHandlerBase(object):
             [ira_data],
         )
 
+
 class BuilderHandler(OrbeonHandlerBase):
     """Orbeon-Builder (data) Handler"""
-    
+
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
         super(BuilderHandler, self).__init__(app, form, data_type, path, args, data)
-        
+
         self.model = 'orbeon.builder'
         self.form_doc_id = path[5] if len(path) > 5 else None
         self.form_data_id = path[6] if len(path) > 6 else None
@@ -98,7 +99,7 @@ class BuilderHandler(OrbeonHandlerBase):
         """Get Orbeon-Builder data by read (i.e. HTTP GET)"""
         if self.data_type == 'data' and self.form_data_id == 'data.xml':
             record = self.xmlrpc.builder_search_read_data(
-                [[("id","=",self.form_doc_id)]],
+                [[("id", "=", self.form_doc_id)]],
                 ["xml"],
             )
             return record.get("xml")
@@ -107,7 +108,7 @@ class BuilderHandler(OrbeonHandlerBase):
 
     def save(self):
         """Save Orbeon-Builder data by save (i.e. HTTP PUT)"""
-        
+
         """Assumption of a database Pk/sequenced integer.
         Orbeon sends a alnum string/hash, which is here handeld by create().
         """
@@ -115,13 +116,13 @@ class BuilderHandler(OrbeonHandlerBase):
             self.write()
         else:
             self.create()
-        
+
     def write(self):
         """Write Orbeon-Builder data by save on edit (i.e. HTTP PUT)"""
         record = self.xmlrpc.search(
             "orbeon.builder",
-            [[("id","=",self.form_doc_id)]],
-                    )
+            [[("id", "=", self.form_doc_id)]],
+        )
         if len(record) == 0:
             return
 
@@ -162,21 +163,20 @@ class BuilderHandler(OrbeonHandlerBase):
         """Search Orbeon-Builder data by search (i.e. HTTP POST on /search)"""
         try:
             form = self.xmlrpc.search_read(
-                    "orbeon.builder", 
-                    [[("id",">",0)]],
-                    ["name","create_date","write_date"]
-                    )
+                    "orbeon.builder",
+                    [[("id", ">", 0)]],
+                    ["name", "create_date", "write_date"]
+            )
             if len(form) > 0:
                 xml = XmlGenerator(form).gen_xml()
                 return xml
         except Exception, e:
             print "Exception: %s" % e
-        
-        return res
+
 
 class RunnerHandler(OrbeonHandlerBase):
     """Orbeon-Runner (data) Handler"""
-    
+
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
         super(RunnerHandler, self).__init__(app, form, data_type, path, args, data)
 
@@ -186,19 +186,19 @@ class RunnerHandler(OrbeonHandlerBase):
 
     def read(self):
         """Get Orbeon-Runner data by read (i.e. HTTP GET)"""
-        
+
         if self.data_type == 'form':
             # Builder form data (definition)
             form_doc_id = self.args.get('document')
             record = self.xmlrpc.runner_search_read_builder(
-                [[("id","=",form_doc_id)]],
+                [[("id", "=", form_doc_id)]],
                 ["xml"],
             )
             return record.get("xml")
         elif self.data_type == 'data' and self.form_data_id == 'data.xml':
             # Runner form data
             record = self.xmlrpc.runner_search_read_data(
-                [[("id","=",self.form_doc_id)]],
+                [[("id", "=", self.form_doc_id)]],
                 ["xml"],
             )
             return record.get("xml")
@@ -218,14 +218,10 @@ class RunnerHandler(OrbeonHandlerBase):
 
     def write(self):
         """Write Orbeon-Runner data by save on edit (i.e. HTTP PUT)"""
-        record = self.xmlrpc.search(
-            "orbeon.runner",
-            [[("id","=",self.form_doc_id)]],
-        )
-        
+
         if self.data_type == 'data' and self.form_data_id == 'data.xml':
             data = {"xml": str(self.data)}
-            
+
             self.xmlrpc.write(
                 "orbeon.runner",
                 int(self.form_doc_id),
@@ -239,7 +235,7 @@ class RunnerHandler(OrbeonHandlerBase):
     Really test thoroughly (create from Orbeon app, and save multiple times.
     - What about the from_id
     - Check handle_binary_data() e.g. images.
-    """    
+    """
     def create(self):
         """Create Orbeon-Runner data by save on create/new (i.e. HTTP PUT)"""
         raise NotImplementedError("'create' not implemented on RunnerHandler")
@@ -247,6 +243,7 @@ class RunnerHandler(OrbeonHandlerBase):
         #         "name": str(self.form_doc_id),
         #         "xml": str(self.data),
         #     }
+
 
 class OdooServiceHandler(OrbeonHandlerBase):
     def __init__(self, app, form, data_type, path=(), args={}, data=None):
@@ -278,16 +275,16 @@ class OdooServiceHandler(OrbeonHandlerBase):
         label = self.args.get('label')
 
         if label is None:
-            _log('error', 'label is missing in args (dict)')                    
+            _log('error', 'label is missing in args (dict)')
 
         domain = []
         domain_fields = self.args.getlist('domain_fields')
 
-        for domain_field in domain_fields: 
+        for domain_field in domain_fields:
             value = self.args.get(domain_field)
 
             if value is not None:
-                filter = (domain_field,'=',value)
+                filter = (domain_field, '=', value)
                 domain.append(filter)
 
         _log('debug', "domain: %s" % domain)
