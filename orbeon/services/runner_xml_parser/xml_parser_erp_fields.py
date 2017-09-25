@@ -99,12 +99,14 @@ class XmlParserERPFields(XmlParserBase):
                 try:
                     target_object = target_object[field]
                     traversed_fields.append(field)
+                except KeyError as relational_field_error:
+                    msg = "NOT IN MODEL %s" % self.res_model
+                    error = self._exception_erpfield(erp_field_obj.tagname, all_fields, msg)
+                except Exception as relational_field_error:
+                    msg = "ERROR with model %s" % self.res_model
+                    error = self._exception_erpfield(erp_field_obj.tagname, all_fields, msg)
 
-                except KeyError:
-                    relational_field_error = True
-                    msg = "not in model %s" % self.res_model
-                    error = self._exception_erpfield(all_fields, msg)
-
+                if relational_field_error:
                     self.errors.append(error)
                     _logger.info('[orbeon] %s' % error.message)
 
@@ -118,8 +120,8 @@ class XmlParserERPFields(XmlParserBase):
                     field_val = target_object[field]
 
                 except KeyError:
-                    msg = "not in model %s" % self.res_model
-                    error = self._exception_erpfield(all_fields, msg)
+                    msg = "NOT IN MODEL %s" % self.res_model
+                    error = self._exception_erpfield(erp_field_obj.tagname, all_fields, msg)
 
                     if self.runner.builder_id.debug_mode:
                         field_val = error.message
@@ -140,6 +142,7 @@ class XmlParserERPFields(XmlParserBase):
                     _logger.info('[orbeon] %s' % error.message)
                     self.errors.append(error)
             else:
+                # elif isinstance(relational_field_error, KeyError):
                 # Brought here by the `while (loop)` above.
                 # where relational_field_error was set True.
                 if self.runner.builder_id.debug_mode:
@@ -149,8 +152,8 @@ class XmlParserERPFields(XmlParserBase):
 
             erp_field_obj.set_element_text(field_val)
 
-    def _exception_erpfield(self, fields_chain, msg):
-        msg_exception = "ERP.%s (DETAILS: %s)" % ((".".join(fields_chain), msg))
+    def _exception_erpfield(self, tagname, fields_chain, msg):
+        msg_exception = "%s (ERP.%s %s)" % (tagname, (".".join(fields_chain)), msg)
         return XMLParserERPFieldsException(msg_exception)
 
 
@@ -166,4 +169,7 @@ class ERPField(object):
         self.model_fields = erp_field_token.split('.')
 
     def set_element_text(self, value):
-        self.element.text = value
+        try:
+            self.element.text = value
+        except:
+            pass
