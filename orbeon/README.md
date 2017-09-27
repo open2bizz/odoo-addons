@@ -7,6 +7,10 @@ General information is available online:
 - [About this Odoo App](https://www.odoo.com/apps/modules/10.0/orbeon)
 - For more information about Orbeon Forms visit [orbeon.com](http://www.orbeon.com)
 
+## Important notes
+
+- It's currently only tested with "Orbeon Forms" **Release 2016.3**.
+- Reports issue #33 with Orbeon Forms **Release 2017.1** 
 
 ## Installation
 
