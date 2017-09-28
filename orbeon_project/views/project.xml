@@ -2,11 +2,15 @@
 <odoo>
     <data>
 
+        <!-- Project -->
         <record id="orbeon_project_project_form" model="ir.ui.view">
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
 	        <notebook position="inside">
+                    <page string="Form Stages">
+	                <field name="form_type_ids"/>
+                    </page>
 	            <page string="Orbeon Runner Forms">
 	                <field name="orbeon_runner_form_ids">
 	                    <tree>

@@ -40,6 +40,10 @@ class Project(models.Model):
         compute="_get_orbeon_runner_forms_count",
     )
 
+    form_type_ids = fields.Many2many(
+        'project.task.type', 'project_form_type_rel', 'project_id', 'form_type_id', string='Form Stages'
+    )
+
     @api.one
     def _get_orbeon_runner_forms_count(self):
         self.orbeon_runner_forms_count = self.env["orbeon.runner"].search_count([
