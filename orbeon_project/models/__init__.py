@@ -20,3 +20,4 @@
 ##############################################################################
 import project_type
 import project
+import orbeon_runner

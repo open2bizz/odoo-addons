@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="orbeon_project_runner_form_form" model="ir.ui.view">
+            <field name="name">orbeon.project.runner.form</field>
+            <field name="model">orbeon.runner</field>
+            <field name="inherit_id" ref="orbeon.orbeon_runner_form_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="res_model" position="before">
+                        <field name="project_id"/>
+                    </field>
+
+	            <xpath expr="//form/sheet" position="before">
+                        <header>
+                            <field name="stage_id" widget="statusbar" clickable="True"/>
+                        </header>
+
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <!-- Orbeon Runner Forms kanban view -->        
+        <record id="orbeon_project_runner_kanban" model="ir.ui.view">
+            <field name="name">orbeon.project.runner.kanban</field>
+            <field name="model">orbeon.runner</field>
+            <field name="inherit_id" ref="orbeon.orbeon_runner_form_kanban"/>
+            <field name="arch" type="xml">
+                <kanban position="attributes">
+                    <attribute name="default_group_by">stage_id</attribute>
+                    <attribute name="group_create">false</attribute>
+                    <attribute name="group_delete">false</attribute>
+                    <attribute name="group_edit">false</attribute>
+                </kanban>
+                
+                <kanban position="inside">
+                    <field name="project_id"/>
+                    <field name="stage_id"/>
+                    <field name="color"/>
+                    <field name="user_email"/>
+                    <field name="user_id"/>
+                    <field name="active"/>
+                </kanban>
+                
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -41,6 +41,8 @@ class OrbeonRunner(models.Model):
 
     _rec_name = "builder_name"
 
+    active = fields.Boolean(default=True)
+
     builder_id = fields.Many2one(
         "orbeon.builder",
         string="Form builder",
@@ -85,6 +87,8 @@ class OrbeonRunner(models.Model):
         compute="_get_url",
         readonly=True)
 
+    # TODO:
+    # Change to Many2one (res_model_id) and add migation (res_model => res_model_id)
     res_model = fields.Char(
         "Resource Model",
         compute="_get_res_model",

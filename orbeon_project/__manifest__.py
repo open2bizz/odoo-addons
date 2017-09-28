@@ -33,6 +33,8 @@
         "orbeon",
     ],
     "data": [
+        "data/orbeon_project_data.xml",
+        "views/orbeon_runner.xml",
         "views/project_type.xml",
         "views/project.xml",
     ],

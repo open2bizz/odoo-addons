@@ -6,12 +6,6 @@
             <field name="model">orbeon.runner</field>
             <field name="arch" type="xml">
                 <form>
-                    <header>
-                        <field
-                            name="state"
-                            widget="statusbar"
-                            />
-                    </header>
                     <sheet>
                         <group>
                             <field name="id" invisible="1"/>
