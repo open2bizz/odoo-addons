@@ -63,6 +63,8 @@ class OrbeonRunner(models.Model):
         compute="_get_builder_title",
         readonly=True)
 
+    color = fields.Integer('Color Index')
+
     state = fields.Selection(
         [
             (STATE_NEW, "New"),

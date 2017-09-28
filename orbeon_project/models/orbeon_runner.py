@@ -52,7 +52,6 @@ class OrbeonRunner(models.Model):
         readonly=True
     )
     user_id = fields.Many2one('res.users', string='Assigned to', index=True, track_visibility='onchange', default=lambda self: self.env.uid)
-    color = fields.Integer('Color Index')
     user_email = fields.Char(related='user_id.email', string='User Email', readonly=True)
     sequence = fields.Integer(
         string='Sequence', index=True, default=10,

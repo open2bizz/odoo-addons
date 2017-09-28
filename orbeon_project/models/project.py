@@ -104,27 +104,25 @@ class Project(models.Model):
 
     @api.multi
     def action_orbeon_runner_forms(self, context=None, *args, **kwargs):
-        tree_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.tree")])[0]
-
         kanban_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.kanban")])[0]
+        tree_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.tree")])[0]
+        form_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.form")])[0]
 
         runner_form_ids = [runner_form.id for runner_form in self.orbeon_runner_form_ids]
 
         if not context.get('default_project_id'):
             context['default_project_id'] = self.id
 
-        # if not context.get('default_project_id'):
-        #     context['default_orbeon_runner_stage_id'] = self.form_type_ids
-
         return {
             "name": _("Forms"),
             "type": "ir.actions.act_window",
             "res_model": "orbeon.runner",
             "view_type": "kanban",
-            "view_mode": "kanban, tree",
+            "view_mode": "kanban, form, tree",
             "views": [
                 [kanban_view.id, "kanban"],
-                [tree_view.id, "tree"],
+                [form_view.id, "form"],
+                [tree_view.id, "tree"]
             ],
             "target": "current",
             "default_project_id": self.id,

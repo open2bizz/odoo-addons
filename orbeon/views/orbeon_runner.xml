@@ -46,17 +46,21 @@
                     <field name="url"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div>
-                                <div class="o_kanban_card_header">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
 
+                                <div class="o_kanban_card_header">
                                     <div class="o_kanban_card_header_title">
                                         <div class="o_primary"><field name="builder_title"/></div>
-                                        <div class="o_secondary">
-                                            <t class="badge"><i class="fa fa-fw fa-at"/></t>
-                                            <field name="builder_version"/>
-                                        </div>
                                     </div>
-
+                                    <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                        <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                            <span class="fa fa-bars fa-lg"/>
+                                        </a>
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <t t-if="widget.editable"><li><a type="set_cover">Set Cover Image</a></li></t>
+                                            <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="container o_kanban_card_content o_visible">
                                     <div class="row">
@@ -67,7 +71,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </t>
                     </templates>

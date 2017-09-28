@@ -43,7 +43,15 @@
                     <field name="user_id"/>
                     <field name="active"/>
                 </kanban>
-                
+
+                <xpath expr="//div[contains(@class, 'o_kanban_card_content')]/div[contains(@class, 'row')][1]" position="before">
+                    <div style="padding-top:10px;">
+                        <ul>
+                            <li>Project: <strong><field name="project_id"/></strong></li>
+                            <li>User: <strong><field name="user_id"/></strong></li>
+                        </ul>
+                    </div>
+                </xpath>
             </field>
         </record>
     </data>
