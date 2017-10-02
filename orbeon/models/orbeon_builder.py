@@ -62,7 +62,7 @@ class OrbeonBuilder(models.Model):
     complete_name = fields.Char(
         "Full Name",
         compute='_compute_complete_name',
-        store=True
+        store=False
     )
 
     parent_id = fields.Many2one(
@@ -137,9 +137,9 @@ class OrbeonBuilder(models.Model):
     )
 
     @api.one
-    @api.depends('name', 'version')
+    @api.depends('title', 'name', 'version')
     def _compute_complete_name(self):
-        self.complete_name = "%s @ %s" % (self.name, self.version)
+        self.complete_name = "%s (%s @ %s)" % (self.title, self.name, self.version)
 
     @api.one
     @api.constrains('name')

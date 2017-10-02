@@ -105,7 +105,7 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_name(self, id=None):
-        self.builder_name = "%s (%s)" % (self.builder_id.name, self.builder_id.version)
+        self.builder_name = "%s @ %s" % (self.builder_id.name, self.builder_id.version)
 
     @api.one
     def _get_builder_version(self, id=None):
@@ -113,7 +113,7 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_title(self, id=None):
-        self.builder_title = "%s (%s)" % (self.builder_id.title, self.builder_id.version)
+        self.builder_title = self.builder_id.title
 
     @api.depends('builder_id')
     def _get_res_model(self):

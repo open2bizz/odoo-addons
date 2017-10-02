@@ -49,13 +49,11 @@
                     <field name="legend_done"/>
                 </kanban>
 
-                <xpath expr="//div[contains(@class, 'o_kanban_card_content')]/div[contains(@class, 'row')]/div[contains(@class, 'o_kanban_primary_right')][1]" position="before">
-                    <div class="col-xs-10 o_kanban_primary_left">
-                        <ul>
-                            <li>Project: <strong><field name="project_id"/></strong></li>
-                            <li>User: <strong><field name="user_id"/></strong></li>
-                        </ul>
-                    </div>
+                <xpath expr="//div[contains(@class, 'o_kanban_card_content')]/div[contains(@class, 'row')]/div[contains(@class, 'o_kanban_primary_left')][1]" position="inside">
+                    <ul>
+                        <li>Project: <strong><field name="project_id"/></strong></li>
+                        <li>User: <strong><field name="user_id"/></strong></li>
+                    </ul>
                 </xpath>
             </field>
         </record>
