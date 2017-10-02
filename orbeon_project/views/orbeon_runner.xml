@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="orbeon_project_runner_form_form" model="ir.ui.view">
+        <record id="orbeon_project_runner_form" model="ir.ui.view">
             <field name="name">orbeon.project.runner.form</field>
             <field name="model">orbeon.runner</field>
             <field name="inherit_id" ref="orbeon.orbeon_runner_form_form"/>
@@ -14,7 +14,8 @@
 
 	            <xpath expr="//form/sheet" position="before">
                         <header>
-                            <field name="stage_id" widget="statusbar" clickable="True"/>
+                            <field name="stage_id" widget="statusbar" clickable="True"
+                                   options="{'fold_field': 'fold'}"/>
                         </header>
 
                     </xpath>
@@ -37,15 +38,19 @@
                 
                 <kanban position="inside">
                     <field name="project_id"/>
-                    <field name="stage_id"/>
+                    <field name="stage_id" options='{"group_by_tooltip": {"description": "Stage Description"}}'/>
                     <field name="color"/>
                     <field name="user_email"/>
                     <field name="user_id"/>
+                    <field name="sequence"/>
                     <field name="active"/>
+                    <field name="legend_blocked"/>
+                    <field name="legend_normal"/>
+                    <field name="legend_done"/>
                 </kanban>
 
-                <xpath expr="//div[contains(@class, 'o_kanban_card_content')]/div[contains(@class, 'row')][1]" position="before">
-                    <div style="padding-top:10px;">
+                <xpath expr="//div[contains(@class, 'o_kanban_card_content')]/div[contains(@class, 'row')]/div[contains(@class, 'o_kanban_primary_right')][1]" position="before">
+                    <div class="col-xs-10 o_kanban_primary_left">
                         <ul>
                             <li>Project: <strong><field name="project_id"/></strong></li>
                             <li>User: <strong><field name="user_id"/></strong></li>

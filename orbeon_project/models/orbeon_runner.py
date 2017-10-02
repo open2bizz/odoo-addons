@@ -55,10 +55,10 @@ class OrbeonRunner(models.Model):
     user_email = fields.Char(related='user_id.email', string='User Email', readonly=True)
     sequence = fields.Integer(
         string='Sequence', index=True, default=10,
-        help="Gives the sequence order when displaying a list of tasks."
+        help="Gives the sequence order when displaying a list of forms."
     )
     stage_id = fields.Many2one(
-        'orbeon.runner.stage', string='Stage', track_visibility='onchange', index=True,
+        'orbeon.project.runner.stage', string='Stage', track_visibility='onchange', index=True,
         domain="[('project_ids', '=', project_id)]", copy=False,
         group_expand='_read_group_stage_ids',
         default=_get_default_stage_id
@@ -71,7 +71,7 @@ class OrbeonRunner(models.Model):
         default='normal',
         track_visibility='onchange',
         required=True, copy=False,
-        help="A task's kanban state indicates special situations affecting it:\n"
+        help="A forms's kanban state indicates special situations affecting it:\n"
              " * Normal is the default situation\n"
              " * Blocked indicates something is preventing the progress of this form\n"
              " * Ready for next stage indicates the form is ready to be pulled to the next stage")
@@ -83,6 +83,9 @@ class OrbeonRunner(models.Model):
         copy=False,
         readonly=True
     )
+    legend_blocked = fields.Char(related='stage_id.legend_blocked', string='Kanban Blocked Explanation', readonly=True)
+    legend_done = fields.Char(related='stage_id.legend_done', string='Kanban Valid Explanation', readonly=True)
+    legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True)
 
     @api.one
     def _compute_project_id(self):
@@ -120,7 +123,7 @@ class OrbeonRunner(models.Model):
                 search_domain.append(('project_ids', '=', project_id))
         search_domain += list(domain)
         # perform search, return the first found
-        return self.env['project.task.type'].search(search_domain, order=order, limit=1).id
+        return self.env['orbeon.project.runner.stage'].search(search_domain, order=order, limit=1).id
 
     @api.model
     def create(self, vals):
@@ -170,13 +173,13 @@ class OrbeonRunner(models.Model):
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'kanban_state' in init_values and self.kanban_state == 'blocked':
-            return 'orbeon_project.mt_project_orbeon_runner_blocked'
+            return 'orbeon_project.mt_orbeon_project_runner_blocked'
         elif 'kanban_state' in init_values and self.kanban_state == 'done':
-            return 'orbeon_project.mt_project_orbeon_runner_ready'
+            return 'orbeon_project.mt_orbeon_project_runner_ready'
         elif 'user_id' in init_values and self.user_id:  # assigned -> new
-            return 'orbeon_project.mt_project_orbeon_runner_new'
+            return 'orbeon_project.mt_orbeon_project_runner_new'
         elif 'pstage_id' in init_values and self.stage_id and self.stage_id.sequence <= 1:  # start stage -> new
-            return 'orbeon_project.mt_project_orbeon_runner_new'
+            return 'orbeon_project.mt_orbeon_project_runner_new'
         elif 'stage_id' in init_values:
-            return 'orbeon_project.mt_project_orbeon_runner_stage'
+            return 'orbeon_project.mt_orbeon_project_runner_stage'
         return super(OrbeonRunner, self)._track_subtype(init_values)

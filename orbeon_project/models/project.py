@@ -27,8 +27,8 @@ _logger = logging.getLogger(__name__)
 
 class OrbeonRunnerStage(models.Model):
 
-    _name = "orbeon.runner.stage"
-    _description = "Orbeon Runner Stage"
+    _name = "orbeon.project.runner.stage"
+    _description = "Orbeon Project Runner Stage"
     _order = 'sequence, id'
 
     def _get_mail_template_id_domain(self):
@@ -39,11 +39,21 @@ class OrbeonRunnerStage(models.Model):
         return [default_project_id] if default_project_id else None
 
     name = fields.Char('Stage Name', translate=True, required=True)
+    description = fields.Text(translate=True)
     sequence = fields.Integer(help="Used to order the Form stages", default=1)
     project_ids = fields.Many2many(
-        'project.project', 'project_orbeon_runner_stage_rel', 'orbeon_runner_stage_id', 'project_id', string='Projects',
+        'project.project', 'orbeon_project_runner_stage_rel', 'orbeon_project_runner_stage_id', 'project_id', string='Projects',
         default=_get_default_project_ids
     )
+    legend_blocked = fields.Char(
+        string='Kanban Blocked Explanation', translate=True,
+        help='Override the default value displayed for the blocked state for kanban selection, when the form is in that stage.')
+    legend_done = fields.Char(
+        string='Kanban Valid Explanation', translate=True,
+        help='Override the default value displayed for the done state for kanban selection, when the form is in that stage.')
+    legend_normal = fields.Char(
+        string='Kanban Ongoing Explanation', translate=True,
+        help='Override the default value displayed for the normal state for kanban selection, when the form is in that stage.')
     mail_template_id = fields.Many2one(
         'mail.template',
         string='Email Template',
@@ -68,8 +78,8 @@ class Project(models.Model):
         compute="_get_orbeon_runner_forms_count",
     )
 
-    orbeon_runner_stage_ids = fields.Many2many(
-        'orbeon.runner.stage', 'project_orbeon_runner_stage_rel', 'project_id', 'orbeon_runner_stage_id', string='Form Stages'
+    orbeon_project_runner_stage_ids = fields.Many2many(
+        'orbeon.project.runner.stage', 'orbeon_project_runner_stage_rel', 'project_id', 'orbeon_project_runner_stage_id', string='Form Stages'
     )
 
     @api.one
