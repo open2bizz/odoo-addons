@@ -96,7 +96,7 @@ class OrbeonRunner(models.Model):
     @api.onchange('project_id')
     def _onchange_project(self):
         if self.project_id:
-            self.stage_id = self.stage_find(self.project_id, [('fold', '=', False)])
+            self.stage_id = self.stage_find(self.project_id.id, [('fold', '=', False)])
         else:
             self.stage_id = False
 
@@ -132,7 +132,9 @@ class OrbeonRunner(models.Model):
 
         # for default stage
         if vals.get('project_id') and not context.get('default_project_id'):
-            context['default_project_id'] = vals.get('project_id')
+            context['default_res_id'] = vals.get('project_id')
+        else:
+            vals['res_id'] = context.get('default_project_id', False)
         # user_id change: update date_assign
         if vals.get('user_id'):
             vals['date_assign'] = fields.Datetime.now()
