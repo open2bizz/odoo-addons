@@ -22,6 +22,7 @@
 from orbeon_xml_api.runner import Runner, RunnerForm
 from odoo.addons.orbeon.tests.test_orbeon_common import TestOrbeonCommon
 
+from datetime import datetime
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -33,3 +34,10 @@ class TestOrbeonRunnerXmlApi(TestOrbeonCommon):
     def test_o_xml_is_runner_api(self):
         self.assertIsInstance(self.runner_form_a_v2.o_xml, Runner)
         self.assertIsInstance(self.runner_form_a_v2.o_xml.form, RunnerForm)
+
+    def test_o_xml_runner_api_get(self):
+        self.assertEqual(self.runner_form_a_v2.o_xml.form.inputcontrol1.value, 'text 1')
+        self.assertEqual(self.runner_form_a_v2.o_xml.form.inputcontrol2.value, 'text 2')
+
+        date_obj = datetime.strptime('2016-05-11', '%Y-%m-%d').date()
+        self.assertEqual(self.runner_form_a_v2.o_xml.form.datecontrol1.value, date_obj)
