@@ -6,20 +6,21 @@
             <field name="model">orbeon.runner</field>
             <field name="arch" type="xml">
                 <form>
-                    <header>
-                        <field
-                            name="state"
-                            widget="statusbar"
-                            />
-                    </header>
                     <sheet>
-                        <group>
-                            <field name="id" invisible="1"/>
-                            <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
-                            <field name="url" widget="url"/>
-                            <field name="res_model" />
-                            <field name="res_id" />
-                        </group>
+                        <notebook>
+                            <page name="general" string="General">
+                                <group>
+                                    <field name="id" invisible="1"/>
+                                    <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
+                                    <field name="url" widget="url"/>
+                                    <field name="res_model" />
+                                    <field name="res_id" />
+                                </group>
+                            </page>
+                            <page name="xml" string="XML">
+                                <field name="xml" />
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
@@ -46,34 +47,46 @@
             <field name="name">orbeon.runner_form.kanban</field>
             <field name="model">orbeon.runner</field>
             <field name="arch" type="xml">
-                <kanban class="oe_background_grey o_kanban_dashboard" create="false">
+                <kanban class="oe_background_grey o_kanban_dashboard">
                     <field name="builder_id" />
                     <field name="builder_name" />
                     <field name="url"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <div>
-                                <div class="o_kanban_card_header">
+                            <div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
 
+                                <div class="o_kanban_card_header">
                                     <div class="o_kanban_card_header_title">
                                         <div class="o_primary"><field name="builder_title"/></div>
-                                        <div class="o_secondary">
-                                            <t class="badge"><i class="fa fa-fw fa-at"/></t>
-                                            <field name="builder_version"/>
-                                        </div>
                                     </div>
-
                                 </div>
+
                                 <div class="container o_kanban_card_content o_visible">
                                     <div class="row">
-                                        <div class="col-xs-6 o_kanban_primary_left">
-                                            <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
+                                        <div class="col-xs-10 o_kanban_primary_left"></div>
+                                        <div class="col-xs-2 o_kanban_primary_right">
+                                            <div class="o_dropdown_kanban dropdown" groups="base.group_user">
+                                                <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                                    <span class="fa fa-bars fa-lg"/>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                                    <li>Set Color<ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="col-xs-6 o_kanban_primary_right">
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-10 o_kanban_primary_left" style="padding-top:0;padding-bottom:0;" groups="orbeon.orbeon_admin">
+                                            <div style="padding-bottom: 8px;"><small class="text-muted">Builder: <field name="builder_name"/></small></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 o_kanban_primary_left" style="padding-top: 0;">
+                                            <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </t>
                     </templates>

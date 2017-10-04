@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,24 +20,37 @@
 ##############################################################################
 
 {
-    "name": "Orbeon Forms on Projects",
-    'summary': 'Orbeon Forms on Projects',
+    "name": "Orbeon XML API",
+    'summary': 'Orbeon XML API',
+    'description': """
+Orbeon XML API
+===============
+
+Use Orbeon (Runner) Forms XML, like it's a simple Python object.  This
+module extends the Orbeon Runner model-object, with a special
+attribute *o_xml*, which is the "Pythonic" object API on the Runner
+its XML.
+
+Syntax examples:
+- runner.o_xml.section_general.firstname: Returns a Python string e.g. "Bob"
+- runner.o_xml.section_general.birthdate: Returns a Python Date object.
+- runner.o_xml.section_general.avatar_pic: Returns Python base64decoded data object.
+
+""",
     "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
-    "category": "Project",
+    "category": "Extra Tools",
     "depends": [
-        "project",
-        "project_type",
         "orbeon",
     ],
-    "data": [
-        "data/orbeon_project_data.xml",
-        "views/orbeon_runner.xml",
-        "views/project_type.xml",
-        "views/project.xml",
+    # 'external_dependencies': {
+    #     'python': ['orbeon_xml_api'],
+    # },
+    'data': [
+        'views/report_runner_test.xml'
     ],
-    "application": True,
+    "application": False,
     "installable": True,
 }

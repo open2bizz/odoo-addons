@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import project_type
-import project
-import orbeon_runner
+{
+    "name": "Project View with Messaging",
+    "version": "0.1",
+    "author": "Open2bizz",
+    "website": "http://www.open2bizz.nl",
+    "license": "AGPL-3",
+    "category": "Project",
+    "depends": [
+        "project",
+    ],
+    "data": [
+        "views/project_views.xml",
+    ],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+}

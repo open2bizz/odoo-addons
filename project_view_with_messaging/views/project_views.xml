@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+
+    <record id="project_view_with_messaging_edit_project" model="ir.ui.view">
+      <field name="name">project_view_with_messaging.project.form</field>
+      <field name="model">project.project</field>
+      <field name="inherit_id" ref="project.edit_project" />
+      <field name="arch" type="xml">
+	<field name="message_follower_ids" position="after">
+            <field name="message_ids" widget="mail_thread"/>
+	</field>
+      </field>
+    </record>
+
+  </data>
+</odoo>

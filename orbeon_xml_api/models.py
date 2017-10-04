@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,6 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-import project_type
-import project
-import orbeon_runner
+
+from orbeon_xml_api.runner import Runner
+from odoo import models
+
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class OrbeonRunner(models.Model):
+    _name = 'orbeon.runner'
+    _inherit = ['orbeon.runner']
+
+    def __getattr__(self, name):
+        if name == 'o_xml':
+            if 'o_xml' not in self.__dict__:
+                self.o_xml = Runner(self.xml, None, self.builder_id.xml)
+            return self.o_xml
+        else:
+            return self.__getattribute__(name)
