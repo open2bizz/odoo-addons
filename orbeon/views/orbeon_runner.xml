@@ -7,13 +7,20 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
-                        <group>
-                            <field name="id" invisible="1"/>
-                            <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
-                            <field name="url" widget="url"/>
-                            <field name="res_model" />
-                            <field name="res_id" />
-                        </group>
+                        <notebook>
+                            <page name="general" string="General">
+                                <group>
+                                    <field name="id" invisible="1"/>
+                                    <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
+                                    <field name="url" widget="url"/>
+                                    <field name="res_model" />
+                                    <field name="res_id" />
+                                </group>
+                            </page>
+                            <page name="xml" string="XML">
+                                <field name="xml" />
+                            </page>
+                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers" />
