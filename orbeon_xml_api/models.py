@@ -34,10 +34,7 @@ class OrbeonRunner(models.Model):
     def __getattr__(self, name):
         if name == 'o_xml':
             if 'o_xml' not in self.__dict__:
-                # runner = Runner(self.xml, None, self.builder_id.xml)
-                # self.o_xml = runner.form
                 self.o_xml = Runner(self.xml, None, self.builder_id.xml)
             return self.o_xml
         else:
-            # return self.__getattribute__(name)
             return self.__getattribute__(name)

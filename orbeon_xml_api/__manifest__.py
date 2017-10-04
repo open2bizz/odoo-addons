@@ -45,9 +45,12 @@ Syntax examples:
     "depends": [
         "orbeon",
     ],
-    'external_dependencies': {
-        'python': ['orbeon-xml-api'],
-    },
+    # 'external_dependencies': {
+    #     'python': ['orbeon_xml_api'],
+    # },
+    'data': [
+        'views/report_runner_test.xml'
+    ],
     "application": False,
     "installable": True,
 }
