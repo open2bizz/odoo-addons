@@ -28,7 +28,10 @@ _logger = logging.getLogger(__name__)
 
 
 class OrbeonBuilderTemplate(models.Model):
-    _name = "orbeon.builder.template"
+    _name = 'orbeon.builder.template'
+    _inherit = ['mail.thread']
+    _description = 'Orbeon Builder Template'
+
     _rec_name = "name"
 
     name = fields.Char(

@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,29 +19,22 @@
 #
 ##############################################################################
 
-{
-    "name": "Orbeon Forms",
-    "summary": 'Integrate Orbeon Forms with Odoo',
-    "description": 'Orbeon Forms integration',
-    "version": "0.2",
-    "author": "Open2bizz",
-    "website": "http://www.open2bizz.nl",
-    "license": "AGPL-3",
-    "category": "Extra Tools",
-    "depends": ['base', 'mail'],
-    'external_dependencies': {
-        'python': ['dicttoxml', 'xmlunittest']
-    },
-    "data": [
-        "security/res_groups.xml",
-        "security/ir_model_access.xml",
-        "views/orbeon_builder_template.xml",
-        "views/orbeon_builder.xml",
-        "views/orbeon_runner.xml",
-        "views/orbeon_server.xml",
-        "views/base.xml",
-        "data/orbeon_builder_template_empty.xml"
-    ],
-    "application": True,
-    "installable": True,
-}
+from orbeon_xml_api.runner import Runner
+from odoo import models
+
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class OrbeonRunner(models.Model):
+    _name = 'orbeon.runner'
+    _inherit = ['orbeon.runner']
+
+    def __getattr__(self, name):
+        if name == 'o_xml':
+            if 'o_xml' not in self.__dict__:
+                self.o_xml = Runner(self.xml, None, self.builder_id.xml)
+            return self.o_xml
+        else:
+            return self.__getattribute__(name)

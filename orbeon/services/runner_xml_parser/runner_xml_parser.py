@@ -17,6 +17,7 @@ class RunnerXmlParser(object):
 
         self.xml_root = self.xml_root()
         self.parsers = self.parsers()
+        self.errors = []
 
     def parsers(self):
         return ('XmlParserERPFields',)
@@ -38,6 +39,9 @@ class RunnerXmlParser(object):
         for parser_class in self.parsers:
             parser = globals()[parser_class](self.runner, self.xml_root)
             parser.parse()
+
+            # Append any errors
             self.xml_root = parser.xml_root
+            self.errors += parser.errors
 
         self.xml = etree.tostring(self.xml_root)

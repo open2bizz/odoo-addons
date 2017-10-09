@@ -22,7 +22,7 @@
 {
     "name": "Orbeon Forms on Projects",
     'summary': 'Orbeon Forms on Projects',
-    "version": "0.1",
+    "version": "0.2",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
@@ -33,6 +33,8 @@
         "orbeon",
     ],
     "data": [
+        "data/orbeon_project_data.xml",
+        "views/orbeon_runner.xml",
         "views/project_type.xml",
         "views/project.xml",
     ],

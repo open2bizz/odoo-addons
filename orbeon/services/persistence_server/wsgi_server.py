@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import base64
-import dicttoxml
 from werkzeug.wrappers import Request, Response
 
 from orbeon_handlers import BuilderHandler, RunnerHandler, OdooServiceHandler
@@ -12,9 +11,10 @@ BUILDER_HANDLER = 'builder_handler'
 RUNNER_HANDLER = 'runner_handler'
 ODOO_SERVICE_HANDLER = 'odoo_service_handler'
 
+
 class OrbeonRequestHandler(object):
     """Orbeon (HTTP) request handler"""
-    
+
     def __init__(self, request, configfile_path=None):
         _log("debug", "request => %s" % request)
         _log("debug", "configfile_path => %s" % configfile_path)
@@ -121,10 +121,11 @@ class OrbeonRequestHandler(object):
         # if self.method == "DELETE":
         #     return self.handler.delete()
 
+
 class OrbeonPersistenceApp(object):
     def __init__(self, configfile_path=None):
         self.configfile_path = configfile_path
-	
+
     def dispatch_request(self, request):
         orbeon_request = OrbeonRequestHandler(request, self.configfile_path)
         return orbeon_request.process()
@@ -136,6 +137,7 @@ class OrbeonPersistenceApp(object):
 
     def __call__(self, environ, start_response):
         return self.wsgi_app(environ, start_response)
+
 
 def create_app(configfile_path=None):
     app = OrbeonPersistenceApp(configfile_path)

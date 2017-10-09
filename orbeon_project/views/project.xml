@@ -2,22 +2,23 @@
 <odoo>
     <data>
 
+        <!-- Project -->
         <record id="orbeon_project_project_form" model="ir.ui.view">
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
 	        <notebook position="inside">
-	            <page string="Orbeon Runner Forms">
-	                <field name="orbeon_runner_form_ids">
-	                    <tree>
-		                <field name="builder_title" string="Title"/>
-		                <field name="state" />
-		                <button name="orbeon_runner_form" string="Form" type="object"
-			                icon="fa-external-link" />
-	                    </tree>
-	                </field>
-	            </page>
+                    <page string="Form Stages">
+	                <field name="orbeon_project_runner_stage_ids"/>
+                    </page>
 	        </notebook>
+
+                <button name="toggle_active" position="before">
+                    <button name="action_orbeon_runner_forms" type="object" context="{'default_project_id':id}"
+                            class="oe_stat_button" icon="fa-file-text">
+                        <field string="Forms " name="orbeon_runner_forms_count" widget="statinfo" context="{'default_project_id':id}"/>
+                    </button>
+                </button>
             </field>
         </record>
 
@@ -47,24 +48,92 @@
             </field>
         </record>
 
-        <!-- orbeon runner forms kanban view -->
-        <record id="orbeon_project_runner_kanban" model="ir.ui.view">
-            <field name="name">orbeon.project.runner.kanban</field>
-            <field name="model">orbeon.runner</field>
+        <!-- Form stages -->
+        <record id="orbeon_project_runner_stage_search" model="ir.ui.view">
+            <field name="name">orbeon.project.runner.stage.search</field>
+            <field name="model">orbeon.project.runner.stage</field>
             <field name="arch" type="xml">
-	        <kanban>
-	            <templates>
-	                <t t-name="kanban-box">
-	                    <div class="oe_kanban_global_click">
-		                <div class="o_primary">
-		                    <!-- <span><t t-esc="record.name.value"/></span> -->
-		                </div>
-	                    </div>
-	                </t>
-	            </templates>
-	        </kanban>
+                <search string="Form Stages">
+                   <field name="name" string="Form Stages"/>
+                </search>
             </field>
         </record>
+
+        <record id="orbeon_project_runner_stage_form" model="ir.ui.view">
+            <field name="name">orbeon.project.runner.stage.form</field>
+            <field name="model">orbeon.project.runner.stage</field>
+            <field name="arch" type="xml">
+                <form string="Form Stage">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="mail_template_id"/>
+                            </group>
+                            <group>
+                                <field name="fold"/>
+                                <field name="project_ids" widget="many2many_tags" groups="base.group_no_one"/>
+                                <field name="sequence" groups="base.group_no_one"/>
+                            </group>
+                        </group>
+                        <group string="Stage Description and Tooltips">
+                            <p class="text-muted" colspan="2">
+                                At each stage employees can block or make form ready for next stage.
+                                You can define here labels that will be displayed for the state instead
+                                of the default labels.
+                            </p>
+                            <label for="legend_normal" string=" " class="oe_kanban_status oe_project_kanban_legend"/>
+                            <field name="legend_normal" nolabel="1"/>
+                            <label for="legend_blocked" string=" " class="oe_kanban_status oe_kanban_status_red oe_project_kanban_legend"/>
+                            <field name="legend_blocked" nolabel="1"/>
+                            <label for="legend_done" string=" " class="oe_kanban_status oe_kanban_status_green oe_project_kanban_legend"/>
+                            <field name="legend_done" nolabel="1"/>
+
+                            <p class="text-muted" colspan="2">
+                                You can also give a tooltip about the use of the stars available in the kanban and form views.
+                            </p>
+
+                            <p class="text-muted" colspan="2">
+                                You can also add a description to help your coworkers understand the meaning and purpose of the stage.
+                            </p>
+                            <field name="description" placeholder="Add a description..." nolabel="1" colspan="2"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="orbeon_project_runner_stage_tree" model="ir.ui.view">
+            <field name="name">orbeon.project.runner.stage.tree</field>
+            <field name="model">orbeon.project.runner.stage</field>
+            <field name="arch" type="xml">
+                <tree string="Form Stage">
+                    <field name="sequence" widget="handle" groups="base.group_no_one"/>
+                    <field name="name"/>
+                    <field name="fold"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="open_orbeon_project_runner_stage" model="ir.actions.act_window">
+            <field name="name">Form Stages</field>
+            <field name="res_model">orbeon.project.runner.stage</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="orbeon_project_runner_stage_tree"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a stage in the task pipeline.
+              </p><p>
+                Define the steps that will be used in the project from the
+                creation of the form, up to the closing of the form.
+                You will use these stages in order to track the progress in
+                solving a form.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="open_orbeon_project_runner_stage" id="menu_orbeon_project_runner_stage" name="Form Stages" parent="project.menu_project_config" sequence="4" groups="project.group_project_manager"/>
 
     </data>
 </odoo>

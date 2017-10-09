@@ -25,6 +25,44 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
+class OrbeonRunnerStage(models.Model):
+
+    _name = "orbeon.project.runner.stage"
+    _description = "Orbeon Project Runner Stage"
+    _order = 'sequence, id'
+
+    def _get_mail_template_id_domain(self):
+        return [('model', '=', 'orbeon.runner')]
+
+    def _get_default_project_ids(self):
+        default_project_id = self.env.context.get('default_project_id')
+        return [default_project_id] if default_project_id else None
+
+    name = fields.Char('Stage Name', translate=True, required=True)
+    description = fields.Text(translate=True)
+    sequence = fields.Integer(help="Used to order the Form stages", default=1)
+    project_ids = fields.Many2many(
+        'project.project', 'orbeon_project_runner_stage_rel', 'orbeon_project_runner_stage_id', 'project_id', string='Projects',
+        default=_get_default_project_ids
+    )
+    legend_blocked = fields.Char(
+        string='Kanban Blocked Explanation', translate=True,
+        help='Override the default value displayed for the blocked state for kanban selection, when the form is in that stage.')
+    legend_done = fields.Char(
+        string='Kanban Valid Explanation', translate=True,
+        help='Override the default value displayed for the done state for kanban selection, when the form is in that stage.')
+    legend_normal = fields.Char(
+        string='Kanban Ongoing Explanation', translate=True,
+        help='Override the default value displayed for the normal state for kanban selection, when the form is in that stage.')
+    mail_template_id = fields.Many2one(
+        'mail.template',
+        string='Email Template',
+        domain=lambda self: self._get_mail_template_id_domain(),
+        help="If set an email will be sent to the customer when the form reaches this step."
+    )
+    fold = fields.Boolean('Folded by Default')
+
+
 class Project(models.Model):
     _inherit = "project.project"
 
@@ -38,6 +76,10 @@ class Project(models.Model):
     orbeon_runner_forms_count = fields.Integer(
         "Number of Orbeon Runner Forms",
         compute="_get_orbeon_runner_forms_count",
+    )
+
+    orbeon_project_runner_stage_ids = fields.Many2many(
+        'orbeon.project.runner.stage', 'orbeon_project_runner_stage_rel', 'project_id', 'orbeon_project_runner_stage_id', string='Form Stages'
     )
 
     @api.one
@@ -62,23 +104,38 @@ class Project(models.Model):
         return res
 
     @api.multi
-    def action_orbeon_runner_forms(self, context=None, *args, **kwargs):
-        tree_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.tree")])[0]
+    def write(self, vals):
+        res = super(Project, self).write(vals)
+        if 'active' in vals:
+            # archiving/unarchiving a project does it on its forms, too
+            forms = self.with_context(active_test=False).mapped('orbeon_runner_form_ids')
+            forms.write({'active': vals['active']})
+        return res
 
+    @api.multi
+    def action_orbeon_runner_forms(self, context=None, *args, **kwargs):
         kanban_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.kanban")])[0]
+        tree_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.tree")])[0]
+        form_view = self.env["ir.ui.view"].search([("name", "=", "orbeon.runner_form.form")])[0]
 
         runner_form_ids = [runner_form.id for runner_form in self.orbeon_runner_form_ids]
+
+        if not context.get('default_project_id'):
+            context['default_project_id'] = self.id
 
         return {
             "name": _("Forms"),
             "type": "ir.actions.act_window",
             "res_model": "orbeon.runner",
             "view_type": "kanban",
-            "view_mode": "kanban, tree",
+            "view_mode": "kanban, form, tree",
             "views": [
                 [kanban_view.id, "kanban"],
-                [tree_view.id, "tree"],
+                [form_view.id, "form"],
+                [tree_view.id, "tree"]
             ],
             "target": "current",
+            "default_project_id": self.id,
+            "context": context,
             "domain": [("id", "in", runner_form_ids)],
         }

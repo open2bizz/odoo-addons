@@ -2,7 +2,7 @@
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -20,28 +20,37 @@
 ##############################################################################
 
 {
-    "name": "Orbeon Forms",
-    "summary": 'Integrate Orbeon Forms with Odoo',
-    "description": 'Orbeon Forms integration',
-    "version": "0.2",
+    "name": "Orbeon XML API",
+    'summary': 'Orbeon XML API',
+    'description': """
+Orbeon XML API
+===============
+
+Use Orbeon (Runner) Forms XML, like it's a simple Python object.  This
+module extends the Orbeon Runner model-object, with a special
+attribute *o_xml*, which is the "Pythonic" object API on the Runner
+its XML.
+
+Syntax examples:
+- runner.o_xml.section_general.firstname: Returns a Python string e.g. "Bob"
+- runner.o_xml.section_general.birthdate: Returns a Python Date object.
+- runner.o_xml.section_general.avatar_pic: Returns Python base64decoded data object.
+
+""",
+    "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
     "category": "Extra Tools",
-    "depends": ['base', 'mail'],
-    'external_dependencies': {
-        'python': ['dicttoxml', 'xmlunittest']
-    },
-    "data": [
-        "security/res_groups.xml",
-        "security/ir_model_access.xml",
-        "views/orbeon_builder_template.xml",
-        "views/orbeon_builder.xml",
-        "views/orbeon_runner.xml",
-        "views/orbeon_server.xml",
-        "views/base.xml",
-        "data/orbeon_builder_template_empty.xml"
+    "depends": [
+        "orbeon",
     ],
-    "application": True,
+    # 'external_dependencies': {
+    #     'python': ['orbeon_xml_api'],
+    # },
+    'data': [
+        'views/report_runner_test.xml'
+    ],
+    "application": False,
     "installable": True,
 }

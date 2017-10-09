@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    open2bizz
-#    Copyright (C) 2016 open2bizz (open2bizz.nl).
+#    Copyright (C) 2017 open2bizz (open2bizz.nl).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -18,30 +18,20 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
 {
-    "name": "Orbeon Forms",
-    "summary": 'Integrate Orbeon Forms with Odoo',
-    "description": 'Orbeon Forms integration',
-    "version": "0.2",
+    "name": "Project View with Messaging",
+    "version": "0.1",
     "author": "Open2bizz",
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
-    "category": "Extra Tools",
-    "depends": ['base', 'mail'],
-    'external_dependencies': {
-        'python': ['dicttoxml', 'xmlunittest']
-    },
-    "data": [
-        "security/res_groups.xml",
-        "security/ir_model_access.xml",
-        "views/orbeon_builder_template.xml",
-        "views/orbeon_builder.xml",
-        "views/orbeon_runner.xml",
-        "views/orbeon_server.xml",
-        "views/base.xml",
-        "data/orbeon_builder_template_empty.xml"
+    "category": "Project",
+    "depends": [
+        "project",
     ],
-    "application": True,
-    "installable": True,
+    "data": [
+        "views/project_views.xml",
+    ],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Form-related subtypes for messaging / Chatter -->
+        <record id="mt_orbeon_project_runner_new" model="mail.message.subtype">
+            <field name="name">Form Opened</field>
+            <field name="res_model">orbeon.runner</field>
+            <field name="default" eval="False"/>
+            <field name="hidden" eval="False"/>
+            <field name="description">Form opened</field>
+        </record>
+        <record id="mt_orbeon_project_runner_blocked" model="mail.message.subtype">
+            <field name="name">Form Blocked</field>
+            <field name="res_model">orbeon.runner</field>
+            <field name="default" eval="False"/>
+            <field name="description">Form blocked</field>
+        </record>
+        <record id="mt_orbeon_project_runner_ready" model="mail.message.subtype">
+            <field name="name">Form Ready</field>
+            <field name="res_model">orbeon.runner</field>
+            <field name="default" eval="False"/>
+            <field name="description">Form ready for Next Stage</field>
+        </record>
+        <record id="mt_orbeon_project_runner_stage" model="mail.message.subtype">
+            <field name="name">Stage Changed</field>
+            <field name="res_model">orbeon.runner</field>
+            <field name="default" eval="False"/>
+            <field name="description">Stage changed</field>
+        </record>
+
+        <!-- Form-related subtypes for messaging / Chatter -->
+        <record id="mt_orbeon_project_runner_new" model="mail.message.subtype">
+            <field name="name">Form Opened</field>
+            <field name="sequence">10</field>
+            <field name="res_model">project.project</field>
+            <field name="default" eval="True"/>
+            <field name="parent_id" eval="ref('mt_orbeon_project_runner_new')"/>
+            <field name="relation_field">project_id</field>
+        </record>
+        <record id="mt_orbeon_project_runner_blocked" model="mail.message.subtype">
+            <field name="name">Form Blocked</field>
+            <field name="sequence">11</field>
+            <field name="res_model">project.project</field>
+            <field name="default" eval="False"/>
+            <field name="parent_id" eval="ref('mt_orbeon_project_runner_blocked')"/>
+            <field name="relation_field">project_id</field>
+        </record>
+        <record id="mt_orbeon_project_runner_ready" model="mail.message.subtype">
+            <field name="name">Form Ready</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.project</field>
+            <field name="default" eval="False"/>
+            <field name="parent_id" eval="ref('mt_orbeon_project_runner_ready')"/>
+            <field name="relation_field">project_id</field>
+        </record>
+        <record id="mt_orbeon_project_runner_stage" model="mail.message.subtype">
+            <field name="name">Form Stage Changed</field>
+            <field name="sequence">13</field>
+            <field name="res_model">project.project</field>
+            <field name="default" eval="False"/>
+            <field name="parent_id" eval="ref('mt_orbeon_project_runner_stage')"/>
+            <field name="relation_field">project_id</field>
+        </record>
+
+    </data>
+</odoo>

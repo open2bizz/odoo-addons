@@ -35,8 +35,13 @@ STATE_CANCELED = 'canceled'
 
 
 class OrbeonRunner(models.Model):
-    _name = "orbeon.runner"
+    _name = 'orbeon.runner'
+    _inherit = ['mail.thread']
+    _description = 'Orbeon Runner'
+
     _rec_name = "builder_name"
+
+    active = fields.Boolean(default=True)
 
     builder_id = fields.Many2one(
         "orbeon.builder",
@@ -57,6 +62,8 @@ class OrbeonRunner(models.Model):
         "Builder Title",
         compute="_get_builder_title",
         readonly=True)
+
+    color = fields.Integer('Color Index')
 
     state = fields.Selection(
         [
@@ -82,6 +89,8 @@ class OrbeonRunner(models.Model):
         compute="_get_url",
         readonly=True)
 
+    # TODO:
+    # Change to Many2one (res_model_id) and add migation (res_model => res_model_id)
     res_model = fields.Char(
         "Resource Model",
         compute="_get_res_model",
@@ -96,7 +105,7 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_name(self, id=None):
-        self.builder_name = "%s (%s)" % (self.builder_id.name, self.builder_id.version)
+        self.builder_name = "%s @ %s" % (self.builder_id.name, self.builder_id.version)
 
     @api.one
     def _get_builder_version(self, id=None):
@@ -104,7 +113,7 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_title(self, id=None):
-        self.builder_title = "%s (%s)" % (self.builder_id.title, self.builder_id.version)
+        self.builder_title = self.builder_id.title
 
     @api.depends('builder_id')
     def _get_res_model(self):
@@ -211,4 +220,9 @@ class OrbeonRunner(models.Model):
     def parse_runner_xml(self, xml, runner):
         parser = runner_xml_parser.RunnerXmlParser(xml, runner)
         parser.parse()
+
+        if runner.builder_id.debug_mode:
+            message = "\r\n".join([e.message for e in parser.errors])
+            runner.message_post(body=message, content_subtype='plaintext')
+
         return parser.xml
