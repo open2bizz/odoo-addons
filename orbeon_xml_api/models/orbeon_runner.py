@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from orbeon_xml_api.runner import Runner
+from orbeon_xml_api import builder, runner, controls
 from odoo import models
 
 import logging
@@ -34,7 +34,54 @@ class OrbeonRunner(models.Model):
     def __getattr__(self, name):
         if name == 'o_xml':
             if 'o_xml' not in self.__dict__:
-                self.o_xml = Runner(self.xml, None, self.builder_id.xml)
+                lang = 'en'
+                controls = {
+                    'ImageAnnotationControl': ImageAnnotationControlOdoo,
+                    # 'AnyUriControl': AnyUriControlOdoo
+                }
+                builder_obj = builder.Builder(self.builder_id.xml, lang, controls=controls)
+                self.o_xml = runner.Runner(self.xml, builder_obj)
             return self.o_xml
         else:
             return self.__getattribute__(name)
+
+
+class ImageAnnotationControlOdoo(controls.ImageAnnotationControl):
+
+    def init_runner_form_attrs(self, runner_element):
+        decoded = self.decode(runner_element)
+
+        if decoded:
+            self.image = decoded['image']
+            self.annotation = decoded['annotation']
+
+    def decode(self, element):
+        data = {
+            'image': None,
+            'annotation': None
+        }
+
+        if element is None:
+            return data
+
+        for el in element.getchildren():
+            if el.tag == 'annotation':
+                data['annotation'] = el.text
+            elif el.tag == 'image':
+                data['image'] = el.text
+
+        return data
+
+
+class AnyUriControlOdoo(controls.AnyUriControl):
+
+    def decode(self, element):
+        res = {}
+
+        if element is None:
+            return res
+
+        for el in element.getchildren():
+            res[el.tag] = {el.tag: "%s FROM %s" % (el.tag, self.__class__.__name__)}
+
+        return res
