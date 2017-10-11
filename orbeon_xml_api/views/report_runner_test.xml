@@ -59,7 +59,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <pre t-field="o.xml"/>
+                    <!-- <pre t-field="o.xml"/> -->
                 </div>
             </t>
         </t>

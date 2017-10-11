@@ -22,6 +22,8 @@
 from orbeon_xml_api import builder, runner, controls
 from odoo import models
 
+from lxml import etree
+
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -40,10 +42,20 @@ class OrbeonRunner(models.Model):
                     # 'AnyUriControl': AnyUriControlOdoo
                 }
                 builder_obj = builder.Builder(self.builder_id.xml, lang, controls=controls)
-                self.o_xml = runner.Runner(self.xml, builder_obj)
+
+                if self.xml is False:
+                    # HACK to fool the o_xml attr/object.
+                    self.o_xml = EmptyRunner(self.xml, builder_obj)
+                else:
+                    self.o_xml = runner.Runner(self.xml, builder_obj)
             return self.o_xml
         else:
             return self.__getattribute__(name)
+
+
+#####################################################
+# Overrides/subclasses for "orbeon-xml-api" Controls.
+#####################################################
 
 
 class ImageAnnotationControlOdoo(controls.ImageAnnotationControl):
@@ -85,3 +97,57 @@ class AnyUriControlOdoo(controls.AnyUriControl):
             res[el.tag] = {el.tag: "%s FROM %s" % (el.tag, self.__class__.__name__)}
 
         return res
+
+###################################################
+# Empty "orbeon-xml-api" alike objects.
+# REASON: In case the 'orbeon.runner' xml is empty.
+###################################################
+
+
+class EmptyRunner(runner.Runner):
+
+    def set_xml_root(self):
+        self.xml_root = etree.Element('empty')
+
+    def init(self):
+        self.form = EmptyRunnerForm(self)
+
+        for name, control in self.builder.controls.items():
+            self.controls[name] = EmptyControl(self.builder, control._bind, False)
+
+
+class EmptyControl(controls.Control):
+
+    def __getattr__(self, name):
+        if name == 'label':
+            return self.label
+        else:
+            return ''
+
+    def set_default_raw_value(self):
+        self.default_raw_value = getattr(self._model_instance, 'text', None)
+
+    def set_default_value(self):
+        self.default_value = self.decode(self._model_instance)
+
+    def set_raw_value(self):
+        self._raw_value = ''
+
+    def decode(self, element):
+        return ''
+
+    def encode(self, value):
+        return value
+
+
+class EmptyRunnerForm:
+
+    def __init__(self, runner):
+        self._runner = runner
+
+    def __getattr__(self, s_name):
+        name = self._runner.builder.sanitized_control_names.get(s_name, False)
+        if name:
+            return self._runner.get_form_control(name)
+        else:
+            return False
