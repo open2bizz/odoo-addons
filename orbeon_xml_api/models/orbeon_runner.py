@@ -36,12 +36,17 @@ class OrbeonRunner(models.Model):
     def __getattr__(self, name):
         if name == 'o_xml':
             if 'o_xml' not in self.__dict__:
+                # TODO language from current user (environment)
                 lang = 'en'
                 controls = {
                     'ImageAnnotationControl': ImageAnnotationControlOdoo,
-                    # 'AnyUriControl': AnyUriControlOdoo
+                    'AnyUriControl': AnyUriControlOdoo
                 }
-                builder_obj = builder.Builder(self.builder_id.xml, lang, controls=controls)
+
+                builder_obj = builder.Builder(
+                    self.builder_id.xml, lang,
+                    controls=controls, context={'model_object': self}
+                )
 
                 if self.xml is False:
                     # HACK to fool the o_xml attr/object.
@@ -66,6 +71,7 @@ class ImageAnnotationControlOdoo(controls.ImageAnnotationControl):
         if decoded:
             self.image = decoded['image']
             self.annotation = decoded['annotation']
+            self.value = decoded['annotation']
 
     def decode(self, element):
         data = {
@@ -88,13 +94,19 @@ class ImageAnnotationControlOdoo(controls.ImageAnnotationControl):
 class AnyUriControlOdoo(controls.AnyUriControl):
 
     def decode(self, element):
-        res = {}
+        res = super(AnyUriControlOdoo, self).decode(element)
+        uri = res.get('uri', False)
 
-        if element is None:
+        if not uri or not isinstance(uri, basestring):
             return res
 
-        for el in element.getchildren():
-            res[el.tag] = {el.tag: "%s FROM %s" % (el.tag, self.__class__.__name__)}
+        # Whereby the last path-component shall be the ir.attachment (file)name.
+        comps = uri.split('/')
+
+        attach_model = self._builder.context['model_object'].env['ir.attachment']
+        attach_obj = attach_model.search([('name', '=', comps[-1])], limit=1)
+
+        res['value'] = "%s%s" % ('data:image/jpeg;base64,', attach_obj.datas)
 
         return res
 
