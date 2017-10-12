@@ -50,6 +50,12 @@
                                 <td t-esc="o.o_xml.form.datetime.value"/>
                             </tr>
                             <tr>
+                                <td t-esc="o.o_xml.form.imageattachment.label"/>
+                                <td>
+                                    <img t-attf-src="{{o.o_xml.form.imageattachment.value}}"/>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td t-esc="o.o_xml.form.staticimage.label"/>
                                 <td>
                                     <img t-attf-src="{{o.o_xml.form.staticimage.value}}"/>
