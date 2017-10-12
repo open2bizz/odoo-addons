@@ -9,7 +9,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <td>Label</td><td>Value</td>
+                                <td><strong>Label:</strong></td><td><strong>Value:</strong></td>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,9 +49,28 @@
                                 <td t-esc="o.o_xml.form.datetime.label"/>
                                 <td t-esc="o.o_xml.form.datetime.value"/>
                             </tr>
+                            <tr>
+                                <td t-esc="o.o_xml.form.imageattachment.label"/>
+                                <td>
+                                    <img t-attf-src="{{o.o_xml.form.imageattachment.value}}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td t-esc="o.o_xml.form.staticimage.label"/>
+                                <td>
+                                    <img t-attf-src="{{o.o_xml.form.staticimage.value}}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td t-esc="o.o_xml.form.imageannotation.label"/>
+                                <td>
+                                    <p t-esc="o.o_xml.form.imageannotation.image"></p>
+                                    <img t-attf-src="{{o.o_xml.form.imageannotation.value}}"/>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    <pre t-field="o.xml"/>
+                    <!-- <pre t-field="o.xml"/> -->
                 </div>
             </t>
         </t>
