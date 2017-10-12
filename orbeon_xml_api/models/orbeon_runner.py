@@ -37,22 +37,28 @@ class OrbeonRunner(models.Model):
         if name == 'o_xml':
             if 'o_xml' not in self.__dict__:
                 # TODO language from current user (environment)
-                lang = 'en'
+                lang = 'nl'
                 controls = {
                     'ImageAnnotationControl': ImageAnnotationControlOdoo,
                     'AnyUriControl': AnyUriControlOdoo
                 }
+
+                builder_xml = u'%s' % self.builder_id.xml
+                builder_xml = bytes(bytearray(builder_xml, encoding='utf-8'))
 
                 builder_obj = builder.Builder(
                     self.builder_id.xml, lang,
                     controls=controls, context={'model_object': self}
                 )
 
+                runner_xml = u'%s' % self.xml
+                runner_xml = bytes(bytearray(runner_xml, encoding='utf-8'))
+
                 if self.xml is False:
                     # HACK to fool the o_xml attr/object.
-                    self.o_xml = EmptyRunner(self.xml, builder_obj)
+                    self.o_xml = EmptyRunner(runner_xml, builder_obj)
                 else:
-                    self.o_xml = runner.Runner(self.xml, builder_obj)
+                    self.o_xml = runner.Runner(runner_xml, builder_obj)
             return self.o_xml
         else:
             return self.__getattribute__(name)
