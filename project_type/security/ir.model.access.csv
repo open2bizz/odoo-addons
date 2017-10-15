@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_project_type_user,access_project_type_user,model_project_type,project_type.project_type_user,1,1,0,0
-access_project_type_admin,access_project_type_admin,model_project_type,project_type.project_type_admin,1,1,1,1

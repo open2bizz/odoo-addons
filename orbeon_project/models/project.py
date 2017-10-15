@@ -89,20 +89,6 @@ class Project(models.Model):
             ("res_model", "=", 'project.project'),
         ])
 
-    @api.model
-    def create(self, vals):
-        res = super(Project, self).create(vals)
-        runner = self.env["orbeon.runner"]
-
-        for builder in res.type_id.orbeon_builder_form_ids:
-            runner.create({
-                'builder_id': builder.id,
-                'name': builder.name,
-                'res_id': res.id,
-            })
-
-        return res
-
     @api.multi
     def write(self, vals):
         res = super(Project, self).write(vals)
