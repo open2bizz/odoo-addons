@@ -139,3 +139,17 @@ class Project(models.Model):
             "context": context,
             "domain": [("id", "in", runner_form_ids)],
         }
+        
+    @api.multi
+    def map_orbeon_forms(self, new_project_id):
+        forms = self.env['orbeon.runner']
+        for form in self.orbeon_runner_form_ids:
+            defaults = {}
+            forms += form.copy(defaults)
+        return self.browse(new_project_id).write({'orbeon_runner_form_ids': [(6, 0, forms.ids)]})
+
+    @api.multi
+    def copy(self, default=None):
+        project = super(Project, self).copy(default) 
+        self.map_orbeon_forms(project.id)
+        return project        
