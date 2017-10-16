@@ -169,11 +169,14 @@ class OrbeonRunner(models.Model):
         """Should this Runner (xml) be merged with the current Builder? """
         self.ensure_one()
 
-        if not self.builder_id.parent_id:
+        if self.is_merged:
             return False
-
-        return not self.is_merged
-
+        elif not self.builder_id.parent_id:
+            return False
+        elif self.builder_id.new_current_builder is not None:
+            return True
+        else:
+            return False
 
     # TODO
     # @api.multi
