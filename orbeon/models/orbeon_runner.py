@@ -165,8 +165,8 @@ class OrbeonRunner(models.Model):
         return res
 
     @api.multi
-    def should_merge(self):
-        """Should this Runner (xml) be merged with the current Builder? """
+    def can_merge(self):
+        """Can this Runner (xml) be merged with a new current Builder? """
         self.ensure_one()
 
         if self.is_merged:

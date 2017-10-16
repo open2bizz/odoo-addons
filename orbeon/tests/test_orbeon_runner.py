@@ -222,42 +222,42 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
         self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
 
-    def test_should_not_merge(self):
+    def test_can_not_merge(self):
         """Test should NOT merge, where Runner field `is_merged` is False and
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
         # First version and default don't merge
-        self.assertFalse(self.runner_form_a_v1_new.should_merge())
+        self.assertFalse(self.runner_form_a_v1_new.can_merge())
 
         # Runner (Form) version 2, already merged.
         self.runner_form_a_v2_new.is_merged = True
-        self.assertFalse(self.runner_form_a_v2_new.should_merge())
+        self.assertFalse(self.runner_form_a_v2_new.can_merge())
 
-    def test_should_merge(self):
+    def test_can_merge(self):
         """Test should NOT merge, where Runner field `is_merged` is False and
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
         # Runner (Form) version 2, should be merged.
-        self.assertTrue(self.runner_form_a_v2_new.should_merge())
+        self.assertTrue(self.runner_form_a_v2_new.can_merge())
 
     @TODO
-    def test_orbeon_search_read_should_merge(self):
+    def test_orbeon_search_read_can_merge(self):
         """Test orbeon_search_read, where Runner field `is_merged` is False and
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
 
     @TODO
-    def test_orbeon_search_read_should_not_merge_is_merged(self):
+    def test_orbeon_search_read_can_not_merge_is_merged(self):
         """Test orbeon_search_read, where Runner field `is_merged` is True and
         there's no newer builder current-version. So in this case it should
         not trigger a merge.
         """
 
     @TODO
-    def test_orbeon_search_read_should_not_merge_current_builder_remains_same(self):
+    def test_orbeon_search_read_can_not_merge_current_builder_remains_same(self):
         """Test orbeon_search_read, where Runner field `is_merged` is False and
         there's no newer builder current-version. So in this case it should
         not trigger a merge.
