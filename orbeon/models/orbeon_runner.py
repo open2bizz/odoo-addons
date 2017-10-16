@@ -164,6 +164,17 @@ class OrbeonRunner(models.Model):
         res = super(OrbeonRunner, self).write(vals)
         return res
 
+    @api.multi
+    def should_merge(self):
+        """Should this Runner (xml) be merged with the current Builder? """
+        self.ensure_one()
+
+        if not self.builder_id.parent_id:
+            return False
+
+        return not self.is_merged
+
+
     # TODO
     # @api.multi
     # def duplicate_runner_form(self):
