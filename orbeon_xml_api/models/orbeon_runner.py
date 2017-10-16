@@ -21,6 +21,7 @@
 
 from orbeon_xml_api import builder, runner, controls
 from odoo import models
+from odoo.exceptions import UserError
 
 from lxml import etree
 
@@ -36,8 +37,18 @@ class OrbeonRunner(models.Model):
     def __getattr__(self, name):
         if name == 'o_xml':
             if 'o_xml' not in self.__dict__:
-                # TODO language from current user (environment)
-                lang = 'nl'
+                context = self._context
+                if 'lang' in context:
+                    lang = context['lang']
+                elif 'lang' not in context and 'uid' in context:
+                    lang = self.env['res.users'].browse(context['uid']).lang
+                elif 'lang' not in context and 'uid' not in context:
+                    lang = self.env['res.users'].browse(self.write_uid).lang
+                else:
+                    raise UserError("The form can't be loaded. No (user) language was set.")
+
+                res_lang = self.env['res.lang'].search([('code', '=', lang)], limit=1)
+
                 controls = {
                     'ImageAnnotationControl': ImageAnnotationControlOdoo,
                     'AnyUriControl': AnyUriControlOdoo
@@ -47,7 +58,7 @@ class OrbeonRunner(models.Model):
                 builder_xml = bytes(bytearray(builder_xml, encoding='utf-8'))
 
                 builder_obj = builder.Builder(
-                    self.builder_id.xml, lang,
+                    builder_xml, res_lang.iso_code,
                     controls=controls, context={'model_object': self}
                 )
 
@@ -55,7 +66,7 @@ class OrbeonRunner(models.Model):
                 runner_xml = bytes(bytearray(runner_xml, encoding='utf-8'))
 
                 if self.xml is False:
-                    # HACK to fool the o_xml attr/object.
+                    # HACK masquerade empty Runner object on the o_xml attr.
                     self.o_xml = EmptyRunner(runner_xml, builder_obj)
                 else:
                     self.o_xml = runner.Runner(runner_xml, builder_obj)
