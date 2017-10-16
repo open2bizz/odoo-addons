@@ -227,7 +227,10 @@ class TestOrbeonRunner(TestOrbeonCommon):
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
-        # First version and default don't merge
+        # First version and default (also empty XML) don't merge
+        self.assertFalse(self.runner_form_a_v1_new.can_merge())
+
+        # Second version (empty XML)
         self.assertFalse(self.runner_form_a_v1_new.can_merge())
 
         # Runner (Form) version 2, already merged.
@@ -240,7 +243,43 @@ class TestOrbeonRunner(TestOrbeonCommon):
         trigger a merge.
         """
         # Runner (Form) version 2, should be merged.
-        self.assertTrue(self.runner_form_a_v2_new.can_merge())
+        self.assertTrue(self.runner_form_a_v2.can_merge())
+
+    def test_merge_basic_only_orbeon_fieldcontrols(self):
+        """Test merge basic XML-form with only Orbeon fieldcontrols. This tests the base
+        merge merge API/functions.
+        """
+        self.assertTrue(self.runner_form_a_v1.merge())
+
+        # xml = self.runner_form_a_v1.merge_xml_current_builder()
+        # root = self.assertXmlDocument(xml)
+
+        # # Original data not
+        # self.assertXpathsOnlyOne(root, ['//input-control-1'])
+        # self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
+
+        # # New controls
+        # self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
+
+    @TODO
+    def test_merge_nocopy_NC_field(self):
+        """Test merge but ignore/skip nocopy (NC.) field"""
+
+        return
+
+        # nocopy_field = "NC.input-control-3"
+
+        xml = self.runner_form_a_v2_nocopy.merge_xml_current_builder()
+        root = self.assertXmlDocument(xml)
+
+        # Original data not
+        self.assertXpathsOnlyOne(root, ['//input-control-1'])
+        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
+
+        # New controls
+        self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
+
+        # msg = ("Field %s shouldn't be copied, but it was!" % nocopy_field)
 
     @TODO
     def test_orbeon_search_read_can_merge(self):
@@ -262,41 +301,3 @@ class TestOrbeonRunner(TestOrbeonCommon):
         there's no newer builder current-version. So in this case it should
         not trigger a merge.
         """
-
-    @TODO
-    def test_merge_basic_only_orbeon_fieldcontrols(self):
-        """Test merge basic XML-form with only Orbeon fieldcontrols. This tests the base
-        merge merge API/functions.
-        """
-
-        return
-
-        xml = self.runner_form_a_v1.merge_xml_current_builder()
-        root = self.assertXmlDocument(xml)
-
-        # Original data not
-        self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
-
-        # New controls
-        self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
-
-    @TODO
-    def test_merge_nocopy_NC_field(self):
-        """Test merge but ignore/skip nocopy (NC.) field"""
-
-        return
-
-        # nocopy_field = "NC.input-control-3"
-
-        xml = self.runner_form_a_v2_nocopy.merge_xml_current_builder()
-        root = self.assertXmlDocument(xml)
-
-        # Original data not
-        self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
-
-        # New controls
-        self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
-
-        # msg = ("Field %s shouldn't be copied, but it was!" % nocopy_field)

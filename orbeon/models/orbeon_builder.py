@@ -130,11 +130,11 @@ class OrbeonBuilder(models.Model):
         compute="_get_url",
         readonly=True)
 
-    new_current_builder = fields.Many2one(
+    current_builder_id = fields.Many2one(
         "orbeon.builder",
-        "New current Builder",
-        compute="_new_current_builder",
-        help="A new current (published) Builder"
+        "Current Builder",
+        compute="_current_builder",
+        help="The current (published) Builder"
     )
 
     debug_mode = fields.Boolean(
@@ -300,19 +300,23 @@ class OrbeonBuilder(models.Model):
         self.url = url
 
     @api.one
-    def _new_current_builder(self):
+    def _current_builder(self):
         if self.state == STATE_CURRENT:
             return False
 
         self.env.cr.execute(
             "WITH RECURSIVE builder_children AS ("
-            "    SELECT id, parent_id, name, state"
-            "    FROM orbeon_builder"
+            "    SELECT "
+            "      id, parent_id, name, state"
+            "    FROM"
+            "      orbeon_builder"
             "    WHERE id = %s"
             "  UNION ALL"
-            "    SELECT ob.id, ob.parent_id, ob.name, ob.state"
-            "    FROM builder_children AS bc"
-            "    INNER JOIN orbeon_builder AS ob ON ob.parent_id = bc.id"
+            "    SELECT"
+            "      ob.id, ob.parent_id, ob.name, ob.state"
+            "    FROM "
+            "      builder_children AS bc"
+            "      INNER JOIN orbeon_builder AS ob ON ob.parent_id = bc.id"
             "    WHERE ob.state = '%s'"
             ") "
             "SELECT id AS builder_id "
@@ -322,7 +326,7 @@ class OrbeonBuilder(models.Model):
         builder_id = self.env.cr.fetchone()
 
         if builder_id:
-            self.new_current_builder = self.browse(builder_id[0])
+            self.current_builder_id = self.browse(builder_id[0])
 
     @api.model
     def orbeon_search_read_data(self, domain=None, fields=None):
