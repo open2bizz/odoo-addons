@@ -134,7 +134,7 @@ class OrbeonBuilder(models.Model):
         "orbeon.builder",
         "New current Builder",
         compute="_new_current_builder",
-        help="A new current (published)x Builder"
+        help="A new current (published) Builder"
     )
 
     debug_mode = fields.Boolean(
