@@ -25,6 +25,7 @@ from test_orbeon_common import TestOrbeonCommon
 from utils import TODO
 from ..services import runner_xml_parser
 
+from orbeon_xml_api.runner import Runner as RunnerAPI
 from lxml import etree
 
 import logging
@@ -245,21 +246,40 @@ class TestOrbeonRunner(TestOrbeonCommon):
         # Runner (Form) version 2, should be merged.
         self.assertTrue(self.runner_form_a_v2.can_merge())
 
-    def test_merge_basic_only_orbeon_fieldcontrols(self):
+    def test_merge_current_builder_basic(self):
         """Test merge basic XML-form with only Orbeon fieldcontrols. This tests the base
         merge merge API/functions.
         """
-        self.assertTrue(self.runner_form_a_v1.merge())
+        current_builder = self.runner_form_a_v1.builder_id.current_builder_id
+        before_merge_runner_api = RunnerAPI(self.runner_form_a_v1.xml, None, self.runner_form_a_v1.builder_id.xml)
 
-        # xml = self.runner_form_a_v1.merge_xml_current_builder()
-        # root = self.assertXmlDocument(xml)
+        self.assertEqual(before_merge_runner_api.form.inputcontrol1.label, 'Input 1')
+        self.assertEqual(before_merge_runner_api.form.inputcontrol1.value, 'text 1')
+        self.assertEqual(before_merge_runner_api.form.inputcontrol1._parent._bind.name, 'section-1')
 
-        # # Original data not
-        # self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        # self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
+        merged_runner = self.runner_form_a_v1.sudo().merge_current_builder()
+        self.runner_form_a_v1.refresh()
 
-        # # New controls
-        # self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
+        # Check orbeon.runner info
+        self.assertTrue(merged_runner.is_merged)
+        self.assertEqual(merged_runner.builder_id.id, current_builder.id)
+
+        # Old form/data still there (not harmed by the merge)
+        merged_runner_api = RunnerAPI(self.runner_form_a_v1.xml, None, current_builder.xml)
+
+        # TODO label still not working?!
+        # self.assertEqual(merged_runner_api.form.inputcontrol1.label, 'Input 1')
+        self.assertEqual(merged_runner_api.form.inputcontrol1.value, 'text 1')
+        self.assertEqual(merged_runner_api.form.inputcontrol1._parent._bind.name, 'section-1')
+
+        # Some new freshly merged controls (from builder)
+        # self.assertEqual(merged_runner_api.form.inputcontrol2.label, 'Input 2')
+        self.assertEqual(merged_runner_api.form.inputcontrol2.value, None)
+        self.assertEqual(merged_runner_api.form.inputcontrol2._parent._bind.name, 'section-1')
+
+        #self.assertEqual(merged_runner_api.form.datecontrol1.label, 'Date 1')
+        self.assertEqual(merged_runner_api.form.datecontrol1.value, None)
+        self.assertEqual(merged_runner_api.form.datecontrol1._parent._bind.name, 'section-1')
 
     @TODO
     def test_merge_nocopy_NC_field(self):

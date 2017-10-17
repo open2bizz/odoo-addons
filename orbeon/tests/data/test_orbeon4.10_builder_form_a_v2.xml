@@ -62,20 +62,19 @@
                     <resource xml:lang="en">
                         <section-1>
                             <label>Untitled Section</label>
+                            <input-control-1>
+                                <label>Input 1</label>
+                                <hint/>
+                            </input-control-1>
+                            <input-control-2>
+                                <label>Input 2</label>
+                                <hint/>
+                            </input-control-2>
+                            <date-control-1>
+                                <label>Date 1</label>
+                                <hint/>
+                            </date-control-1>
                         </section-1>
-                        <input-control-1>
-                            <label>Input 1</label>
-                            <hint/>
-                            
-                        </input-control-1>
-                        <input-control-2>
-                            <label>Input 2</label>
-                            <hint/>
-                        </input-control-2>
-                        <date-control-1>
-                            <label>Date 1</label>
-                            <hint/>
-                        </date-control-1>
                     </resource>
                 </resources>
             </xf:instance>
