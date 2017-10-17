@@ -15,6 +15,7 @@
                                     <field name="url" widget="url"/>
                                     <field name="res_model" />
                                     <field name="res_id" />
+                                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
                                 </group>
                             </page>
                             <page name="xml" string="XML">
@@ -39,6 +40,7 @@
                     <field name="url"/>
                     <field name="res_model" />
                     <field name="res_id" />
+                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
                 </tree>
             </field>
         </record>
