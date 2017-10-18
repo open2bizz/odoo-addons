@@ -267,17 +267,16 @@ class TestOrbeonRunner(TestOrbeonCommon):
         # Old form/data still there (not harmed by the merge)
         merged_runner_api = RunnerAPI(self.runner_form_a_v1.xml, None, current_builder.xml)
 
-        # TODO label still not working?!
-        # self.assertEqual(merged_runner_api.form.inputcontrol1.label, 'Input 1')
+        self.assertEqual(merged_runner_api.form.inputcontrol1.label, 'Input 1')
         self.assertEqual(merged_runner_api.form.inputcontrol1.value, 'text 1')
         self.assertEqual(merged_runner_api.form.inputcontrol1._parent._bind.name, 'section-1')
 
         # Some new freshly merged controls (from builder)
-        # self.assertEqual(merged_runner_api.form.inputcontrol2.label, 'Input 2')
+        self.assertEqual(merged_runner_api.form.inputcontrol2.label, 'Input 2')
         self.assertEqual(merged_runner_api.form.inputcontrol2.value, None)
         self.assertEqual(merged_runner_api.form.inputcontrol2._parent._bind.name, 'section-1')
 
-        #self.assertEqual(merged_runner_api.form.datecontrol1.label, 'Date 1')
+        self.assertEqual(merged_runner_api.form.datecontrol1.label, 'Date 1')
         self.assertEqual(merged_runner_api.form.datecontrol1.value, None)
         self.assertEqual(merged_runner_api.form.datecontrol1._parent._bind.name, 'section-1')
 
