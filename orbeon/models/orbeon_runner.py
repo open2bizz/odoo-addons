@@ -19,7 +19,7 @@
 #
 ##############################################################################
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
 from ..services import runner_xml_parser
@@ -100,7 +100,6 @@ class OrbeonRunner(models.Model):
     res_id = fields.Integer(
         "Record ID",
         ondelete='restrict',
-        readonly=True,
         help="Database ID of the record in res_model to which this applies")
 
     @api.one
@@ -164,6 +163,37 @@ class OrbeonRunner(models.Model):
         res = super(OrbeonRunner, self).write(vals)
         return res
 
+    @api.multi
+    def can_merge(self):
+        """Can this Runner (xml) be merged with a new current Builder? """
+        self.ensure_one()
+
+        if self.is_merged or not self.xml:
+            return False
+        elif self.builder_id.current_builder_id is not None:
+            return True
+        else:
+            return False
+
+    @api.multi
+    def merge(self):
+        """ Merge (and replace) this Runner XML with XML from the current/published Builder """
+        self.ensure_one()
+
+        if not self.can_merge():
+            return False
+
+        try:
+            # Do the real merge
+            return self._merge(self.builder_id.current_builder_id)
+        except Exception, e:
+            _logger.error("Orbeon Runner merge Exception: %s" % e)
+            raise UserError("Error in merge Runner: %s" % e)
+
+    def _merge(self, builder_obj):
+        """ Merge (and replace) this Runner XML with XML from builder_obj """
+        return True
+
     # TODO
     # @api.multi
     # def duplicate_runner_form(self):
@@ -173,17 +203,6 @@ class OrbeonRunner(models.Model):
     #     # XXX maybe useless if merge_xml_current_builder() returns None?
     #     alter["xml"] = self.merge_xml_current_builder()
     #     super(OrbeonRunner, self).copy(alter)
-
-    # TODO: check whether and which @api decorator is needed here
-    def merge_xml_current_builder(self):
-        # No merge required if the runner's builder already is currrent
-        if (self.builder_id.state == BUILDER_STATE_CURRENT):
-            return self.xml
-
-    # TODO: check whether and which @api decorator is needed here
-    def merge_xml_builder(self, builder_id):
-        # TODO implement
-        pass
 
     @api.model
     def orbeon_search_read_builder(self, domain=None, fields=None):

@@ -19,20 +19,18 @@
 #
 ##############################################################################
 
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon
 from utils import TODO
-from ..models import orbeon_runner
 from ..services import runner_xml_parser
 
-from psycopg2 import IntegrityError
-from lxml import etree, objectify
+from lxml import etree
 
 import logging
 
 _logger = logging.getLogger(__name__)
+
 
 class TestOrbeonRunner(TestOrbeonCommon):
     """Tests for Orbeon Runner Forms"""
@@ -91,7 +89,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
         """
         domain = [('id', '=', self.runner_form_a_v2.id)]
         runner = self.runner_model.orbeon_search_read_data(domain, ['xml'])
-        
+
         self.assertXmlEquivalentOutputs(runner['xml'], self.xmlFromFile('test_orbeon4.10_runner_form_a_v2.xml'))
 
         root = self.assertXmlDocument(runner['xml'])
@@ -111,12 +109,12 @@ class TestOrbeonRunner(TestOrbeonCommon):
         })
 
         runner_with_changes = self.runner_model.orbeon_search_read_data(domain, ['xml'])
-        
+
         root = self.assertXmlDocument(runner_with_changes['xml'])
         self.assertXpathValues(root, '//input-control-1/text()', ['this is text 1'])
         self.assertXpathValues(root, '//input-control-2/text()', ['this is text 2'])
         self.assertXpathValues(root, '//date-control-1/text()', ['2017-01-10'])
-        
+
     def test_orbeon_search_read_with_ERP_fieds(self):
         """Test reading a runner form with ERP-fields (model-object-fields)."""
 
@@ -155,7 +153,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         self.assertXpathsOnlyOne(root, ['//ERP.login'])
         self.assertXpathValues(root, './/ERP.login/text()', [('dummy_login')])
-    
+
     def test_orbeon_search_read_with_unknown_ERP_fieds(self):
         """Test reading a runner form with unknown ERP-fields (model-object)."""
 
@@ -189,7 +187,7 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         # Check initial, if empty
         root_initial = self.assertXmlDocument(rec['xml'])
-        
+
         self.assertXpathValues(root_initial, '//nickname/text()', [])
         self.assertXpathValues(root_initial, '//notes/text()', [])
 
@@ -199,14 +197,14 @@ class TestOrbeonRunner(TestOrbeonCommon):
         root_with_changes.xpath('//notes')[0].text = 'Batman has Orbeon superpowers'
 
         xml_with_changes = etree.tostring(root_with_changes)
-    
+
         self.runner_form_c_erp_fields_v1.sudo().write({
             'xml': xml_with_changes
         })
 
         # Test change and whether rest of XML-doc stayed the same
         self.runner_form_c_erp_fields_v1.refresh()
-        
+
         root = self.assertXmlDocument(self.runner_form_c_erp_fields_v1.xml)
 
         self.assertXpathValues(root, '//nickname/text()', ['Batman'])
@@ -224,53 +222,52 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathsOnlyOne(root, ['//ERP.company_id.currency_id.name'])
         self.assertXpathValues(root, './/ERP.company_id.currency_id.name/text()', [('EUR')])
 
-    @TODO
-    def test_orbeon_search_read_should_merge(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is False and
+    def test_can_not_merge(self):
+        """Test should NOT merge, where Runner field `is_merged` is False and
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
+        # First version and default (also empty XML) don't merge
+        self.assertFalse(self.runner_form_a_v1_new.can_merge())
 
-    @TODO
-    def test_orbeon_search_read_should_not_merge_is_merged(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is True and
-        there's no newer builder current-version. So in this case it should
-        not trigger a merge.
+        # Second version (empty XML)
+        self.assertFalse(self.runner_form_a_v1_new.can_merge())
+
+        # Runner (Form) version 2, already merged.
+        self.runner_form_a_v2_new.is_merged = True
+        self.assertFalse(self.runner_form_a_v2_new.can_merge())
+
+    def test_can_merge(self):
+        """Test should NOT merge, where Runner field `is_merged` is False and
+        there's a new builder current-version. So in this case it should
+        trigger a merge.
         """
+        # Runner (Form) version 2, should be merged.
+        self.assertTrue(self.runner_form_a_v2.can_merge())
 
-    @TODO
-    def test_orbeon_search_read_should_not_merge_current_builder_remains_same(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is False and
-        there's no newer builder current-version. So in this case it should
-        not trigger a merge.
-        """
-
-    @TODO
     def test_merge_basic_only_orbeon_fieldcontrols(self):
         """Test merge basic XML-form with only Orbeon fieldcontrols. This tests the base
         merge merge API/functions.
         """
+        self.assertTrue(self.runner_form_a_v1.merge())
 
-        return
+        # xml = self.runner_form_a_v1.merge_xml_current_builder()
+        # root = self.assertXmlDocument(xml)
 
-        xml = self.runner_form_a_v1.merge_xml_current_builder()
-        root = self.assertXmlDocument(xml)
+        # # Original data not
+        # self.assertXpathsOnlyOne(root, ['//input-control-1'])
+        # self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
 
-        # Original data not
-        self.assertXpathsOnlyOne(root, ['//input-control-1'])
-        self.assertXpathValues(root, '//input-control-1/text()', ('text 1'))
-
-        # New controls
-        self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
-        
+        # # New controls
+        # self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
 
     @TODO
     def test_merge_nocopy_NC_field(self):
         """Test merge but ignore/skip nocopy (NC.) field"""
-        
+
         return
 
-        nocopy_field = "NC.input-control-3"
+        # nocopy_field = "NC.input-control-3"
 
         xml = self.runner_form_a_v2_nocopy.merge_xml_current_builder()
         root = self.assertXmlDocument(xml)
@@ -281,5 +278,26 @@ class TestOrbeonRunner(TestOrbeonCommon):
 
         # New controls
         self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
-        
-        msg = ("Field %s shouldn't be copied, but it was!" % nocopy_field)
+
+        # msg = ("Field %s shouldn't be copied, but it was!" % nocopy_field)
+
+    @TODO
+    def test_orbeon_search_read_can_merge(self):
+        """Test orbeon_search_read, where Runner field `is_merged` is False and
+        there's a new builder current-version. So in this case it should
+        trigger a merge.
+        """
+
+    @TODO
+    def test_orbeon_search_read_can_not_merge_is_merged(self):
+        """Test orbeon_search_read, where Runner field `is_merged` is True and
+        there's no newer builder current-version. So in this case it should
+        not trigger a merge.
+        """
+
+    @TODO
+    def test_orbeon_search_read_can_not_merge_current_builder_remains_same(self):
+        """Test orbeon_search_read, where Runner field `is_merged` is False and
+        there's no newer builder current-version. So in this case it should
+        not trigger a merge.
+        """
