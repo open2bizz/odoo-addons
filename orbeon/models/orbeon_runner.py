@@ -104,6 +104,11 @@ class OrbeonRunner(models.Model):
         ondelete='restrict',
         help="Database ID of the record in res_model to which this applies")
 
+    any_new_current_builder = fields.Boolean(
+        "Any New Current Builder",
+        compute="_any_new_current_builder",
+        readonly=True)
+
     @api.one
     def _get_builder_name(self, id=None):
         self.builder_name = "%s @ %s" % (self.builder_id.name, self.builder_id.version)
@@ -139,6 +144,15 @@ class OrbeonRunner(models.Model):
                 url = "%s/%s/%i" % (base_url, path_mode, rec.id)
 
             rec.url = url
+
+    @api.multi
+    def _any_new_current_builder(self):
+        self.ensure_one()
+
+        if not self.builder_id.current_builder_id.id:
+            self.any_new_current_builder = False
+        else:
+            self.any_new_current_builder = (self.builder_id.id != self.builder_id.current_builder_id.id)
 
     @api.multi
     def action_open_orbeon_runner(self):
