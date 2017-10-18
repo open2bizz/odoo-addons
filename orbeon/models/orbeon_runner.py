@@ -102,7 +102,6 @@ class OrbeonRunner(models.Model):
     res_id = fields.Integer(
         "Record ID",
         ondelete='restrict',
-        readonly=True,
         help="Database ID of the record in res_model to which this applies")
 
     @api.one
