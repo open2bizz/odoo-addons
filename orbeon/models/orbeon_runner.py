@@ -20,7 +20,7 @@
 ##############################################################################
 from orbeon_xml_api.builder import Builder as BuilderAPI
 from orbeon_xml_api.runner import Runner as RunnerAPI
-from orbeon_xml_api.runner_builder_merge import RunnerBuilderMerge as RunnerBuilderMergeAPI
+from orbeon_xml_api.runner_copy_builder_merge import RunnerCopyBuilderMerge as RunnerCopyBuilderMergeAPI
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -236,7 +236,8 @@ class OrbeonRunner(models.Model):
         merge_builder_api = BuilderAPI(merge_builder_xml, res_lang.iso_code)
 
         try:
-            merger_api = RunnerBuilderMergeAPI(runner_api, merge_builder_api)
+            # TODO Store the no_copy_prefix per orbeon.builder record (as field)?
+            merger_api = RunnerCopyBuilderMergeAPI(runner_api, merge_builder_api, no_copy_prefix='NC.')
             merged_runner = merger_api.merge()
 
             self.write({
