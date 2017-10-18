@@ -197,7 +197,9 @@ class OrbeonBuilder(models.Model):
             template = self.env['orbeon.builder.template'].browse(vals['builder_template_id'])
             xml = etree.fromstring(template.xml)
         elif 'xml' in vals:
-            xml = etree.fromstring(vals['xml'])
+            xml = u"%s" % vals['xml']
+            xml = bytes(bytearray(xml, encoding='utf-8'))
+            xml = etree.fromstring(xml)
 
         if len(xml.xpath('//application-name')) > 0:
             xml.xpath('//application-name')[0].text = 'odoo'
@@ -214,7 +216,7 @@ class OrbeonBuilder(models.Model):
             if len(xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
                 xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
 
-        vals['xml'] = etree.tostring(xml)
+        vals['xml'] = etree.tostring(xml, encoding='utf-8')
         res = super(OrbeonBuilder, self).create(vals)
 
         return res
