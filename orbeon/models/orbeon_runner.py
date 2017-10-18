@@ -18,10 +18,13 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
+from orbeon_xml_api.builder import Builder as BuilderAPI
+from orbeon_xml_api.runner import Runner as RunnerAPI
+from orbeon_xml_api.runner_builder_merge import RunnerBuilderMerge as RunnerBuilderMergeAPI
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
-from orbeon_builder import STATE_CURRENT as BUILDER_STATE_CURRENT
 from ..services import runner_xml_parser
 
 import logging
@@ -102,6 +105,11 @@ class OrbeonRunner(models.Model):
         ondelete='restrict',
         help="Database ID of the record in res_model to which this applies")
 
+    any_new_current_builder = fields.Boolean(
+        "Any New Current Builder",
+        compute="_any_new_current_builder",
+        readonly=True)
+
     @api.one
     def _get_builder_name(self, id=None):
         self.builder_name = "%s @ %s" % (self.builder_id.name, self.builder_id.version)
@@ -139,6 +147,15 @@ class OrbeonRunner(models.Model):
             rec.url = url
 
     @api.multi
+    def _any_new_current_builder(self):
+        self.ensure_one()
+
+        if not self.builder_id.current_builder_id.id:
+            self.any_new_current_builder = False
+        else:
+            self.any_new_current_builder = (self.builder_id.id != self.builder_id.current_builder_id.id)
+
+    @api.multi
     def action_open_orbeon_runner(self):
         self.ensure_one()
         return {
@@ -154,11 +171,9 @@ class OrbeonRunner(models.Model):
 
     @api.multi
     def write(self, vals):
-        if self.is_merged is False:
-            vals['is_merged'] = True
-
-        if vals.get('builder_id', False) and vals['builder_id'] != self.builder_id:
-            raise ValidationError("Changing the builder is not allowed.")
+        if 'is_merged' not in vals:
+            if vals.get('builder_id', False) and vals['builder_id'] != self.builder_id:
+                raise ValidationError("Changing the builder is not allowed.")
 
         res = super(OrbeonRunner, self).write(vals)
         return res
@@ -176,23 +191,64 @@ class OrbeonRunner(models.Model):
             return False
 
     @api.multi
-    def merge(self):
+    @api.returns('self')
+    def merge_current_builder(self):
         """ Merge (and replace) this Runner XML with XML from the current/published Builder """
-        self.ensure_one()
-
         if not self.can_merge():
             return False
 
         try:
             # Do the real merge
-            return self._merge(self.builder_id.current_builder_id)
+            return self.merge_builder(self.builder_id.current_builder_id)
         except Exception, e:
             _logger.error("Orbeon Runner merge Exception: %s" % e)
-            raise UserError("Error in merge Runner: %s" % e)
 
-    def _merge(self, builder_obj):
+    @api.one
+    @api.returns('self')
+    def merge_builder(self, builder_obj):
         """ Merge (and replace) this Runner XML with XML from builder_obj """
-        return True
+        context = self._context
+
+        if 'lang' in context:
+            lang = context['lang']
+        elif 'lang' not in context and 'uid' in context:
+            lang = self.env['res.users'].browse(context['uid']).lang
+        elif 'lang' not in context and 'uid' not in context:
+            lang = self.env['res.users'].browse(self.write_uid.id).lang
+        else:
+            raise UserError("The form can't be loaded. No (user) language was set.")
+
+        res_lang = self.env['res.lang'].search([('code', '=', lang)], limit=1)
+
+        # This Runner
+        builder_xml = u'%s' % self.builder_id.xml
+        builder_xml = bytes(bytearray(builder_xml, encoding='utf-8'))
+        builder_api = BuilderAPI(builder_xml, res_lang.iso_code)
+
+        runner_xml = u'%s' % self.xml
+        runner_xml = bytes(bytearray(runner_xml, encoding='utf-8'))
+
+        runner_api = RunnerAPI(runner_xml, builder_api)
+
+        # Builder to be merged with
+        merge_builder_xml = u'%s' % builder_obj.xml
+        merge_builder_xml = bytes(bytearray(merge_builder_xml, encoding='utf-8'))
+        merge_builder_api = BuilderAPI(merge_builder_xml, res_lang.iso_code)
+
+        try:
+            merger_api = RunnerBuilderMergeAPI(runner_api, merge_builder_api)
+            merged_runner = merger_api.merge()
+
+            self.write({
+                'xml': merged_runner.xml,
+                'builder_id': builder_obj.id,
+                'is_merged': True
+            })
+
+            return self
+        except Exception as e:
+            _logger.error("[orbeon] Merge failed with error: %s" % e)
+            raise UserError("Merge failed with error: %s" % e)
 
     # TODO
     # @api.multi

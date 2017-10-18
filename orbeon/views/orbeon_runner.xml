@@ -7,14 +7,29 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="merge_current_builder" type="object"
+                                    attrs="{'invisible':['|', ('id','=',False), '|', ('is_merged','=',True), '|', ('any_new_current_builder','=',False)]}"
+                                    string="Merge Current Builder" help="Merge the Form Design (structure additions) into this Runner Form." class="oe_stat_button" icon="fa-random" />
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <strong>
+                                    <field name="builder_title" readonly="1"/>
+                                </strong>
+                            </h1>
+                        </div>
                         <notebook>
                             <page name="general" string="General">
                                 <group>
                                     <field name="id" invisible="1"/>
+                                    <field name="any_new_current_builder" invisible="1"/>
                                     <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
                                     <field name="url" widget="url"/>
                                     <field name="res_model" />
-                                    <field name="res_id" />
+                                    <field name="res_id" readonly="1"/>
+                                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
                                 </group>
                             </page>
                             <page name="xml" string="XML">
@@ -39,6 +54,7 @@
                     <field name="url"/>
                     <field name="res_model" />
                     <field name="res_id" />
+                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
                 </tree>
             </field>
         </record>

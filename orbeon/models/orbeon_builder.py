@@ -304,24 +304,26 @@ class OrbeonBuilder(models.Model):
         if self.state == STATE_CURRENT:
             return False
 
-        self.env.cr.execute(
-            "WITH RECURSIVE builder_children AS ("
-            "    SELECT "
-            "      id, parent_id, name, state"
-            "    FROM"
-            "      orbeon_builder"
-            "    WHERE id = %s"
-            "  UNION ALL"
-            "    SELECT"
-            "      ob.id, ob.parent_id, ob.name, ob.state"
-            "    FROM "
-            "      builder_children AS bc"
-            "      INNER JOIN orbeon_builder AS ob ON ob.parent_id = bc.id"
-            "    WHERE ob.state = '%s'"
-            ") "
-            "SELECT id AS builder_id "
-            "FROM builder_children "
-            "WHERE state = '%s' LIMIT 1" % (self.id, STATE_CURRENT, STATE_CURRENT))
+        query = """WITH RECURSIVE
+            builder_children AS (
+              SELECT
+                id, parent_id, name, state
+              FROM
+                  orbeon_builder
+              WHERE id = {builder_id}
+                UNION ALL
+              SELECT
+                ob.id, ob.parent_id, ob.name, ob.state
+              FROM
+                builder_children AS bc
+                INNER JOIN orbeon_builder AS ob ON ob.parent_id = bc.id
+            )
+            SELECT id AS builder_id
+            FROM builder_children
+            WHERE state = '{state}' LIMIT 1
+        """.format(builder_id=self.id, state=STATE_CURRENT)
+
+        self.env.cr.execute(query)
 
         builder_id = self.env.cr.fetchone()
 
