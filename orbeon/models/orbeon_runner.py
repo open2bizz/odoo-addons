@@ -20,6 +20,7 @@
 ##############################################################################
 from orbeon_xml_api.builder import Builder as BuilderAPI
 from orbeon_xml_api.runner import Runner as RunnerAPI
+from orbeon_xml_api.runner_builder_merge import RunnerBuilderMerge as RunnerBuilderMergeAPI
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -202,7 +203,7 @@ class OrbeonRunner(models.Model):
         except Exception, e:
             _logger.error("Orbeon Runner merge Exception: %s" % e)
 
-    @api.multi
+    @api.one
     @api.returns('self')
     def merge_builder(self, builder_obj):
         """ Merge (and replace) this Runner XML with XML from builder_obj """
@@ -234,16 +235,20 @@ class OrbeonRunner(models.Model):
         merge_builder_xml = bytes(bytearray(merge_builder_xml, encoding='utf-8'))
         merge_builder_api = BuilderAPI(merge_builder_xml, res_lang.iso_code)
 
-        # TODO try/except handling?
-        merged_runner = runner_api.merge(merge_builder_api)
+        try:
+            merger_api = RunnerBuilderMergeAPI(runner_api, merge_builder_api)
+            merged_runner = merger_api.merge()
 
-        self.write({
-            'xml': merged_runner.xml,
-            'builder_id': builder_obj.id,
-            'is_merged': True
-        })
+            self.write({
+                'xml': merged_runner.xml,
+                'builder_id': builder_obj.id,
+                'is_merged': True
+            })
 
-        return self
+            return self
+        except Exception as e:
+            _logger.error("[orbeon] Merge failed with error: %s" % e)
+            raise UserError("Merge failed with error: %s" % e)
 
     # TODO
     # @api.multi

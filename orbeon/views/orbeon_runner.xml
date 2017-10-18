@@ -28,7 +28,7 @@
                                     <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
                                     <field name="url" widget="url"/>
                                     <field name="res_model" />
-                                    <field name="res_id" />
+                                    <field name="res_id" readonly="1"/>
                                     <field name="is_merged" groups="orbeon.orbeon_admin"/>
                                 </group>
                             </page>
