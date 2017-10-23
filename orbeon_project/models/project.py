@@ -131,7 +131,18 @@ class Project(models.Model):
         forms = self.env['orbeon.runner']
         for form in self.orbeon_runner_form_ids:
             defaults = {}
-            forms += form.copy(defaults)
+            if self.state == 'template':
+                defaults.update({'state' : 'new'
+                                , 'xml' : ''})
+                if form.builder_id.current_builder_id:
+                    defaults.update({'builder_id' : form.builder_id.current_builder_id.id})
+                new_form = form.copy(defaults)
+            else:
+                defaults.update({'state' : 'new'
+                                , 'is_merged' : False})
+                new_form = form.copy(defaults)
+                new_form.with_context(lang='nl_NL').merge_current_builder()
+            forms += new_form
         return self.browse(new_project_id).write({'orbeon_runner_form_ids': [(6, 0, forms.ids)]})
 
     @api.multi
