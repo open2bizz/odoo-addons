@@ -132,14 +132,18 @@ class Project(models.Model):
         for form in self.orbeon_runner_form_ids:
             defaults = {}
             if self.state == 'template':
-                defaults.update({'state' : 'new'
-                                , 'is_merged' : False})
+                defaults.update({ 'is_merged' : False
+                                , 'stage_id' : form.stage_id.id if form.stage_id else False })
                 if form.builder_id.current_builder_id:
                     defaults.update({'builder_id' : form.builder_id.current_builder_id.id})
                 new_form = form.copy(defaults)
             else:
-                defaults.update({'state' : 'new'
-                                , 'is_merged' : False})
+                new_stage = False
+                for st in self.orbeon_project_runner_stage_ids:
+                    if st.sequence == 1:
+                        new_stage = st.id
+                defaults.update({ 'is_merged' : False
+                                , 'stage_id' : new_stage})
                 new_form = form.copy(defaults)
                 new_form.with_context(lang='nl_NL').merge_current_builder()
             forms += new_form
