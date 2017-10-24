@@ -133,7 +133,7 @@ class Project(models.Model):
             defaults = {}
             if self.state == 'template':
                 defaults.update({'state' : 'new'
-                                , 'xml' : ''})
+                                , 'is_merged' : False})
                 if form.builder_id.current_builder_id:
                     defaults.update({'builder_id' : form.builder_id.current_builder_id.id})
                 new_form = form.copy(defaults)
