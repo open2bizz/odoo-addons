@@ -284,12 +284,12 @@ class OrbeonRunner(models.Model):
                 # TODO
                 # preprend the <xml> tag from elsewhere? Via builder-API to get right version?
                 # code: runner.builder_id.get_xml_form_node(with_xml_tag)
-                runner_xml = '<?xml version="1.0" encoding="utf-8"?>%s' % \
+                xml = '<?xml version="1.0" encoding="utf-8"?>%s' % \
                              runner.builder_id.get_xml_form_node()[0]
             else:
-                runner_xml = runner.xml
+                xml = runner.xml
 
-            res['xml'] = self.parse_runner_xml(runner_xml, runner)
+        res['xml'] = bytes(bytearray(xml, encoding='utf-8'))
 
         return res
 
