@@ -22,29 +22,29 @@
             </field>
         </record>
 
+
         <record id="orbeon_project_project_kanban" model="ir.ui.view">
             <field name="name">orbeon.project.project.kanban</field>
             <field name="model">project.project</field>
             <field name="priority" eval="20" />
-            <field name="inherit_id"
-	           ref="project_type.project_type_view_project_kanban" />
+            <field name="inherit_id" ref="project.view_project_kanban" />
             <field name="arch" type="xml">
-	        <data>
-	            <xpath expr="//templates" position="before">
-	                <field name="orbeon_runner_forms_count" />
-	            </xpath>
-
-	            <xpath expr="//div[contains(@class, 'o_project_kanban_boxes')]"
-		           position="inside">
-	                <a t-if="record.orbeon_runner_forms_count.raw_value" class="o_project_kanban_box"
-	                   name="action_orbeon_runner_forms" type="object">
-	                    <span class="o_value">
-		                <t t-esc="record.orbeon_runner_forms_count.value" />
-	                    </span>
-	                    <span class="o_label">Forms</span>
-	                </a>
-	            </xpath>
-	        </data>
+	            <data>
+		            <xpath expr="//templates" position="before">
+		                <field name="orbeon_runner_forms_count" />
+		            </xpath>
+	
+		            <xpath expr="//div[contains(@class, 'o_project_kanban_boxes')]"
+			           position="inside">
+		                <a t-if="record.orbeon_runner_forms_count.raw_value" class="o_project_kanban_box"
+		                   name="action_orbeon_runner_forms" type="object">
+		                    <span class="o_value">
+			                <t t-esc="record.orbeon_runner_forms_count.value" />
+		                    </span>
+		                    <span class="o_label">Forms</span>
+		                </a>
+		            </xpath>
+		        </data>
             </field>
         </record>
 

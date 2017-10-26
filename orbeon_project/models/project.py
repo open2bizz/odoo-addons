@@ -89,20 +89,6 @@ class Project(models.Model):
             ("res_model", "=", 'project.project'),
         ])
 
-    @api.model
-    def create(self, vals):
-        res = super(Project, self).create(vals)
-        runner = self.env["orbeon.runner"]
-
-        for builder in res.type_id.orbeon_builder_form_ids:
-            runner.create({
-                'builder_id': builder.id,
-                'name': builder.name,
-                'res_id': res.id,
-            })
-
-        return res
-
     @api.multi
     def write(self, vals):
         res = super(Project, self).write(vals)
@@ -139,3 +125,32 @@ class Project(models.Model):
             "context": context,
             "domain": [("id", "in", runner_form_ids)],
         }
+        
+    @api.multi
+    def map_orbeon_forms(self, new_project_id):
+        forms = self.env['orbeon.runner']
+        for form in self.orbeon_runner_form_ids:
+            defaults = {}
+            if self.state == 'template':
+                defaults.update({ 'is_merged' : False
+                                , 'stage_id' : form.stage_id.id if form.stage_id else False })
+                if form.builder_id.current_builder_id:
+                    defaults.update({'builder_id' : form.builder_id.current_builder_id.id})
+                new_form = form.copy(defaults)
+            else:
+                new_stage = False
+                for st in self.orbeon_project_runner_stage_ids:
+                    if st.sequence == 1:
+                        new_stage = st.id
+                defaults.update({ 'is_merged' : False
+                                , 'stage_id' : new_stage})
+                new_form = form.copy(defaults)
+                new_form.with_context(lang='nl_NL').merge_current_builder()
+            forms += new_form
+        return self.browse(new_project_id).write({'orbeon_runner_form_ids': [(6, 0, forms.ids)]})
+
+    @api.multi
+    def copy(self, default=None):
+        project = super(Project, self).copy(default) 
+        self.map_orbeon_forms(project.id)
+        return project        
