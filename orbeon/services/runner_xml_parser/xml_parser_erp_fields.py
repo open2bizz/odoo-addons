@@ -132,7 +132,7 @@ class XmlParserERPFields(XmlParserBase):
                     self.errors.append(error)
 
                 except Exception as e:
-                    error = self._exception_erpfield(all_fields, e.message)
+                    error = self._exception_erpfield(erp_field_obj.tagname, all_fields, e.message)
 
                     if self.runner.builder_id.debug_mode:
                         field_val = error.message
