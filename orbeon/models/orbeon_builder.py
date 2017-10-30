@@ -195,28 +195,31 @@ class OrbeonBuilder(models.Model):
 
         if vals.get('builder_template_id', False):
             template = self.env['orbeon.builder.template'].browse(vals['builder_template_id'])
-            xml = etree.fromstring(template.xml)
+            root = etree.fromstring(template.xml)
         elif 'xml' in vals:
             xml = u"%s" % vals['xml']
             xml = bytes(bytearray(xml, encoding='utf-8'))
-            xml = etree.fromstring(xml)
 
-        if len(xml.xpath('//application-name')) > 0:
-            xml.xpath('//application-name')[0].text = 'odoo'
+            # Fix Unicode parser (ValueError)
+            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
+            root = etree.XML(xml.encode('utf-8'), parser)
 
-        if 'name' in vals and len(xml.xpath('//form-name')) > 0:
-            xml.xpath('//form-name')[0].text = vals['name']
+        if len(root.xpath('//application-name')) > 0:
+            root.xpath('//application-name')[0].text = 'odoo'
+
+        if 'name' in vals and len(root.xpath('//form-name')) > 0:
+            root.xpath('//form-name')[0].text = vals['name']
 
         if 'title' in vals and vals['title']:
-            xml.xpath('//metadata/title')[0].text = vals['title']
+            root.xpath('//metadata/title')[0].text = vals['title']
 
-            if len(xml.xpath('//title')) > 0:
-                xml.xpath('//title')[0].text = vals['title']
+            if len(root.xpath('//title')) > 0:
+                root.xpath('//title')[0].text = vals['title']
 
-            if len(xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
-                xml.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
+            if len(root.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})) > 0:
+                root.xpath('//xh:title', namespaces={'xh': "http://www.w3.org/1999/xhtml"})[0].text = vals['title']
 
-        vals['xml'] = etree.tostring(xml, encoding='utf-8')
+        vals['xml'] = etree.tostring(root, encoding='unicode')
         res = super(OrbeonBuilder, self).create(vals)
 
         return res
@@ -242,7 +245,7 @@ class OrbeonBuilder(models.Model):
         # Fix Unicode parser (ValueError)
         parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
         root = etree.XML(self.xml.encode('utf-8'), parser)
-        alter["xml"] = etree.tostring(root)
+        alter["xml"] = etree.tostring(root, encoding='unicode')
 
         res = super(OrbeonBuilder, self).copy(alter)
 
@@ -355,7 +358,7 @@ class OrbeonBuilder(models.Model):
             namespaces={'xf': "http://www.w3.org/2002/xforms"}
         )[0]
 
-        form = etree.XML(etree.tostring(form_node), parser)
+        form = etree.XML(etree.tostring(form_node, encoding='unicode'), parser)
         etree.cleanup_namespaces(form)
 
-        return etree.tostring(form)
+        return etree.tostring(form, encoding='unicode')

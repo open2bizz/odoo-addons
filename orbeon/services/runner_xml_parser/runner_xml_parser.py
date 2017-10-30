@@ -44,4 +44,4 @@ class RunnerXmlParser(object):
             self.xml_root = parser.xml_root
             self.errors += parser.errors
 
-        self.xml = etree.tostring(self.xml_root)
+        self.xml = etree.tostring(self.xml_root, encoding='unicode')

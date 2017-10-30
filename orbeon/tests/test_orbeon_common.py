@@ -193,4 +193,4 @@ class TestOrbeonCommon(TransactionCase, XmlTestCase):
                       'Element:\n%s'
                       % (node.tag, xpath,
                          ', '.join(values),
-                         etree.tostring(node, pretty_print=True)))
+                         etree.tostring(node, encoding='unicode', pretty_print=True)))
