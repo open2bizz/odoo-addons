@@ -185,10 +185,8 @@ class OrbeonRunner(models.Model):
 
         if self.is_merged or not self.xml:
             return False
-        elif self.builder_id.current_builder_id is not None:
-            return True
         else:
-            return False
+            return self.any_new_current_builder
 
     @api.multi
     @api.returns('self')

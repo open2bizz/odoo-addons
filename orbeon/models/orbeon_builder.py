@@ -301,9 +301,6 @@ class OrbeonBuilder(models.Model):
 
     @api.one
     def _current_builder(self):
-        if self.state == STATE_CURRENT:
-            return False
-
         query = """WITH RECURSIVE
             builder_children AS (
               SELECT

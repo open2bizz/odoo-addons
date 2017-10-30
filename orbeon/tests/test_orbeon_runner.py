@@ -243,8 +243,15 @@ class TestOrbeonRunner(TestOrbeonCommon):
         there's a new builder current-version. So in this case it should
         trigger a merge.
         """
-        # Runner (Form) version 2, should be merged.
-        self.assertTrue(self.runner_form_a_v2.can_merge())
+        # Runner version 1, can be merged.
+        self.assertTrue(self.runner_form_a_v1.can_merge())
+
+        # Runner version 2, already the last current one (can't merge)
+        self.assertFalse(self.runner_form_a_v2.can_merge())
+
+        # Merge Runner version 1. Afterwards can't merge
+        self.runner_form_a_v1.merge_current_builder()
+        self.assertFalse(self.runner_form_a_v1.can_merge())
 
     def test_merge_current_builder_basic(self):
         """Test merge basic XML-form with only Orbeon fieldcontrols. This tests the base
@@ -299,24 +306,3 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertXpathsOnlyOne(root, ['//input-control-2', '//data-control-1'])
 
         # msg = ("Field %s shouldn't be copied, but it was!" % nocopy_field)
-
-    @TODO
-    def test_orbeon_search_read_can_merge(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is False and
-        there's a new builder current-version. So in this case it should
-        trigger a merge.
-        """
-
-    @TODO
-    def test_orbeon_search_read_can_not_merge_is_merged(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is True and
-        there's no newer builder current-version. So in this case it should
-        not trigger a merge.
-        """
-
-    @TODO
-    def test_orbeon_search_read_can_not_merge_current_builder_remains_same(self):
-        """Test orbeon_search_read, where Runner field `is_merged` is False and
-        there's no newer builder current-version. So in this case it should
-        not trigger a merge.
-        """
