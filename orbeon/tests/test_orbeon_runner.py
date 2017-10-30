@@ -287,6 +287,34 @@ class TestOrbeonRunner(TestOrbeonCommon):
         self.assertEqual(merged_runner_api.form.datecontrol1.value, None)
         self.assertEqual(merged_runner_api.form.datecontrol1._parent._bind.name, 'section-1')
 
+    def test_copy_and_merge_current_builder(self):
+        before_runner = self.runner_form_a_v1
+        before_root = self.assertXmlDocument(before_runner.xml)
+
+        # First check to be merged controls aren't present yet
+        self.assertXpathsOnlyOne(before_root, ['//input-control-1'])
+        self.assertXpathValues(before_root, './/input-control-1/text()', [('text 1')])
+
+        self.assertEqual(len(before_root.xpath('//input-control-2')), 0)
+        self.assertEqual(len(before_root.xpath('//date-control-1')), 0)
+
+        # Copy (and merge)
+        after_runner = before_runner.sudo().copy()
+        after_root = self.assertXmlDocument(after_runner.xml)
+
+        self.assertFalse(after_runner.can_merge())
+
+        self.assertXpathsOnlyOne(after_root, ['//input-control-1'])
+        self.assertXpathValues(after_root, './/input-control-1/text()', [('text 1')])
+
+        self.assertXpathsOnlyOne(after_root, ['//input-control-2'])
+        # Assert text is empty
+        self.assertXpathValues(after_root, './/input-control-2/text()', [])
+
+        self.assertXpathsOnlyOne(after_root, ['//date-control-1'])
+        # Assert text is empty
+        self.assertXpathValues(after_root, './/date-control-1/text()', [])
+
     @TODO
     def test_merge_nocopy_NC_field(self):
         """Test merge but ignore/skip nocopy (NC.) field"""

@@ -179,6 +179,13 @@ class OrbeonRunner(models.Model):
         return res
 
     @api.multi
+    def copy(self, default=None):
+        runner = super(OrbeonRunner, self).copy(default)
+        ctx = self._context.copy()
+        runner.with_context(ctx).merge_current_builder()
+        return runner
+
+    @api.multi
     def can_merge(self):
         """Can this Runner (xml) be merged with a new current Builder? """
         self.ensure_one()
