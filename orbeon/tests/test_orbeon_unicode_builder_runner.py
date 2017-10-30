@@ -58,13 +58,24 @@ class TestOrbeonUnicodeBuilderRunner(TestOrbeonCommon):
             self.fail(e)
 
     def test_unicode_builder_write(self):
-        """Test Builder create with Unicode"""
+        """Test Builder write with Unicode"""
         try:
             self.builder_form_a_v1.sudo().write(
                 {
                     'xml': self.xmlFromFile('test_orbeon4.10_builder_form_unicode.xml')
                 }
             )
+        except Exception as e:
+            self.fail(e)
+
+    def test_unicode_builder_copy_as_new_version(self):
+        """Test Builder with Unicode, copy as new version"""
+        builder = self._create_builder_unicode()
+
+        try:
+            new_builder = builder.copy_as_new_version()
+            self.assertEqual(new_builder.version, 2)
+            self.assertXmlDocument(new_builder.xml)
         except Exception as e:
             self.fail(e)
 
