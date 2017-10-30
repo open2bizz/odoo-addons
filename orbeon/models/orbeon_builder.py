@@ -242,16 +242,6 @@ class OrbeonBuilder(models.Model):
         alter["version"] = builder.version + 1
         alter["builder_template_id"] = False
 
-        # xml = self.xml
-        # xml = u"%s" % xml.decode('utf-8')
-        # # xml = u"%s" % self.xml
-        # alter['xml'] = bytes(bytearray(xml, encoding='utf-8'))
-
-        # Fix Unicode parser (ValueError)
-        # parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-        # root = etree.XML(xml.encode('utf-8'), parser)
-        # alter["xml"] = etree.tostring(root, encoding='unicode')
-
         res = super(OrbeonBuilder, self).copy(alter)
 
         return res
