@@ -289,6 +289,7 @@ class OrbeonRunner(models.Model):
             else:
                 xml = runner.xml
 
+        xml = self.parse_runner_xml(xml, runner)
         res['xml'] = bytes(bytearray(xml, encoding='utf-8'))
 
         return res
