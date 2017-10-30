@@ -32,12 +32,12 @@ class TestOrbeonRunnerXmlApi(TestOrbeonCommon):
     """Tests for Orbeon Runner XML API"""
 
     def test_o_xml_is_runner_api(self):
-        self.assertIsInstance(self.runner_form_a_v2.o_xml, Runner)
-        self.assertIsInstance(self.runner_form_a_v2.o_xml.form, RunnerForm)
+        self.assertIsInstance(self.runner_form_a_v2.with_context(uid=1).o_xml, Runner)
+        self.assertIsInstance(self.runner_form_a_v2.with_context(uid=1).o_xml.form, RunnerForm)
 
     def test_o_xml_runner_api_get(self):
-        self.assertEqual(self.runner_form_a_v2.o_xml.form.inputcontrol1.value, 'text 1')
-        self.assertEqual(self.runner_form_a_v2.o_xml.form.inputcontrol2.value, 'text 2')
+        self.assertEqual(self.runner_form_a_v2.with_context(uid=1).o_xml.form.inputcontrol1.value, 'text 1')
+        self.assertEqual(self.runner_form_a_v2.with_context(uid=1).o_xml.form.inputcontrol2.value, 'text 2')
 
         date_obj = datetime.strptime('2016-05-11', '%Y-%m-%d').date()
-        self.assertEqual(self.runner_form_a_v2.o_xml.form.datecontrol1.value, date_obj)
+        self.assertEqual(self.runner_form_a_v2.with_context(uid=1).o_xml.form.datecontrol1.value, date_obj)
