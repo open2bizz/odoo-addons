@@ -8,6 +8,8 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button name="open_orbeon_runner" type="object" attrs="{'invisible':[('id','=',False)]}"
+                                    string="Edit" class="oe_stat_button" icon="fa-edit" />
                             <button name="merge_current_builder" type="object"
                                     attrs="{'invisible':['|', ('id','=',False), '|', ('is_merged','=',True), '|', ('any_new_current_builder','=',False)]}"
                                     string="Merge Current Builder" help="Merge the Form Design (structure additions) into this Runner Form." class="oe_stat_button" icon="fa-random" />
@@ -99,7 +101,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-xs-6 o_kanban_primary_left" style="padding-top: 0;">
-                                            <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Open</button>
+                                            <button class="btn btn-primary" name="action_open_orbeon_runner" type="object">Edit</button>
                                         </div>
                                     </div>
                                 </div>
