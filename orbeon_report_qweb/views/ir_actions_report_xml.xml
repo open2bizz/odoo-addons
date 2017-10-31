@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="orbeon_report_qweb_ir_actions_report_xml_form" model="ir.ui.view">
+            <field name="name">orbeon.report.qweb.ir.actions.report.xml.form</field>
+            <field name="inherit_id" ref="base.act_report_xml_view" />
+            <field name="model">ir.actions.report.xml</field>
+            <field name="arch" type="xml">
+                <data>
+                    <page name="advanced" position="after">
+                        <page name="orbeon" string="Orbeon Forms">
+                            <field name="orbeon_builder_ids">
+                                <tree>
+                                    <field name="orbeon_builder_id" string="Name"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </page>
+                </data>
+            </field>
+        </record>
+
+    </data>
+</odoo>
