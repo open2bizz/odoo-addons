@@ -200,9 +200,7 @@ class OrbeonBuilder(models.Model):
             xml = u"%s" % vals['xml']
             xml = bytes(bytearray(xml, encoding='utf-8'))
 
-            # Fix Unicode parser (ValueError)
-            parser = etree.XMLParser(ns_clean=True, recover=True, encoding='utf-8')
-            root = etree.XML(xml.decode('utf-8'), parser)
+            root = etree.fromstring(xml)
 
         if len(root.xpath('//application-name')) > 0:
             root.xpath('//application-name')[0].text = 'odoo'
