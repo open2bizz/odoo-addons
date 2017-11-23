@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="orbeon_builder_report_xml_form" model="ir.ui.view">
+            <field name="name">orbeon.builder.report.xml.form</field>
+            <field name="model">orbeon.builder.report.xml</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+		        <form string="Report">
+		        	<group>
+                    	<field name="sequence"/>
+                    	<field name="ir_actions_report_xml_id"/>
+                    </group>
+		        </form>
+            </field>
+        </record>
+</odoo>

@@ -1,1 +1,2 @@
 orbeon/services/persistence_server/*.cfg
+*.pyc

@@ -18,8 +18,26 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from . import ir_actions_report_xml
-from . import orbeon_builder_report_xml
-from . import orbeon_builder
-from . import orbeon_runner
-from . import orbeon_report_qweb_chooser
+from odoo import fields, models, _, api, osv
+from openerp.exceptions import Warning
+
+
+import logging
+
+_logger = logging.getLogger(__name__)
+
+
+class OrbeonReportQwebChooser(models.TransientModel):
+    _name = 'orbeon.report.qweb.chooser'
+    _description = "Choose QWEB report"
+
+    report_xml_id = fields.Many2one(
+        'ir.actions.report.xml',
+        string="Reports"
+    )  
+    
+    def run_report(self, context={}):
+        rep = self.env['orbeon.runner'].browse(context.get('orbeon_runner_id'))
+        return rep[0].run_qweb_report(self.report_xml_id.id)
+        
+    

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="orbeon_report_qweb_orbeon_runner_form" model="ir.ui.view">
+            <field name="name">orbeon.runner_form.kanban</field>
+            <field name="model">orbeon.runner</field>
+            <field name="priority" eval="20" />
+            <field name="inherit_id" ref="orbeon.orbeon_runner_form_kanban" />
+            <field name="arch" type="xml">
+	        <data>
+	            <xpath expr="//div[contains(@class, 'col-xs-6 o_kanban_primary_left')]" position="after">
+					<a type="button">
+						<button class="btn btn-primary" name="report_button" type="object">Report</button>
+					</a>
+	            </xpath>
+	        </data>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

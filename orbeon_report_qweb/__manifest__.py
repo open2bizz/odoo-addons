@@ -32,6 +32,8 @@
         "views/ir_actions_report_xml.xml",
         "views/orbeon_builder.xml",
         "views/orbeon_runner.xml",
+        "views/qweb_report_chooser.xml",
+        "views/orbeon_builder_report_xml.xml"
     ],
     "application": False,
     "installable": True,
