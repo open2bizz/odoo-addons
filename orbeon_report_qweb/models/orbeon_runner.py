@@ -29,6 +29,15 @@ _logger = logging.getLogger(__name__)
 
 class OrbeonRunner(models.Model):
     _inherit = ['orbeon.runner']
+    
+    builder_reports_count = fields.Integer(
+        compute='_builder_reports_count',
+        string='Builder reports count'
+    )
+
+    @api.one
+    def _builder_reports_count(self):
+        self.builder_reports_count = len(self.builder_id.report_xml_ids)
 
     def run_qweb_report(self, report_id):
         rep = self.env['ir.actions.report.xml'].browse(report_id)
