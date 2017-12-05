@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="0">
+
+      <!-- Adding Groups -->
+    	<record id="orbeon_project.orbeon_stage_user" model="res.groups">
+    	    <field name="name">Orbeon Stage User</field>
+    	</record>
+      <record id="orbeon_project.orbeon_stage_admin" model="res.groups">
+          <field name="name">Orbeon Stage Admin</field>
+
+      </record>
+    </data>
+</odoo>
