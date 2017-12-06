@@ -186,18 +186,11 @@ class RunnerHandler(OrbeonHandlerBase):
 
     def read(self):
         """Get Orbeon-Runner data by read (i.e. HTTP GET)"""
-
         if self.data_type == 'form':
-            if not self.args.get('document'):
-                record = self.xmlrpc.runner_search_read_data(
-                    [[("id", "=", self.form_doc_id)]],
-                    ["xml"],
-                )
-            else:
-                record = self.xmlrpc.runner_search_read_builder(
-                    [[("id", "=", self.form_doc_id)]],
-                    ["xml"],
-                )
+            record = self.xmlrpc.runner_search_read_builder(
+                [[("id", "=", self.form_doc_id)]],
+                ["xml"],
+            )
             return record.get("xml")
         elif self.data_type == 'data' and self.form_data_id == 'data.xml':
             # Runner form data
