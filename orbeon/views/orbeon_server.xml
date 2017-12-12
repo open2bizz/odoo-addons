@@ -26,7 +26,6 @@
                             <page name="configuration" string="Configuration">
                                 <group string="Orbeon Server">
                                     <field name="url" widget="url" string="URL" />
-                                    <field name="summary_url" widget="url" string="Summary URL" />
                                     <field name="description"/>
                                 </group>
                                 <group string="Orbeon Persistence Server">

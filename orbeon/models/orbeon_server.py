@@ -69,12 +69,8 @@ class OrbeonServer(models.Model):
     )
     url = fields.Char(
         "URL",
+        help='URL relative to Odoo server, the Odoo server will open the URL and proxy the response',
         required=True,
-    )
-    summary_url = fields.Char(
-        "Summary URL",
-        compute="_set_summary_url",
-        store=True,
     )
     description = fields.Text(
         "Description"
@@ -137,15 +133,6 @@ class OrbeonServer(models.Model):
         res = super(OrbeonServer, self).__init__(pool, cr)
         self._autostart_persistence_servers(pool, cr)
         return res
-
-    @api.one
-    @api.depends("url")
-    def _set_summary_url(self):
-        if self.url:
-            url = "%s/fr/orbeon/builder/summary" % self.url
-        else:
-            url = "Enter URL"
-        self.summary_url = url
 
     @api.constrains("name")
     def constraint_unique_name(self):
