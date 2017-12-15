@@ -1,0 +1,142 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* orbeon_report_qweb
+# Thomas Pot <t.pot@open2bizz.nl>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-12-14 18:51+0000\n"
+"PO-Revision-Date: 2017-12-14 19:55+0100\n"
+"Last-Translator: Thomas Pot <t.pot@open2bizz.nl>\n"
+"Language-Team: nl <>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.7\n"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_runner_builder_reports_count
+msgid "Builder reports count"
+msgstr "Aantal formulierontwerpen"
+
+#. module: orbeon_report_qweb
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_report_chooser_form
+msgid "Cancel"
+msgstr "Annuleer"
+
+#. module: orbeon_report_qweb
+#: model:ir.model,name:orbeon_report_qweb.model_orbeon_report_qweb_chooser
+msgid "Choose QWEB report"
+msgstr "Kies rapport"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_create_uid
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_create_uid
+msgid "Created by"
+msgstr "Aangemaakt door"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_create_date
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_create_date
+msgid "Created on"
+msgstr "Aangemaakt op"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_display_name
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_display_name
+msgid "Display Name"
+msgstr "Weergave naam"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_id
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_id
+msgid "ID"
+msgstr "ID"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml___last_update
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser___last_update
+msgid "Last Modified on"
+msgstr "Laatst gewijzigd op"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_write_uid
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_write_uid
+msgid "Last Updated by"
+msgstr "Laatst bijgewerkt door"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_write_date
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_write_date
+msgid "Last Updated on"
+msgstr "Laatst bijgewerkt op"
+
+#. module: orbeon_report_qweb
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_ir_actions_report_xml_form
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_orbeon_builder_form
+msgid "Name"
+msgstr "Naam"
+
+#. module: orbeon_report_qweb
+#: model:ir.model,name:orbeon_report_qweb.model_orbeon_builder
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_orbeon_builder_id
+msgid "Orbeon Builder"
+msgstr "Formulier ontwerper"
+
+#. module: orbeon_report_qweb
+#: model:ir.model,name:orbeon_report_qweb.model_orbeon_builder_report_xml
+msgid "Orbeon Builder Reports"
+msgstr "Formulier ontwerper rapporten"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_ir_act_report_xml_orbeon_builder_ids
+msgid "Orbeon Builders"
+msgstr "Formulier-ontwerpen"
+
+#. module: orbeon_report_qweb
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_ir_actions_report_xml_form
+msgid "Orbeon Forms"
+msgstr "Orbeon formulieren"
+
+#. module: orbeon_report_qweb
+#: model:ir.model,name:orbeon_report_qweb.model_orbeon_runner
+msgid "Orbeon Runner"
+msgstr "Formulieren service"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_ir_actions_report_xml_id
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_builder_report_xml_form
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_orbeon_runner_form
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_report_chooser_form
+msgid "Report"
+msgstr "Rapport"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,help:orbeon_report_qweb.field_orbeon_builder_report_xml_sequence
+msgid "Report priority/sequence for the Builder Form"
+msgstr "Volgorde van de rapportage"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_ids
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_report_qweb_chooser_report_xml_id
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_orbeon_builder_form
+msgid "Reports"
+msgstr "Rapportages"
+
+#. module: orbeon_report_qweb
+#: model:ir.ui.view,arch_db:orbeon_report_qweb.orbeon_report_qweb_report_chooser_form
+msgid "Run Report"
+msgstr "Openen rapport"
+
+#. module: orbeon_report_qweb
+#: model:ir.model.fields,field_description:orbeon_report_qweb.field_orbeon_builder_report_xml_sequence
+msgid "Sequence"
+msgstr "Reeks"
+
+#. module: orbeon_report_qweb
+#: model:ir.model,name:orbeon_report_qweb.model_ir_actions_report_xml
+msgid "ir.actions.report.xml"
+msgstr "ir.actions.report.xml"

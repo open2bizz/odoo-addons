@@ -32,6 +32,8 @@
         "orbeon",
     ],
     "data": [
+             "security/res_groups.xml",
+             "security/ir.model.access.csv",
         "data/orbeon_project_data.xml",
         "views/orbeon_runner.xml",
         "views/project.xml",
