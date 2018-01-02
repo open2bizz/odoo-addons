@@ -501,7 +501,7 @@ msgstr "Start persistence"
 #: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_state
 #: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_state
 msgid "State"
-msgstr "Staat / Provincie"
+msgstr "Status"
 
 #. module: orbeon
 #: model:ir.ui.view,arch_db:orbeon.orbeon_server_form

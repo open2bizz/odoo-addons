@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="orbeon_report_qweb_report_chooser_form" model="ir.ui.view">
+            <field name="name">orbeon.report.qweb.report.chooser.form</field>
+            <field name="model">orbeon.report.qweb.chooser</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+		        <form string="Report">
+		        	<group>
+                    	<field name="report_xml_id" domain="[('id','in',context.get('rep_ids'))]"/>
+                    </group>
+                    <footer>
+                        <button special="cancel" string="Cancel"/>
+                        <button name="run_report" string="Run Report" type="object"/>
+                    </footer>
+                    
+		        </form>
+            </field>
+        </record>
+</odoo>

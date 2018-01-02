@@ -21,3 +21,5 @@
 from . import ir_actions_report_xml
 from . import orbeon_builder_report_xml
 from . import orbeon_builder
+from . import orbeon_runner
+from . import orbeon_report_qweb_chooser
