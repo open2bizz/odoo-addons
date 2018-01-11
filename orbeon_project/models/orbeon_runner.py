@@ -51,6 +51,13 @@ class OrbeonRunner(models.Model):
         string='Project',
         readonly=True
     )
+    partner_id = fields.Many2one(
+        'res.partner',
+        compute='_compute_partner_id',
+        string='Partner',
+        readonly=True,
+        store=True
+    )
     user_id = fields.Many2one('res.users', string='Assigned to', index=True, track_visibility='onchange', default=lambda self: self.env.uid)
     user_email = fields.Char(related='user_id.email', string='User Email', readonly=True)
     sequence = fields.Integer(
@@ -92,6 +99,12 @@ class OrbeonRunner(models.Model):
         if self.res_model == 'project.project':
             project = self.env['project.project'].search([('id', '=', self.res_id)])
             self.project_id = project.id
+
+    @api.depends('builder_id')
+    def _compute_partner_id(self):
+        if self.res_model == 'project.project':
+            project = self.env['project.project'].search([('id', '=', self.res_id)])
+            self.partner_id = project.partner_id
 
     @api.onchange('project_id')
     def _onchange_project(self):

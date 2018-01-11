@@ -49,11 +49,13 @@ class OrbeonRunner(models.Model):
     builder_id = fields.Many2one(
         "orbeon.builder",
         string="Form builder",
-        ondelete='restrict')
+        ondelete='restrict',
+        store=True)
 
     builder_name = fields.Char(
         "Builder Name",
         compute="_get_builder_name",
+        store=True,
         readonly=True)
 
     builder_version = fields.Integer(

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="health_orbeon_runner_copy_button" model="ir.ui.view">
+          <field name="name">Health Orbeon Runner Copy Button</field>
+          <field name="model">orbeon.runner</field>
+          <field name="inherit_id" ref="orbeon.orbeon_runner_form_form" />
+          <field name="arch" type="xml">
+            <data>
+              <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="wizard_copy_form" type="object" attrs="{'invisible':[('xml','!=',False)]}" string="Copy" class="oe_stat_button" icon="fa-copy" />
+              </xpath>
+            </data>
+          </field>
+      </record>
+    </data>
+</odoo>
