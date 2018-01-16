@@ -55,7 +55,6 @@ class OrbeonRunner(models.Model):
     builder_name = fields.Char(
         "Builder Name",
         compute="_get_builder_name",
-        store=True,
         readonly=True)
 
     builder_version = fields.Integer(

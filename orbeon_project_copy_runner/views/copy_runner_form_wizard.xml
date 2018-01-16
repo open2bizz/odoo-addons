@@ -12,7 +12,7 @@
 						<field name="project_id" />
 						<field name="patient_id" />
 						<field name="origin_form_id"/>
-						<field name="target_form_id" domain="[('founder_id','=',founder_id)]"/>
+						<field name="target_form_id" domain="[('founder_id','=',founder_id),('partner_id','=',patient_id),('state','=','complete')]"/>
 						<field name="founder_id" invisible="1"/>
 						</group>
           </div>
@@ -32,7 +32,7 @@
 			 <xpath expr="//div[@class='row' and position()=last()]" position="after">
 				 <div class="row">
 					<div class="col-xs-6 o_kanban_primary_left" style="padding-top: 0;">
-						<button class="btn btn-outline-primary" name="wizard_copy_form" type="object">Copy</button>
+						<button class="btn btn-outline-primary" name="copy" type="object">Copy</button>
 					</div>
 				</div>
 			 </xpath>

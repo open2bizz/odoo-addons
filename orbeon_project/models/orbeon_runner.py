@@ -53,7 +53,7 @@ class OrbeonRunner(models.Model):
     )
     partner_id = fields.Many2one(
         'res.partner',
-        compute='_compute_partner_id',
+        related='project_id.partner_id',
         string='Partner',
         readonly=True,
         store=True
@@ -99,12 +99,6 @@ class OrbeonRunner(models.Model):
         if self.res_model == 'project.project':
             project = self.env['project.project'].search([('id', '=', self.res_id)])
             self.project_id = project.id
-
-    @api.depends('builder_id')
-    def _compute_partner_id(self):
-        if self.res_model == 'project.project':
-            project = self.env['project.project'].search([('id', '=', self.res_id)])
-            self.partner_id = project.partner_id
 
     @api.onchange('project_id')
     def _onchange_project(self):

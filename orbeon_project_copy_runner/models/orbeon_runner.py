@@ -35,9 +35,6 @@ class OrbeonRunnerCopyAction(models.Model):
 
     @api.multi
     def wizard_copy_form(self):
-        print ('__________________________________________________________________________________________________________')
-        print self.partner_id.id
-        print ('__________________________________________________________________________________________________________')
         if self.xml == False:
             return{
                     'name': _('Copy Runner Form'),
