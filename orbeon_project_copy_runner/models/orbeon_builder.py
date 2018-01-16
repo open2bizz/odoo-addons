@@ -27,6 +27,7 @@ class OrbeonBuilderCopyAction(models.Model):
         "orbeon.builder",
         "Builder Founder",
         copy=True,
+        readonly=True,
         help="This builder form highest parent_id"
         )
 

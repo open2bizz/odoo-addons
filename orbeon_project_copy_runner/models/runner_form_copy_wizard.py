@@ -20,6 +20,10 @@
 ##############################################################################
 from odoo import fields, models, api
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 class RunnerFormCopyWizard(models.TransientModel):
     _name = 'wizard.runner.form.copy'
     _description = 'Copy previously added forms'
@@ -34,4 +38,5 @@ class RunnerFormCopyWizard(models.TransientModel):
     def copy_runner_form_xml(self):
         for record in self.env['orbeon.runner'].browse(self._context.get('active_ids', [])):
             record.xml = self.target_form_id.xml
+            record.copy()
         return True
