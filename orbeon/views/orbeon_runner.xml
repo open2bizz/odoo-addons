@@ -25,17 +25,22 @@
                         <notebook>
                             <page name="general" string="General">
                                 <group>
-                                    <field name="id" invisible="1"/>
-                                    <field name="any_new_current_builder" invisible="1"/>
-                                    <field name="builder_id" domain='[("state", "=", "current")]' attrs="{'readonly': [('id','!=',False)]}"/>
-                                    <field name="url" widget="url"/>
-                                    <field name="res_model" />
-                                    <field name="res_id" readonly="1"/>
-                                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
+                                    <field name="builder_id" domain="[(&quot;state&quot;, &quot;=&quot;, &quot;current&quot;)]" attrs="{'readonly': [('id','!=',False)]}"/>
+                                    <field name="url" widget="url" attrs="{'invisible': [('kanban_state','=', 'blocked')]}"/>
                                 </group>
                             </page>
-                            <page name="xml" string="XML">
-                                <field name="xml" />
+                            <page name="xml" string="XML" groups='base.group_system'>
+                                <field name="xml" attrs="{'readonly': [('kanban_state','=', 'blocked')]}"/>
+                            </page>
+                            <page name="technical" string="TECH" groups='base.group_system'>
+                                <group>
+                                    <field name="id" invisible="1"/>
+                                    <field name="any_new_current_builder" invisible="1"/>
+                                    <field name="res_model"/>
+                                    <field name="res_id" readonly="1"/>
+                                    <field name="is_merged" groups="orbeon.orbeon_admin"/>
+                                    <field name="state"/>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
