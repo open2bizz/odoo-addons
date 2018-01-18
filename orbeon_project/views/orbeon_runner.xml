@@ -8,22 +8,21 @@
             <field name="inherit_id" ref="orbeon.orbeon_runner_form_form"/>
             <field name="arch" type="xml">
                 <data>
-                    <field name="res_model" position="before">
-                        <field name="project_id"/>
-                    </field>
+                  <field name="url" position="after">
+                      <field name="project_id"/>
+                  </field>
 
-	            <xpath expr="//form/sheet" position="before">
-                        <header>
-                            <field name="stage_id" widget="statusbar" clickable="True"
-                                   options="{'fold_field': 'fold'}"/>
-                        </header>
+                    <xpath expr="//form/sheet" position="before">
+                               <header>
+                                   <field name="stage_id" widget="statusbar" clickable="True" options="{'fold_field': 'fold'}"/>
+                               </header>
 
-                    </xpath>
+                           </xpath>
                 </data>
             </field>
         </record>
-        
-        <!-- Orbeon Runner Forms kanban view -->        
+
+        <!-- Orbeon Runner Forms kanban view -->
         <record id="orbeon_project_runner_kanban" model="ir.ui.view">
             <field name="name">orbeon.project.runner.kanban</field>
             <field name="model">orbeon.runner</field>
@@ -36,7 +35,7 @@
                     <attribute name="group_edit">false</attribute>
                     <attribute name="quick_create">false</attribute>
                 </kanban>
-                
+
                 <kanban position="inside">
                     <field name="project_id"/>
                     <field name="stage_id" options='{"group_by_tooltip": {"description": "Stage Description"}}'/>
