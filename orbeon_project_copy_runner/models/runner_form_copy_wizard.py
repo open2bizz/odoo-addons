@@ -28,8 +28,8 @@ class RunnerFormCopyWizard(models.TransientModel):
     _name = 'wizard.runner.form.copy'
     _description = 'Copy previously added forms'
 
-    target_form_id = fields.Many2one('orbeon.runner', string="Target Form")
-    origin_form_id = fields.Many2one('orbeon.runner', string="Origin Form", readonly=True)
+    target_form_id = fields.Many2one('orbeon.runner', string="Target Form", readonly=True)
+    origin_form_id = fields.Many2one('orbeon.runner', string="Origin Form")
     project_id = fields.Many2one('project.project', string="Project", readonly=True)
     patient_id = fields.Many2one('res.partner', string="Patient", readonly=True)
     founder_id = fields.Many2one('orbeon.builder', string="Origin Founder", readonly=True)
@@ -37,6 +37,6 @@ class RunnerFormCopyWizard(models.TransientModel):
     @api.multi
     def copy_runner_form_xml(self):
         for record in self.env['orbeon.runner'].browse(self._context.get('active_ids', [])):
-            record.xml = self.target_form_id.xml
-            record.copy()
+            record.write({'xml':self.origin_form_id.xml, 'is_merged': False, 'builder_id': self.origin_form_id.builder_id.id})
+            record.merge_current_builder()
         return True
