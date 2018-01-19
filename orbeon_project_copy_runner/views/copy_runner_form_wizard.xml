@@ -12,7 +12,7 @@
 						<field name="project_id" />
 						<field name="patient_id" />
 						<field name="target_form_id"/>
-						<field name="origin_form_id" domain="[('founder_id','=',founder_id),('partner_id','=',patient_id),('state','=','complete')]"/>
+						<field name="origin_form_id" domain="[('founder_id','=',founder_id),('partner_id','=',patient_id),('state','=','complete')]" widget="selection"/>
 						<field name="founder_id" invisible="1"/>
 						</group>
           </div>
