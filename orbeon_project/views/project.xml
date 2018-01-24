@@ -33,7 +33,7 @@
 		            <xpath expr="//templates" position="before">
 		                <field name="orbeon_runner_forms_count" />
 		            </xpath>
-	
+
 		            <xpath expr="//div[contains(@class, 'o_project_kanban_boxes')]"
 			           position="inside">
 		                <a t-if="record.orbeon_runner_forms_count.raw_value" class="o_project_kanban_box"
@@ -132,6 +132,22 @@
               </p>
             </field>
         </record>
+
+        <record id="orbeon_project_template_tasks" model="ir.ui.view">
+            <field name="name">orbeon.project.project.template.tasks</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project" />
+            <field name="arch" type="xml">
+              <xpath expr="//notebook" position="inside">
+                <page  name="task_stages" string="Task Stages">
+                  <group>
+                    <field name="type_ids"/>
+                  </group>
+                </page>
+              </xpath>
+            </field>
+        </record>
+
 
         <menuitem action="open_orbeon_project_runner_stage" id="menu_orbeon_project_runner_stage" name="Form Stages" parent="project.menu_project_config" sequence="4" groups="project.group_project_manager"/>
 
