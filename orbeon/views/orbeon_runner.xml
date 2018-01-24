@@ -26,11 +26,11 @@
                             <page name="general" string="General">
                                 <group>
                                     <field name="builder_id" domain="[(&quot;state&quot;, &quot;=&quot;, &quot;current&quot;)]" attrs="{'readonly': [('id','!=',False)]}"/>
-                                    <field name="url" widget="url" attrs="{'invisible': [('kanban_state','=', 'blocked')]}"/>
+                                    <field name="url" widget="url" />
                                 </group>
                             </page>
                             <page name="xml" string="XML" groups='base.group_system'>
-                                <field name="xml" attrs="{'readonly': [('kanban_state','=', 'blocked')]}"/>
+                                <field name="xml" />
                             </page>
                             <page name="technical" string="TECH" groups='base.group_system'>
                                 <group>
