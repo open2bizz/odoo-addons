@@ -53,6 +53,7 @@
                     <ul>
                         <li>Project: <strong><field name="project_id"/></strong></li>
                         <li>User: <strong><field name="user_id"/></strong></li>
+                        <li>Aangemaakt op: <strong><field name="create_date"/></strong></li>
                     </ul>
                 </xpath>
             </field>

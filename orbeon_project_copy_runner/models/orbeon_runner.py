@@ -21,6 +21,7 @@
 
 from odoo import fields, models, api, _
 from odoo.osv import osv
+from odoo.exceptions import UserError, ValidationError
 
 class OrbeonRunnerCopyAction(models.Model):
     _inherit = 'orbeon.runner'
@@ -44,7 +45,7 @@ class OrbeonRunnerCopyAction(models.Model):
                     'view_type': 'form',
                     'view_mode': 'form',
                     'target': 'new',
-                    'context': {'default_patient_id': self.project_id.partner_id.id,'default_target_form_id': self.id, 'default_project_id': self.project_id.id, 'default_founder_id': self.founder_id.id},
+                    'context': {'default_patient_id': self.project_id.partner_id.id,'default_target_form_id': self.id, 'default_project_id': self.project_id.id, 'default_founder_id': self.builder_id.founder_id},
             }
         else:
-            raise osv.except_osv(('Error'), ('Cannot edit the XML when it is already filled'))
+             raise UserError(_('Cannot copy a runner form, because this form already contains XML data. Empty the XML field in order to copy a runner form.'))

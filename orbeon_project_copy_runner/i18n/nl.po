@@ -118,3 +118,9 @@ msgstr "Doel Formulier"
 msgid "This builder form highest parent_id"
 msgstr "Deze builder formulier is de hoogste parent"
 
+#. module: orbeon_project_copy_runner
+#: code:addons/odoo-addons/orbeon_project_copy_runner/models/orbeon_runner.py:51
+#, python-format
+msgid "Cannot copy a runner form, because this form already contains XML data. Empty the XML field in order to copy a runner form."
+msgstr ""
+"Een ingevuld formulier kunt u niet meer kopieren; Verwijder het formulier en voeg een blanco formulier toe. Dan kunt u een vorige versie kopieren."

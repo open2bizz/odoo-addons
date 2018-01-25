@@ -341,3 +341,8 @@ msgstr "U kan ook een tooltip geven over het gebruik van sterren in de kanban en
 #: model:ir.model,name:orbeon_project.model_project_type
 msgid "project.type"
 msgstr "project.type"
+
+#. module: orbeon_project
+#: model:ir.ui.view,arch_db:orbeon_project.orbeon_project_template_tasks
+msgid "Task Stages"
+msgstr "Taak Fasen"
