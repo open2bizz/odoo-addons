@@ -49,7 +49,8 @@ class OrbeonRunner(models.Model):
         'project.project',
         compute='_compute_project_id',
         string='Project',
-        readonly=True
+        readonly=True,
+        store=True
     )
     partner_id = fields.Many2one(
         'res.partner',
