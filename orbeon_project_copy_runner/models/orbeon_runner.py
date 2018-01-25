@@ -45,7 +45,7 @@ class OrbeonRunnerCopyAction(models.Model):
                     'view_type': 'form',
                     'view_mode': 'form',
                     'target': 'new',
-                    'context': {'default_patient_id': self.project_id.partner_id.id,'default_target_form_id': self.id, 'default_project_id': self.project_id.id, 'default_founder_id': self.founder_id.id},
+                    'context': {'default_patient_id': self.project_id.partner_id.id,'default_target_form_id': self.id, 'default_project_id': self.project_id.id, 'default_founder_id': self.builder_id.founder_id},
             }
         else:
              raise UserError(_('Cannot copy a runner form, because this form already contains XML data. Empty the XML field in order to copy a runner form.'))
