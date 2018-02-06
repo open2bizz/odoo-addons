@@ -117,6 +117,16 @@
             </field>
         </record>
 
+        <record id="orbeon_runner_search-view" model="ir.ui.view">
+            <field name="name">orbeon.runne.search.view</field>
+            <field name="model">orbeon.runner</field>
+            <field name="arch" type="xml">
+                <search>
+                  <field name="builder_id"/>
+                </search>
+            </field>
+        </record>
+
         <record id="orbeon_runner_form_action" model="ir.actions.act_window">
             <field name="name">Orbeon Runner Forms</field>
             <field name="type">ir.actions.act_window</field>
@@ -138,5 +148,22 @@
             <field name="view_mode">form</field>
             <field name="view_id" ref="orbeon_runner_form_form" />
         </record>
+
+        <record model="ir.actions.server" id="write_rec_model_name">
+          <field name="name">Write Rec Model Name</field>
+          <field name="model_id" ref="model_orbeon_runner"/>
+            <field name="code">
+              record.write_rec_model_name()
+          </field>
+        </record>
+
+        <record id="rec_model_name" model="base.action.rule">
+            <field name="name">Rec Model Name</field>
+            <field name="kind">on_create_or_write</field>
+            <field name="model_id" ref="model_orbeon_runner"/>
+            <field name="server_action_ids" eval="[(6,0,[ref('orbeon.write_rec_model_name')])]"/>
+        </record>
+
+
     </data>
 </odoo>
