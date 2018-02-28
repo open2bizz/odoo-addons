@@ -11,7 +11,7 @@
 	        <data>
 	            <xpath expr="//div[contains(@class, 'col-xs-6 o_kanban_primary_left')]" position="after">
 	            	<field name="builder_reports_count" invisible="1"/>
-	            	
+
 					<a type="button">
 						<button class="btn btn-primary" name="report_button" type="object" attrs="{'invisible': [('builder_reports_count', '=', 0)]}">Report</button>
 					</a>
@@ -19,7 +19,17 @@
 	        </data>
             </field>
         </record>
-
-
+        <record id="runner_report_button_form_view" model="ir.ui.view">
+                  <field name="name">Runner Report Button Form View</field>
+                  <field name="model">orbeon.runner</field>
+                  <field name="inherit_id" ref="orbeon.orbeon_runner_form_form" />
+                  <field name="arch" type="xml">
+                    <data>
+                      <xpath expr="//div[@name='button_box']" position="inside">
+                         <button name="report_button" type="object" class="oe_stat_button" string="Report" icon="fa-print" attrs="{'invisible':[('builder_reports_count','=',0)]}"/>
+                      </xpath>
+                    </data>
+                  </field>
+      </record>
     </data>
 </odoo>
