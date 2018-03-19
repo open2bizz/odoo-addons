@@ -30,7 +30,6 @@ class OrbeonRunnerCopyAction(models.Model):
         "orbeon.builder",
         "Builder Founder",
         readonly=True,
-        store=True,
         related="builder_id.founder_id"
         )
 
