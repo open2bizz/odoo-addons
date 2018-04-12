@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="orbeon_report_qweb_orbeon_runner_form" model="ir.ui.view">
+        <record id="orbeon_report_qweb_orbeon_runner_form_" model="ir.ui.view">
             <field name="name">orbeon.runner_form.kanban</field>
             <field name="model">orbeon.runner</field>
             <field name="priority" eval="20" />
@@ -36,17 +36,7 @@
                   </field>
       </record>
 
-      <record id="orbeon_report_qweb_orbeon_runner_form" model="ir.ui.view">
-          <field name="name">orbeon.runner_form.form</field>
-          <field name="model">orbeon.runner</field>
-          <field name="priority" eval="30" />
-          <field name="inherit_id" ref="orbeon.orbeon_runner_form_form" />
-          <field name="arch" type="xml">
-            <field name="id" position="after">
-              <field name="builder_reports_count" invisible="1"/>
-            </field>
-          </field>
-      </record>
+
 
     </data>
 </odoo>
