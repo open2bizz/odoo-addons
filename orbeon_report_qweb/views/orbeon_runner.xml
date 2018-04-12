@@ -29,6 +29,9 @@
                       <xpath expr="//div[@name='button_box']" position="inside">
                          <button name="report_button" type="object" class="oe_stat_button" string="Report" icon="fa-print" attrs="{'invisible':[('builder_reports_count','=',0)]}"/>
                       </xpath>
+                      <xpath expr="//field[@name='url']" position="after">
+                        <field name="builder_reports_count" invisible="1"/>
+                      </xpath>
                     </data>
                   </field>
       </record>
