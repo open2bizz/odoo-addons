@@ -49,14 +49,14 @@ class OrbeonRunner(models.Model):
         'project.project',
         compute='_compute_project_id',
         string='Project',
-        readonly=True,
-        store=True
+        readonly=True
     )
     partner_id = fields.Many2one(
         'res.partner',
         related='project_id.partner_id',
         string='Partner',
-        readonly=True
+        readonly=True,
+        store=True
     )
     user_id = fields.Many2one('res.users', string='Assigned to', index=True, track_visibility='onchange', default=lambda self: self.env.uid)
     user_email = fields.Char(related='user_id.email', string='User Email', readonly=True)
