@@ -67,11 +67,6 @@ class OrbeonRunner(models.Model):
         compute="_get_builder_title",
         readonly=True)
 
-    model_record_name = fields.Char(
-        "Model Record Name",
-        readonly=True
-    )
-
     color = fields.Integer('Color Index')
 
     state = fields.Selection(
@@ -118,8 +113,8 @@ class OrbeonRunner(models.Model):
 
     @api.one
     def _get_builder_name(self, id=None):
-        if self.model_record_name != False:
-            self.builder_name = "%s v.%s (%s)" % (self.builder_id.name, self.builder_id.version, self.model_record_name)
+        if self.res_model != False and self.res_id != 0:
+            self.builder_name = "%s v.%s (%s)" % (self.builder_id.name, self.builder_id.version, self.env[self.res_model].browse(self.res_id).display_name)
         else:
             self.builder_name = "%s v.%s" % (self.builder_id.name, self.builder_id.version)
 
@@ -316,9 +311,3 @@ class OrbeonRunner(models.Model):
             runner.message_post(body=message, content_subtype='plaintext')
 
         return parser.xml
-
-    def write_rec_model_name(self):
-        model = self.env['ir.model'].browse(self.builder_id.res_model_id.id)
-        for obj in model:
-            rec = self.env[obj.model].browse(self.res_id)
-            self.write({'model_record_name':rec.name})
