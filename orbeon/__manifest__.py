@@ -42,6 +42,9 @@
         "views/base.xml",
         "data/orbeon_builder_template_empty.xml"
     ],
+    'demo': [
+        'data/demo_data.xml',
+    ],
     "application": True,
     "installable": True,
 }
