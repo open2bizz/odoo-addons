@@ -50,7 +50,7 @@ class Orbeon(http.Controller):
         in_headers.update({'Authorization' : 'Basic %s' % base64.b64encode("%s:%s" % (odoo_session.get('login'), odoo_session.get('password')) ) } )
         
         logger.debug('Calling Orbeon on url %s with header %s' % (o.netloc, in_headers))
-        curl = urlparse(http.request.httprequest.url)._replace(netloc=o.netloc, scheme='http')
+        curl = urlparse(http.request.httprequest.url)._replace(netloc=o.netloc)
         
         resp = requests.request(
             method=http.request.httprequest.method,

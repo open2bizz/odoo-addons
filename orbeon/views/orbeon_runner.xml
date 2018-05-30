@@ -11,7 +11,7 @@
                             <button name="action_open_orbeon_runner" type="object" attrs="{'invisible':[('id','=',False)]}"
                                     string="Edit" class="oe_stat_button" icon="fa-edit" />
                             <button name="merge_current_builder" type="object"
-                                    attrs="{'invisible':['|', ('id','=',False), '|', ('xml','=',False), '|', ('any_new_current_builder','=',False),'|', ('state', 'in', ['complete', 'canceled'])]}"
+                                    attrs="{'invisible':['|', ('id','=',False), '|', ('is_merged','=',True), '|', ('any_new_current_builder','=',False)]}"
                                     string="Merge Current Builder" help="Merge the Form Design (structure additions) into this Runner Form." class="oe_stat_button" icon="fa-random" />
                         </div>
 
