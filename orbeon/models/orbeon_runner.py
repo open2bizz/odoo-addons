@@ -193,10 +193,10 @@ class OrbeonRunner(models.Model):
         """Can this Runner (xml) be merged with a new current Builder? """
         self.ensure_one()
 
-        if self.is_merged or not self.xml:
+        if not self.xml:
             return False
         else:
-            return self.any_new_current_builder
+            return True
 
     @api.multi
     @api.returns('self')
@@ -210,6 +210,7 @@ class OrbeonRunner(models.Model):
             return self.merge_builder(self.builder_id.current_builder_id)
         except Exception, e:
             _logger.error("Orbeon Runner merge Exception: %s" % e)
+            raise UserError("Orbeon Runner merge Exception: %s" % e)
 
     @api.one
     @api.returns('self')
