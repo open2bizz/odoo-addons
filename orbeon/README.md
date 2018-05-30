@@ -140,15 +140,3 @@ password: orbeon
 If everyting is setup correctly, you're now able to use Orbeon Forms via Odoo.
 
 In case of failure or questions, first check the *Odoo server log* or the *Java Webserver log*.
-
-#### 2.7 Odoo odoo/http.py
-
-Odoo commit [da1f153d61d747d9357694382fe04f96c0ca886a](https://github.com/odoo/odoo/commit/da1f153d61d747d9357694382fe04f96c0ca886a#diff-03542f2676ca18278ea62cb40f5a2261) stopped the password
-from being stored in the session. 
-This is a problem for the current SSO function for Orbeon via Odoo. 
-We do not have a good fix for this yet. 
-The workaround is to modify http.py. We added the file http.patch for that. 
-
-
-
-

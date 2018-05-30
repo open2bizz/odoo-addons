@@ -95,7 +95,6 @@ class OrbeonRunner(models.Model):
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True)
 
     @api.one
-    @api.depends('res_id')
     def _compute_project_id(self):
         if self.res_model == 'project.project':
             project = self.env['project.project'].search([('id', '=', self.res_id)])

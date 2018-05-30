@@ -4,7 +4,8 @@
         <menuitem id="orbeon_base_menu"
                   name="Orbeon"
                   groups="orbeon.orbeon_admin,orbeon.orbeon_user"
-                  sequence="101"/>
+                  sequence="101"
+                  web_icon="orbeon,static/description/icon.png"/>
 
         <menuitem id="orbeon_builder_menu"
                   name="Builder"
@@ -31,7 +32,7 @@
                   parent="orbeon_base_menu"
                   groups="orbeon.orbeon_admin"
                   sequence="30"/>
-        
+
         <menuitem id="orbeon_runner_forms_menu"
                   name="Runner Forms"
                   parent="orbeon_runner_menu"
