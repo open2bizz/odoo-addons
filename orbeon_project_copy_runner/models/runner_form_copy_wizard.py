@@ -37,6 +37,6 @@ class RunnerFormCopyWizard(models.TransientModel):
     @api.multi
     def copy_runner_form_xml(self):
         for record in self.env['orbeon.runner'].browse(self._context.get('active_ids', [])):
-            record.write({'xml':self.origin_form_id.xml, 'is_merged': False,})
+            record.write({'xml':self.origin_form_id.xml, 'is_merged': False, 'builder_id': self.origin_form_id.builder_id.id})
             record.merge_current_builder()
         return True
