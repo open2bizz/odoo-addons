@@ -49,7 +49,8 @@ class OrbeonRunner(models.Model):
         'project.project',
         compute='_compute_project_id',
         string='Project',
-        readonly=True
+        readonly=True,
+        store=True
     )
     partner_id = fields.Many2one(
         'res.partner',
@@ -95,7 +96,7 @@ class OrbeonRunner(models.Model):
     legend_normal = fields.Char(related='stage_id.legend_normal', string='Kanban Ongoing Explanation', readonly=True)
 
     @api.one
-    @api.depends('res_id')
+    @api.depends('res_model', 'res_id')
     def _compute_project_id(self):
         if self.res_model == 'project.project':
             project = self.env['project.project'].search([('id', '=', self.res_id)])
