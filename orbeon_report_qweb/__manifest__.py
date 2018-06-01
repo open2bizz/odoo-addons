@@ -27,7 +27,7 @@
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
     "category": "orbeon",
-    "depends": ["orbeon"],
+    "depends": ["orbeon", "orbeon_project"],
     "data": [
         "views/ir_actions_report_xml.xml",
         "views/orbeon_builder.xml",
