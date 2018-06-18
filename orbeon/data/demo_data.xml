@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="orbeon_server_demo_1" model="orbeon.server">
+        <field name="name">Default Orbeon Server</field>
+        <field name="url">http://localhost:8080</field>
+        <field name="persistence_server_port">8081</field>
+      </record>
+    </data>
+</odoo>
