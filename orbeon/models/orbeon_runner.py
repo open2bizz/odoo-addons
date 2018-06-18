@@ -116,13 +116,12 @@ class OrbeonRunner(models.Model):
         compute="_any_new_current_builder",
         readonly=True)
 
-    @api.one
-    def _get_builder_name(self, id=None):
-        if self.model_record_name != False:
-            self.builder_name = "%s v.%s (%s)" % (self.builder_id.name, self.builder_id.version, self.model_record_name)
-        else:
-            self.builder_name = "%s v.%s" % (self.builder_id.name, self.builder_id.version)
-
+        @api.one
+        def _get_builder_name(self, id=None):
+            if self.res_model != False and self.res_id != 0:
+                self.builder_name = "%s v.%s (%s)" % (self.builder_id.name, self.builder_id.version, self.env[self.res_model].browse(self.res_id).display_name)
+            else:
+                self.builder_name = "%s v.%s" % (self.builder_id.name, self.builder_id.version)
     @api.one
     def _get_builder_version(self, id=None):
         self.builder_version = self.builder_id.version
