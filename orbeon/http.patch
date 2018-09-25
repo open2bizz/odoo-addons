@@ -1,0 +1,29 @@
+diff --git a/odoo/http.py b/odoo/http.py
+index a9e9e8c..dcfc07c 100644
+--- a/odoo/http.py
++++ b/odoo/http.py
+@@ -1046,6 +1046,7 @@ class OpenERPSession(werkzeug.contrib.sessions.Session):
+         self.db = db
+         self.uid = uid
+         self.login = login
++        self.password = password
+         self.session_token = uid and security.compute_session_token(self)
+         request.uid = uid
+         request.disable_db = False
+@@ -1066,7 +1067,7 @@ class OpenERPSession(werkzeug.contrib.sessions.Session):
+         if self.get('password'):
+             security.check(self.db, self.uid, self.password)
+             self.session_token = security.compute_session_token(self)
+-            self.pop('password')
++            #self.pop('password')
+         # =================================================================================================
+         # here we check if the session is still valid
+         if not security.check_session(self):
+@@ -1083,6 +1084,7 @@ class OpenERPSession(werkzeug.contrib.sessions.Session):
+         self.setdefault("db", None)
+         self.setdefault("uid", None)
+         self.setdefault("login", None)
++        self.setdefault("password", None)
+         self.setdefault("session_token", None)
+         self.setdefault("context", {})
+ 

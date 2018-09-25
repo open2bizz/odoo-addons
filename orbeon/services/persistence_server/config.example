@@ -1,0 +1,7 @@
+[odoo config]
+server_url: http://localhost
+port: 8069
+database_name: health_3103
+username: admin
+password: admin
+

@@ -1,0 +1,575 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* orbeon
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-11-01 18:30+0000\n"
+"PO-Revision-Date: 2017-11-01 18:30+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_name
+msgid "\n"
+"        Identifies this specific form (e.g. \"health-record\" or \"claim\").\n"
+"        This name can be used in APIs, so we recommend you use only lowercases characters."
+msgstr "\n"
+"        Identifies this specific form (e.g. \"health-record\" or \"claim\").\n"
+"        This name can be used in APIs, so we recommend you use only lowercases characters."
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_state
+msgid "        - New: In draft and was never published (Current)\n"
+"        - Current: Published i.e. live\n"
+"        - Obsolete: Was published but obsolete"
+msgstr "        - Nieuw: In concept en nog iet gepubliceerd (Huidig)\n"
+"        - Huidig: Gepubliceerd i.e. live\n"
+"        - Verouderd: oudere versie dus niet beschikbaar"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_active
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_active
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Active"
+msgstr "Actief"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_any_new_current_builder
+msgid "Any New Current Builder"
+msgstr "Elk nieuw huidig formulier"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_autostart
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Autostart"
+msgstr "Autostart"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_builder_menu
+msgid "Builder"
+msgstr "Ontwerper"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_builder_template_id
+msgid "Builder Form Template"
+msgstr "Formulier ontwerp sjablonen"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_builder_template_menu
+msgid "Builder Form Templates"
+msgstr "Formulier ontwerp sjablonen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_builder_templates_created
+msgid "Builder Form Templates Created"
+msgstr "Formulier ontwerp sjablonen aangemaakt"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_builder_template_ids
+msgid "Builder Form templates"
+msgstr "Formulier ontwerp sjablonen"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_builder_form_menu
+msgid "Builder Forms"
+msgstr "Formulier ontwerpen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_builder_name
+msgid "Builder Name"
+msgstr "Naam formulier"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Builder Template Forms"
+msgstr "Formulier ontwerp sjablonen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_builder_title
+msgid "Builder Title"
+msgstr "Formulier ontwerp titel"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_builder_version
+msgid "Builder Version"
+msgstr "Formulier ontwerp versie"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_kanban
+msgid "Builder:"
+msgstr "Formulier ontwerp:"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_builder_template_id
+msgid "By default some Builder Form Templates are shipped by the Orbeon Server."
+msgstr "Standaard worden er formulier ontwerpen meegeleverd."
+
+#. module: orbeon
+#: selection:orbeon.runner,state:0
+msgid "Canceled"
+msgstr "Geannuleerd"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_color
+msgid "Color Index"
+msgstr "Kleur index"
+
+#. module: orbeon
+#: selection:orbeon.runner,state:0
+msgid "Complete"
+msgstr "Compleet"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_configfile_path
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Config-file path"
+msgstr "Config-file path"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Configuration"
+msgstr "Instellingen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_create_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_create_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_create_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_create_uid
+msgid "Created by"
+msgstr "Aangemaakt door"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_create_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_create_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_create_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_create_date
+msgid "Created on"
+msgstr "Aangemaakt op"
+
+#. module: orbeon
+#: selection:orbeon.builder,state:0
+msgid "Current"
+msgstr "Huidig"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_current_builder_id
+msgid "Current Builder"
+msgstr "Huidig Formulier ontwerp"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_runner_res_id
+msgid "Database ID of the record in res_model to which this applies"
+msgstr "Database ID van het record binnen het model waar res_model naar verwijst"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_debug_mode
+msgid "Debug Mode"
+msgstr "Fouten opsporen modus"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_description
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_description
+msgid "Description"
+msgstr "Omschrijving"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_display_name
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_display_name
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_display_name
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_display_name
+msgid "Display Name"
+msgstr "Weergave naam"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_kanban
+msgid "Edit"
+msgstr "Bewerken"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_server_persistence_server_autostart
+msgid "Ensures the persistence-server will be started right after Odoo starts"
+msgstr "Ensures the persistence-server will be started right after Odoo starts"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_fetched_from_orbeon
+msgid "Fetched from Orbeon"
+msgstr "Fetched from Orbeon"
+
+#. module: orbeon
+#: selection:orbeon.server,persistence_server_processtype:0
+msgid "Forking (process)"
+msgstr "Forking (process)"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_form_name
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_template_form
+msgid "Form Name"
+msgstr "Formuliernaam"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_builder_id
+msgid "Form builder"
+msgstr "Formulier ontwerper"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_description
+msgid "Form description in the current language"
+msgstr "Formulier omschrijving in de huidige taal"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_runner_form_ids
+msgid "Form runners"
+msgstr "Ingevulde formulieren"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_title
+msgid "Form title in the current language"
+msgstr "Formulier titel in de huidige taal"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_complete_name
+msgid "Full Name"
+msgstr "Volledige naam"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_template_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_form
+msgid "General"
+msgstr "Algemeen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_id
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_id
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_id
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_id
+msgid "ID"
+msgstr "ID"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_server_persistence_server_configfile_path
+msgid "If specified, the Odoo connection is setup with its config, from file in given path. If blank, the Orbeon HTTP-Headers will be used."
+msgstr "If specified, the Odoo connection is setup with its config, from file in given path. If blank, the Orbeon HTTP-Headers will be used."
+
+#. module: orbeon
+#: selection:orbeon.runner,state:0
+msgid "In Progress"
+msgstr "In uitvoering"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_is_merged
+msgid "Is Merged"
+msgstr "Is samengevoegd"
+
+#. module: orbeon
+#: model:ir.actions.act_window,help:orbeon.orbeon_runner_form_action
+msgid "Klik hier om nieuw document toe te voegen"
+msgstr "Klik hier om nieuw document toe te voegen"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder___last_update
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template___last_update
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner___last_update
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server___last_update
+msgid "Last Modified on"
+msgstr "Laatst gewijzigd op"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_write_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_write_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_write_uid
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_write_uid
+msgid "Last Updated by"
+msgstr "Laatst bijgewerkt door"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_write_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_write_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_write_date
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_write_date
+msgid "Last Updated on"
+msgstr "Laatst bijgewerkt op"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Maintenance"
+msgstr "Onderhoud"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_form
+msgid "Merge Current Builder"
+msgstr "Huidig formulier ontwerp samenvoegen"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_form
+msgid "Merge the Form Design (structure additions) into this Runner Form."
+msgstr "Voeg het formulier ontwerp (structuur aanvullingen) samen in het huidige ingevulde formulier"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_res_model_id
+msgid "Model as resource this form represents or acts on"
+msgstr "Model waar het formulier aan toebehoort"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_module_id
+msgid "Module"
+msgstr "Module"
+
+#. module: orbeon
+#: selection:orbeon.server,persistence_server_processtype:0
+msgid "Multi threaded"
+msgstr "Multi threaded"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_name
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_name
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_name
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_template_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Name"
+msgstr "Naam"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "Name..."
+msgstr "Naam..."
+
+#. module: orbeon
+#: selection:orbeon.builder,state:0
+#: selection:orbeon.runner,state:0
+msgid "New"
+msgstr "Nieuw"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "New Version"
+msgstr "Nieuwe versie"
+
+#. module: orbeon
+#: selection:orbeon.builder,state:0
+msgid "Obsolete"
+msgstr "Verouderd"
+
+#. module: orbeon
+#: model:ir.module.category,name:orbeon.orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_base_menu
+msgid "Orbeon"
+msgstr "Orbeon"
+
+#. module: orbeon
+#: model:res.groups,name:orbeon.orbeon_admin
+msgid "Orbeon Admin"
+msgstr "Orbeon Admin"
+
+#. module: orbeon
+#: model:ir.model,name:orbeon.model_orbeon_builder
+msgid "Orbeon Builder"
+msgstr "Formulier ontwerper"
+
+#. module: orbeon
+#: model:ir.actions.act_window,name:orbeon.orbeon_builder_template_action
+msgid "Orbeon Builder Form Templates"
+msgstr "Formulier ontwerper sjablonen"
+
+#. module: orbeon
+#: model:ir.actions.act_window,name:orbeon.orbeon_builder_form_action
+msgid "Orbeon Builder Forms"
+msgstr "Formulier ontwerpen"
+
+#. module: orbeon
+#: model:ir.model,name:orbeon.model_orbeon_builder_template
+msgid "Orbeon Builder Template"
+msgstr "Formulier ontwerper sjablonen"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Orbeon Persistence Server"
+msgstr "Orbeon Persistence Server"
+
+#. module: orbeon
+#: model:ir.model,name:orbeon.model_orbeon_runner
+msgid "Orbeon Runner"
+msgstr "Formulieren service"
+
+#. module: orbeon
+#: model:ir.actions.act_window,name:orbeon.orbeon_runner_form_action
+msgid "Orbeon Runner Forms"
+msgstr "Ingevulde Formulieren"
+
+#. module: orbeon
+#: model:ir.actions.act_window,name:orbeon.orbeon_server_action
+#: model:ir.model,name:orbeon.model_orbeon_server
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Orbeon Server"
+msgstr "Orbeon Server"
+
+#. module: orbeon
+#: model:res.groups,name:orbeon.orbeon_user
+msgid "Orbeon User"
+msgstr "Orbeon User"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_parent_id
+msgid "Parent Version"
+msgstr "Voorafgaande versie"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_port
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Port"
+msgstr "Poort"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_processtype
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Process-type"
+msgstr "Process-type"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_server_persistence_server_active
+msgid "Provisioning the persistence-server is enabled if active is checked (True)."
+msgstr "Provisioning the persistence-server is enabled if active is checked (True)."
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_res_id
+msgid "Record ID"
+msgstr "Record-id"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_res_model_id
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_res_model
+msgid "Resource Model"
+msgstr "Model"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_runner_menu
+msgid "Runner"
+msgstr "Service"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_runner_forms_menu
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "Runner Forms"
+msgstr "Formulieren"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_server_id
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_server_id
+#: model:ir.ui.menu,name:orbeon.orbeon_server_menu
+msgid "Server"
+msgstr "Server"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_kanban
+msgid "Set Color"
+msgstr "Zet de kleur"
+
+#. module: orbeon
+#: model:ir.ui.menu,name:orbeon.orbeon_settings_menu
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "Settings"
+msgstr "Instellingen"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_debug_mode
+msgid "Shows debug info (by field) in Orbeon Runner Form.
+\n"
+"Adds debug-info as messages (by field) on the Runner record."
+msgstr "Shows debug info (by field) in Orbeon Runner Form.
+\n"
+"Adds debug-info as messages (by field) on the Runner record."
+
+#. module: orbeon
+#: selection:orbeon.server,persistence_server_processtype:0
+msgid "Single threaded"
+msgstr "Single threaded"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Start persistence"
+msgstr "Start persistence"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_state
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_state
+msgid "State"
+msgstr "Status"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Stop persistence"
+msgstr "Stop persistence"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_summary_url
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "Summary URL"
+msgstr "Samengestelde URL"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_template_fetched_from_orbeon
+msgid "Template was fetched from Orbeon"
+msgstr "Template was fetched from Orbeon"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_builder_current_builder_id
+msgid "The current (published) Builder"
+msgstr "Het huidige (gepubliceerde) formulierontwerp"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_title
+msgid "Title"
+msgstr "Titel"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_url
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_url
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_url
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "URL"
+msgstr "URL"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_server_persistence_server_uuid
+#: model:ir.ui.view,arch_db:orbeon.orbeon_server_form
+msgid "UUID (thread)"
+msgstr "UUID (thread)"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_version
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "Version"
+msgstr "Versie"
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_version_comment
+msgid "Version Comment"
+msgstr "Versie opmerkingen"
+
+#. module: orbeon
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+msgid "View"
+msgstr "Weergave"
+
+#. module: orbeon
+#: model:ir.model.fields,help:orbeon.field_orbeon_server_builder_templates_created
+msgid "Whether Builder Form Templates had been created. Unset to delete and re-create Builder Template Forms."
+msgstr "Whether Builder Form Templates had been created. Unset to delete and re-create Builder Template Forms."
+
+#. module: orbeon
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_template_xml
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_builder_xml
+#: model:ir.model.fields,field_description:orbeon.field_orbeon_runner_xml
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_form_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_builder_template_form
+#: model:ir.ui.view,arch_db:orbeon.orbeon_runner_form_form
+msgid "XML"
+msgstr "XML"
