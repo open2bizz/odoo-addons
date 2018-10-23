@@ -15,14 +15,25 @@ ODOO_SERVICE_HANDLER = 'odoo_service_handler'
 class OrbeonRequestHandler(object):
     """Orbeon (HTTP) request handler"""
 
-    def __init__(self, request, configfile_path=None):
+    def __init__(self, request, configfile_path=None, wsgi_input=None):
         _log("debug", "request => %s" % request)
         _log("debug", "configfile_path => %s" % configfile_path)
 
         self.request = request
         self.path = request.path.split("/")
         self.args = request.args
-        self.data = request.data
+
+        # Correct for chunked encoding in Orbeon > 2016
+        if request.headers.get('Transfer-Encoding', '') == 'chunked' and request.headers.get('Content-Length', ' ') != ' ':
+            body = ''
+            if wsgi_input is not None:
+                size = int(wsgi_input.readline(),16)
+                while size > 0:
+                    body += wsgi_input.read(size+2)
+                    size = int(wsgi_input.readline(),16)
+                self.data = body
+        else:
+            self.data = request.data
 
         _log("debug", "path => %s" % self.path)
 
@@ -126,13 +137,13 @@ class OrbeonPersistenceApp(object):
     def __init__(self, configfile_path=None):
         self.configfile_path = configfile_path
 
-    def dispatch_request(self, request):
-        orbeon_request = OrbeonRequestHandler(request, self.configfile_path)
+    def dispatch_request(self, request, wsgi_input=None):
+        orbeon_request = OrbeonRequestHandler(request, self.configfile_path, wsgi_input)
         return orbeon_request.process()
 
     def wsgi_app(self, environ, start_response):
         request = Request(environ)
-        response = self.dispatch_request(request)
+        response = self.dispatch_request(request, wsgi_input=environ.get('wsgi.input'))
         return response(environ, start_response)
 
     def __call__(self, environ, start_response):
