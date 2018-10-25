@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo.tests.common import TransactionCase
-from odoo import fields, models
+from openerp.tests.common import TransactionCase
+from openerp import fields, models
 
 import logging
 import os

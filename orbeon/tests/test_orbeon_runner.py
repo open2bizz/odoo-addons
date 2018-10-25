@@ -19,7 +19,7 @@
 #
 ##############################################################################
 
-from odoo.exceptions import ValidationError
+from openerp.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon
 from utils import TODO

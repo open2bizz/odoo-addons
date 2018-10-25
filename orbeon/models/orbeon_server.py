@@ -19,7 +19,7 @@
 #
 ##############################################################################
 from openerp import models, fields, api
-from odoo.exceptions import ValidationError
+from openerp.exceptions import ValidationError
 
 import threading
 import urllib2

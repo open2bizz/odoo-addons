@@ -18,8 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-from odoo.tests.common import TransactionCase
-from odoo.exceptions import ValidationError
+from openerp.tests.common import TransactionCase
+from openerp.exceptions import ValidationError
 
 from test_orbeon_common import TestOrbeonCommon
 from ..models import orbeon_server

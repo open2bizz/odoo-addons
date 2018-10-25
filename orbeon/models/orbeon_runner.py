@@ -23,7 +23,7 @@ from orbeon_xml_api.runner import Runner as RunnerAPI
 from orbeon_xml_api.runner_copy_builder_merge import RunnerCopyBuilderMerge as RunnerCopyBuilderMergeAPI
 
 from openerp import api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from openerp.exceptions import ValidationError
 
 from ..services import runner_xml_parser
 
@@ -215,7 +215,7 @@ class OrbeonRunner(models.Model):
             return self.merge_builder(self.builder_id.current_builder_id)
         except Exception, e:
             _logger.error("Orbeon Runner merge Exception: %s" % e)
-            raise UserError("Orbeon Runner merge Exception: %s" % e)
+            raise ValidationError("Orbeon Runner merge Exception: %s" % e)
 
     @api.one
     @api.returns('self')
@@ -230,7 +230,7 @@ class OrbeonRunner(models.Model):
         elif 'lang' not in context and 'uid' not in context:
             lang = self.env['res.users'].browse(self.write_uid.id).lang
         else:
-            raise UserError("The form can't be loaded. No (user) language was set.")
+            raise ValidationError("The form can't be loaded. No (user) language was set.")
 
         res_lang = self.env['res.lang'].search([('code', '=', lang)], limit=1)
 
@@ -263,7 +263,7 @@ class OrbeonRunner(models.Model):
             return self
         except Exception as e:
             _logger.error("[orbeon] Merge failed with error: %s" % e)
-            raise UserError("Merge failed with error: %s" % e)
+            raise ValidationError("Merge failed with error: %s" % e)
 
     # TODO
     # @api.multi
