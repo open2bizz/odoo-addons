@@ -4,6 +4,7 @@ from werkzeug.wrappers import Request, Response
 
 from orbeon_handlers import BuilderHandler, RunnerHandler, OdooServiceHandler
 from .. import utils
+from xml.etree import ElementTree as ET
 
 _log = utils._log
 
@@ -29,8 +30,9 @@ class OrbeonRequestHandler(object):
             if wsgi_input is not None:
                 size = int(wsgi_input.readline(),16)
                 while size > 0:
-                    body += wsgi_input.read(size+2)
+                    body += wsgi_input.read(size+2)[:-2]
                     size = int(wsgi_input.readline(),16)
+                ET.fromstring(body) # Check if XML is valid!
                 self.data = body
         else:
             self.data = request.data
