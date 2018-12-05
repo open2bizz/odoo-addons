@@ -56,11 +56,12 @@
             <field name="name">orbeon.runner_form.tree</field>
             <field name="model">orbeon.runner</field>
             <field name="arch" type="xml">
-                <tree>
-                    <field name="builder_id" />
+                <tree create="false">
+                    <field name="display_name"/>
                     <field name="url"/>
-                    <field name="res_model" />
-                    <field name="res_id" />
+                    <field name="res_model" groups="orbeon.orbeon_admin"/>
+                    <field name="res_id"/>
+                    <field name="stage_id"/>
                     <field name="is_merged" groups="orbeon.orbeon_admin"/>
                 </tree>
             </field>
@@ -122,7 +123,14 @@
             <field name="model">orbeon.runner</field>
             <field name="arch" type="xml">
                 <search>
+                  <field name="res_id"/>
+                  <field name="stage_id"/>
+                  <field name="state"/>
                   <field name="builder_id"/>
+                  <separator/>
+                  <filter string="Open" name="open" domain="[('state','not in',('complete','canceled'))]"/>
+                  <filter string="Done" name="done" domain="[('state','=','complete')]"/>
+                  <filter string="Cancelled" name="cancel" domain="[('state','=','canceled')]"/>
                 </search>
             </field>
         </record>
