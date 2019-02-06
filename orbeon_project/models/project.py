@@ -125,7 +125,7 @@ class Project(models.Model):
             "context": context,
             "domain": [("id", "in", runner_form_ids)],
         }
-        
+
     @api.multi
     def map_orbeon_forms(self, new_project_id):
         forms = self.env['orbeon.runner']
@@ -133,7 +133,8 @@ class Project(models.Model):
             defaults = {}
             if self.state == 'template':
                 defaults.update({ 'is_merged' : False
-                                , 'stage_id' : form.stage_id.id if form.stage_id else False })
+                                , 'stage_id' : form.stage_id.id if form.stage_id else False
+                                , 'user_id' : self.env.uid })
                 if form.builder_id.current_builder_id:
                     defaults.update({'builder_id' : form.builder_id.current_builder_id.id})
                 new_form = form.copy(defaults)
@@ -151,6 +152,6 @@ class Project(models.Model):
 
     @api.multi
     def copy(self, default=None):
-        project = super(Project, self).copy(default) 
+        project = super(Project, self).copy(default)
         self.map_orbeon_forms(project.id)
-        return project        
+        return project
