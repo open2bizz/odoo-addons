@@ -122,7 +122,7 @@ class OrbeonRunner(models.Model):
             self.builder_name = "%s v.%s (%s)" % (self.builder_id.name, self.builder_id.version, self.env[self.res_model].browse(self.res_id).display_name)
         else:
             self.builder_name = "%s v.%s" % (self.builder_id.name, self.builder_id.version)
-            
+
     @api.one
     def _get_builder_version(self, id=None):
         self.builder_version = self.builder_id.version
@@ -138,21 +138,22 @@ class OrbeonRunner(models.Model):
     @api.multi
     @api.onchange('builder_id')
     def _get_url(self):
-        for rec in self:
-            if isinstance(rec.id, models.NewId) and not rec.builder_id.id:
-                return rec.url
+        if self.builder_id:            
+            for rec in self:
+                if isinstance(rec.id, models.NewId) and not rec.builder_id.id:
+                    return rec.url
 
-            base_path = 'fr/b!%s!%s/runner' % (rec.builder_id.id, rec.id)
-            base_url = "/orbeon/%s" % (base_path)
+                base_path = 'fr/b!%s!%s/runner' % (rec.builder_id.id, rec.id)
+                base_url = "/orbeon/%s" % (base_path)
 
-            if isinstance(rec.id, models.NewId):
-                url = "%s/new" % base_url
-            else:
-                get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
-                path_mode = get_mode.get(rec.state, 'view')
-                url = "%s/%s/%i" % (base_url, path_mode, rec.id)
+                if isinstance(rec.id, models.NewId):
+                    url = "%s/new" % base_url
+                else:
+                    get_mode = {STATE_NEW: 'edit', STATE_PROGRESS: 'edit'}
+                    path_mode = get_mode.get(rec.state, 'view')
+                    url = "%s/%s/%i" % (base_url, path_mode, rec.id)
 
-            rec.url = url
+                rec.url = url
 
     @api.multi
     def _any_new_current_builder(self):
