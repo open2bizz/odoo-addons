@@ -32,7 +32,6 @@ class OrbeonRequestHandler(object):
                 while size > 0:
                     body += wsgi_input.read(size+2)[:-2]
                     size = int(wsgi_input.readline(),16)
-                ET.fromstring(body) # Check if XML is valid!
                 self.data = body
         else:
             self.data = request.data
