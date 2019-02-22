@@ -1,0 +1,219 @@
+<xh:html xmlns:xh="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms"
+         xmlns:xs="http://www.w3.org/2001/XMLSchema"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:ev="http://www.w3.org/2001/xml-events"
+         xmlns:xi="http://www.w3.org/2001/XInclude"
+         xmlns:xxi="http://orbeon.org/oxf/xml/xinclude"
+         xmlns:xxf="http://orbeon.org/oxf/xml/xforms"
+         xmlns:exf="http://www.exforms.org/exf/1-0"
+         xmlns:fr="http://orbeon.org/oxf/xml/form-runner"
+         xmlns:saxon="http://saxon.sf.net/"
+         xmlns:sql="http://orbeon.org/oxf/xml/sql"
+         xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
+         xmlns:fb="http://orbeon.org/oxf/xml/form-builder">
+  <xh:head>
+    <xh:title>Test Builder 1</xh:title>
+    <xf:model id="fr-form-model" xxf:expose-xpath-types="true">
+
+      <!-- Main instance -->
+      <xf:instance id="fr-form-instance" xxf:exclude-result-prefixes="#all" xxf:index="id">
+        <form>
+          <section-1>
+            <ERP.name/>
+            <ERP.login/>
+            <nickname/>
+            <ERP.company_id.name/>
+            <ERP.company_id.currency_id.name/>
+            <ERP.unknown_field/>
+            <ERP.unknown_field_id.name/>
+            <ERP.company_id.unknown_field/>
+            <ERP.company_id.unknown_field_id.name/>
+            <notes/>
+          </section-1>
+        </form>
+      </xf:instance>
+
+      <!-- Bindings -->
+      <xf:bind id="fr-form-binds" ref="instance('fr-form-instance')">
+        <xf:bind id="section-1-bind" name="section-1" ref="section-1">
+          <xf:bind id="ERP.name-bind" name="ERP.name" ref="ERP.name"/>
+          <xf:bind id="ERP.login-bind" ref="ERP.login" name="ERP.login"/>
+          <xf:bind id="nickname-bind" ref="nickname" name="nickname"/>
+          <xf:bind id="ERP.company_id.name-bind" name="ERP.company_id.name" ref="ERP.company_id.name"/>
+          <xf:bind id="ERP.company_id.currency_id.name-bind" name="ERP.company_id.currency_id.name" ref="ERP.company_id.currency_id.name"/>
+          <xf:bind id="ERP.unknown_field-bind" name="ERP.unknown_field" ref="ERP.unknown_field"/>
+          <xf:bind id="ERP.unknown_field_id.name-bind" name="ERP.unknown_field_id.name" ref="ERP.unknown_field_id.name"/>
+          <xf:bind id="ERP.company_id.unknown_field-bind" name="ERP.company_id.unknown_field" ref="ERP.company_id.unknown_fied"/>
+          <xf:bind id="ERP.company_id.unknown_field_id.name-bind" name="ERP.company_id.unknown_field_id.name" ref="ERP.company_id.unknown_fied_id.name"/>
+          <xf:bind id="notes-bind" ref="notes" name="notes"/>
+        </xf:bind>
+      </xf:bind>
+
+      <!-- Metadata -->
+      <xf:instance xxf:readonly="true" id="fr-form-metadata" xxf:exclude-result-prefixes="#all">
+        <metadata>
+          <application-name>odoo</application-name>
+          <form-name>test-builder-1</form-name>
+          <title xml:lang="en">Test Builder 1</title>
+          <description xml:lang="en"/>
+          <singleton>false</singleton>
+        </metadata>
+      </xf:instance>
+
+      <!-- Attachments -->
+      <xf:instance id="fr-form-attachments" xxf:exclude-result-prefixes="#all">
+        <attachments>
+          <css mediatype="text/css" filename="" size=""/>
+          <pdf mediatype="application/pdf" filename="" size=""/>
+        </attachments>
+      </xf:instance>
+
+      <!-- All form resources -->
+      <!-- Don't make readonly by default in case a service modifies the resources -->
+      <xf:instance id="fr-form-resources" xxf:readonly="false" xxf:exclude-result-prefixes="#all">
+        <resources>
+          <resource xml:lang="en">
+            <section-1>
+              <label>User</label>
+            </section-1>
+            <ERP.name>
+              <label>Name</label>
+              <hint/>
+            </ERP.name>
+            <ERP.login>
+              <label>Login</label>
+              <hint/>
+            </ERP.login>
+            <nickname>
+              <label>Nickname</label>
+              <hint/>
+            </nickname>
+            <ERP.company_id.name>
+              <label>Company Name</label>
+              <hint/>
+            </ERP.company_id.name>
+            <ERP.company_id.currency_id.name>
+              <label>Company Currency</label>
+              <hint/>
+            </ERP.company_id.currency_id.name>
+            <ERP.unknown_field>
+              <label>Unknown_field</label>
+              <hint/>
+            </ERP.unknown_field>
+            <ERP.unknown_field_id.name>
+              <label>Unknown_field_id Name</label>
+              <hint/>
+            </ERP.unknown_field_id.name>
+            <ERP.company_id.unknown_field>
+              <label>Company Unknown_field</label>
+              <hint/>
+            </ERP.company_id.unknown_field>
+            <ERP.company_id.unknown_field_id.name>
+              <label>Company Unknown_field_id Name</label>
+              <hint/>
+            </ERP.company_id.unknown_field_id.name>
+            <notes>
+              <label>Notes</label>
+              <hint/>
+            </notes>
+          </resource>
+        </resources>
+      </xf:instance>
+
+      <!-- Utility instances for services -->
+      <xf:instance id="fr-service-request-instance" xxf:exclude-result-prefixes="#all">
+        <request/>
+      </xf:instance>
+
+      <xf:instance id="fr-service-response-instance" xxf:exclude-result-prefixes="#all">
+        <response/>
+      </xf:instance>
+
+    </xf:model>
+  </xh:head>
+  <xh:body>
+    <fr:view>
+      <fr:body xmlns:xbl="http://www.w3.org/ns/xbl" xmlns:p="http://www.orbeon.com/oxf/pipeline"
+               xmlns:oxf="http://www.orbeon.com/oxf/processors">
+        <fr:section id="section-1-control" bind="section-1-bind">
+          <xf:label ref="$form-resources/section-1/label"/>
+          <fr:grid>
+            <xh:tr>
+              <xh:td>
+                <xf:input id="ERP.name-control" bind="ERP.name-bind">
+                  <xf:label ref="$form-resources/ERP.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.login-control" bind="ERP.login-bind">
+                  <xf:label ref="$form-resources/ERP.login/label"/>
+                  <xf:hint ref="$form-resources/ERP.login/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="nickname-control" bind="nickname-bind">
+                  <xf:label ref="$form-resources/nickname/label"/>
+                  <xf:hint ref="$form-resources/nickname/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.name-control" bind="ERP.company_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.currency_id.name-control" bind="ERP.company_id.currency_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.currency_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.currency_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.unknown_field-control" bind="ERP.unknown_field-bind">
+                  <xf:label ref="$form-resources/ERP.unknown_field/label"/>
+                  <xf:hint ref="$form-resources/ERP.unknown_field/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.unknown_field_id.name-control" bind="ERP.unknown_field_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.unknown_field_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.unknown_field_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.unknown_field-control" bind="ERP.company_id.unknown_field-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.unkwown_field/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.unknown_field/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="ERP.company_id.unknown_field_id.name-control" bind="ERP.company_id.unknown_field_id.name-bind">
+                  <xf:label ref="$form-resources/ERP.company_id.unkwown_field_id.name/label"/>
+                  <xf:hint ref="$form-resources/ERP.company_id.unknown_field_id.name/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+              <xh:td>
+                <xf:input id="notes-control" bind="notes-bind">
+                  <xf:label ref="$form-resources/notes/label"/>
+                  <xf:hint ref="$form-resources/notes/hint"/>
+                  <xf:alert ref="$fr-resources/detail/labels/alert"/>
+                </xf:input>
+              </xh:td>
+            </xh:tr>
+            
+          </fr:grid>
+        </fr:section>
+      </fr:body>
+    </fr:view>
+  </xh:body>
+</xh:html>
