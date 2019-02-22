@@ -4,9 +4,10 @@
         <record id="orbeon_sale_view_order_form" model="ir.ui.view">
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="groups_id" eval="[(4, ref('orbeon.orbeon_user'))]"/>
             <field name="arch" type="xml">
 				<xpath expr="//page[@string='Other Information']" position='after'>
-	    			<page string='Forms'>
+	    			<page string='Forms' groups="orbeon.orbeon_user">
 	    				<field name="orbeon_runner_form_ids" colspan="4" nolabel="1" widget="one2many_list" context="{'default_res_id': active_id}"/>
 	    			</page>
 	    		</xpath>
