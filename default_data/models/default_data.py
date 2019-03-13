@@ -1,28 +1,9 @@
-# -*- encoding: utf-8 -*-
-##############################################################################
-#
-#    open2bizz
-#    Copyright (C) 2017 open2bizz (open2bizz.nl).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
+# -*- coding: utf-8 -*-
+# Copyright Open2bizz (http://www.open2bizz.nl)
+# See LICENSE file for full copyright and license details.
 
 from odoo import api, fields, models, _
 from odoo.exceptions import  ValidationError
-import logging
-_logger = logging.getLogger(__name__)
 
 FIELD_TYPES = [
     ('html', 'HTML'),
@@ -36,9 +17,10 @@ FIELD_TYPES = [
     ('datetime', 'DateTime'),
 ]
 
+
 class DefaultData(models.Model):
     _name = 'default.data'
-    
+
     name = fields.Char(
         string = 'Name'
     )
@@ -97,7 +79,28 @@ class DefaultData(models.Model):
     value_datetime = fields.Datetime(
         string = 'Value'
     )
+    value_many2one_id = fields.Integer(
+        string = 'Record ID'
+    )
+    repr_value = fields.Text(
+        compute='_compute_repr_value',
+        string='Value'
+    )
 
+    @api.depends(
+        'value_char', 'value_text', 'value_html', 'value_integer', 'value_float',\
+        'value_boolean', 'value_binary', 'value_date', 'value_datetime')
+    def _compute_repr_value(self):
+        for r in self:
+            default_data = r.get_default_data()
+            if r.type == 'many2one':
+                res = self.env[r.field_id.relation].browse(r.value_many2one_id)
+                if hasattr(res, 'name'):
+                    r.repr_value = res.name
+                else:
+                    r.repr_value = default_data
+            else:
+                r.repr_value = default_data
 
     @api.onchange('model_id')
     def onchange_model_id(self):
@@ -113,26 +116,30 @@ class DefaultData(models.Model):
 
     @api.multi
     def get_default_data(self):
-        if  self.type == 'html':
+        if self.type == 'html':
             return self.value_html
-        elif  self.type == 'char':
+        elif self.type == 'char':
             return self.value_char
-        elif  self.type == 'float':
+        elif self.type == 'float':
             return self.value_float
-        elif  self.type == 'boolean':
+        elif self.type == 'boolean':
             return self.value_boolean
-        elif  self.type == 'integer':
+        elif self.type == 'integer':
             return self.value_integer
-        elif  self.type == 'text':
+        elif self.type == 'text':
             return self.value_text
-        elif  self.type == 'binary':
+        elif self.type == 'binary':
             return self.value_binary
-        elif  self.type == 'date':
+        elif self.type == 'date':
             return self.value_date
         elif  self.type == 'datetime':
             return self.value_datetime
-        else:
-            raise ValidationError(_('Not able to find the default data record'))
+        elif self.type == 'many2one':
+            value = self.env[self.field_id.relation].browse(self.value_many2one_id)
+            if value:
+                return value.id
+            else:
+                raise ValidationError(_('Not able to find the default data record'))
         
     @api.multi
     def get_update_default_data(self, old_data):
