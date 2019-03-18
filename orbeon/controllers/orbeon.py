@@ -56,7 +56,7 @@ class Orbeon(http.Controller):
             method=http.request.httprequest.method,
             url=curl.geturl(),
             headers=in_headers,
-            data=http.request.httprequest.get_data(),
+            data=http.request.httprequest.form if len(http.request.httprequest.form)>0 else http.request.httprequest.get_data(),
             #cookies=http.request.httprequest.cookies,
             allow_redirects=False) 
         
