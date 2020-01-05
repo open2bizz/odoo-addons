@@ -3,20 +3,7 @@
 #
 #    open2bizz
 #    Copyright (C) 2017 open2bizz (open2bizz.nl).
-#
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-#
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+#    See licence file
 ##############################################################################
 
 from odoo import api, fields, models, _
@@ -42,3 +29,19 @@ class HelpdeskTicket(models.Model):
             update_data = self.default_solution.get_update_default_data(self.solution)
             if update_data['update']:
                 self.solution = update_data['data']
+
+    def action_create_default_data(self):
+        value = self.solution
+        name_new = self.solution[:10]
+        model_id = self.env['ir.model'].search([('model','=','helpdesk.ticket')])
+        field_id = self.env['ir.model.fields'].search([('model','=','helpdesk.ticket'),('name','=','solution')])
+        default_data = self.env['default.data'].create({'model_id': model_id.id,'name': name_new ,'field_id': field_id.id ,'value_html': self.solution, 'type': 'html'})
+        return {
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form,tree',
+                'res_model': 'default.data',
+                'target': 'current',
+                'res_id': default_data.id,
+                'domain': [('model','=','helpdesk.ticket')],
+            } 
