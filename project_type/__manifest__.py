@@ -28,6 +28,7 @@
     "website": "http://www.open2bizz.nl",
     "license": "AGPL-3",
     "category": "Project",
+    "installable": False,
     "depends": [
         "project",
     ],
