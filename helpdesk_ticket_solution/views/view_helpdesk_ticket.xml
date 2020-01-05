@@ -21,13 +21,13 @@
                             <div class="oe_edit_only">
                                 Use template
                                 <field name="default_solution"
-                                    nolabel="1" class="oe_inline" />
+                                    nolabel="1" class="oe_inline" options="{'no_create': True}"/>
                             </div>
+                            <button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
                         </page>
                     </notebook>
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>
