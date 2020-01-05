@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import  ValidationError
+import logging
+_logger = logging.getLogger(__name__)
 
 FIELD_TYPES = [
     ('html', 'HTML'),
@@ -17,15 +19,16 @@ FIELD_TYPES = [
     ('datetime', 'DateTime'),
 ]
 
-
 class DefaultData(models.Model):
     _name = 'default.data'
-
+    
     name = fields.Char(
-        string = 'Name'
+        string = 'Name',
+        help = "General name to quick select the default data on a field/model"
     )
     model_id = fields.Many2one(
         comodel_name = 'ir.model',
+        help = "The model on which the data is used",
         string = 'Model',
         required = True
     )
@@ -37,6 +40,7 @@ class DefaultData(models.Model):
     )
     field_id = fields.Many2one(
         comodel_name = 'ir.model.fields',
+        help = "The fiels on which the data is used to set as template",
         string = 'Field',
         required = True,
         domain = "[('model_id.model', '=', model)]"
@@ -53,54 +57,42 @@ class DefaultData(models.Model):
         required=True,
     )
     value_char = fields.Char(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_text = fields.Text(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_html = fields.Html(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_integer = fields.Integer(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_float = fields.Float(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_boolean = fields.Boolean(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_binary = fields.Binary(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_date = fields.Date(
-        string = 'Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
     value_datetime = fields.Datetime(
-        string = 'Value'
-    )
-    value_many2one_id = fields.Integer(
-        string = 'Record ID'
-    )
-    repr_value = fields.Text(
-        compute='_compute_repr_value',
-        string='Value'
+        string = 'Value',
+        help = "The actual default value which will be used as a template",
     )
 
-    @api.depends(
-        'value_char', 'value_text', 'value_html', 'value_integer', 'value_float',\
-        'value_boolean', 'value_binary', 'value_date', 'value_datetime')
-    def _compute_repr_value(self):
-        for r in self:
-            default_data = r.get_default_data()
-            if r.type == 'many2one':
-                res = self.env[r.field_id.relation].browse(r.value_many2one_id)
-                if hasattr(res, 'name'):
-                    r.repr_value = res.name
-                else:
-                    r.repr_value = default_data
-            else:
-                r.repr_value = default_data
 
     @api.onchange('model_id')
     def onchange_model_id(self):
@@ -116,30 +108,26 @@ class DefaultData(models.Model):
 
     @api.multi
     def get_default_data(self):
-        if self.type == 'html':
+        if  self.type == 'html':
             return self.value_html
-        elif self.type == 'char':
+        elif  self.type == 'char':
             return self.value_char
-        elif self.type == 'float':
+        elif  self.type == 'float':
             return self.value_float
-        elif self.type == 'boolean':
+        elif  self.type == 'boolean':
             return self.value_boolean
-        elif self.type == 'integer':
+        elif  self.type == 'integer':
             return self.value_integer
-        elif self.type == 'text':
+        elif  self.type == 'text':
             return self.value_text
-        elif self.type == 'binary':
+        elif  self.type == 'binary':
             return self.value_binary
-        elif self.type == 'date':
+        elif  self.type == 'date':
             return self.value_date
         elif  self.type == 'datetime':
             return self.value_datetime
-        elif self.type == 'many2one':
-            value = self.env[self.field_id.relation].browse(self.value_many2one_id)
-            if value:
-                return value.id
-            else:
-                raise ValidationError(_('Not able to find the default data record'))
+        else:
+            raise ValidationError(_('Not able to find the default data record'))
         
     @api.multi
     def get_update_default_data(self, old_data):
@@ -153,3 +141,4 @@ class DefaultData(models.Model):
                 'update' : True,
                 'data' : new_data
             }
+
