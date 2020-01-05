@@ -39,7 +39,9 @@
                                 attrs="{'invisible' : [('type', '!=', 'date')]}" />
                             <field name="value_datetime"
                                 attrs="{'invisible' : [('type', '!=', 'datetime')]}" />
-
+                            <field name="value_many2one_id"
+                                   attrs="{'invisible' : [('type', '!=', 'many2one')]}"/>
+                            <field name="repr_value"/>
                         </group>
                     </sheet>
                 </form>
@@ -55,6 +57,7 @@
                     <field name="model" />
                     <field name="field_id" />
                     <field name="type" />
+                    <field name="repr_value"/>
                 </tree>
             </field>
         </record>
