@@ -1,33 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-
-        <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
-            <field name="name">helpdesk.ticket.form.inherit</field>
-            <field name="model">helpdesk.ticket</field>
-            <field name="priority">32</field>
-            <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form" />
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='description']"
-                    position="replace">
-                    <notebook>
-                        <page string="Description" name="description_page">
-                            <field name="description" widget="html"
-                                colspan="4" nolabel="1" />
-                        </page>
-                        <page string="Solution or Response" name="solution_page">
-                            <field name="solution" colspan="4"
-                                nolabel="1" />
-                            <div class="oe_edit_only">
+  <data>
+    <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
+      <field name="name">helpdesk.ticket.form.inherit</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="priority">32</field>
+      <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//notebook" position="inside">
+          <page string="Solution or Response" name="solution_page">
+            <field name="solution" colspan="4" nolabel="1"/>
+            <div class="oe_edit_only">
                                 Use template
-                                <field name="default_solution"
-                                    nolabel="1" class="oe_inline" options="{'no_create': True}"/>
+                                <field name="default_solution" nolabel="1" class="oe_inline" options="{'no_create': True}"/>
                             </div>
-                            <button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
-                        </page>
-                    </notebook>
-                </xpath>
-            </field>
-        </record>
-    </data>
+            <button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
+          </page>
+        </xpath>
+        <xpath expr="//field[@name='description']" position="replace">
+          <field name="description" widget="html" colspan="4" nolabel="1"/>
+        </xpath>
+      </field>
+    </record>
+  </data>
 </odoo>
+
