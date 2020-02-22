@@ -32,7 +32,9 @@ class HelpdeskTicket(models.Model):
 
     def action_create_default_data(self):
         value = self.solution
-        name_new = self.solution[:10]
+        name_new = self.name
+#  Chenged to use the ticket name instead of solution
+#        name_new = self.solution[:10]
         model_id = self.env['ir.model'].search([('model','=','helpdesk.ticket')])
         field_id = self.env['ir.model.fields'].search([('model','=','helpdesk.ticket'),('name','=','solution')])
         default_data = self.env['default.data'].create({'model_id': model_id.id,'name': name_new ,'field_id': field_id.id ,'value_html': self.solution, 'type': 'html'})
