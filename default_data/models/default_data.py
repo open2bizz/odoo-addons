@@ -21,6 +21,7 @@ FIELD_TYPES = [
 
 class DefaultData(models.Model):
     _name = 'default.data'
+    _description = "Default Data"
     
     name = fields.Char(
         string = 'Name',
@@ -106,7 +107,6 @@ class DefaultData(models.Model):
             else:
                 raise ValidationError(_('The type (\"%s\") of this field is not supported' % self.field_id.ttype))
 
-    @api.multi
     def get_default_data(self):
         if  self.type == 'html':
             return self.value_html
@@ -129,7 +129,6 @@ class DefaultData(models.Model):
         else:
             raise ValidationError(_('Not able to find the default data record'))
         
-    @api.multi
     def get_update_default_data(self, old_data):
         new_data = self.get_default_data()
         if old_data == new_data:

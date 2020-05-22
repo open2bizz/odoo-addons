@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <data>
+    <!-- todo when integrating with timesheets this needs to be altered --> 
     <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
       <field name="name">helpdesk.ticket.form.inherit</field>
       <field name="model">helpdesk.ticket</field>
@@ -11,7 +12,7 @@
 		<notebook>
           <page string="Description" name="description_page">
 			<field name="description" widget="html" colspan="4" nolabel="1"/>
-		</page>
+		  </page>
           <page string="Solution or Response" name="solution_page">
             <field name="solution" colspan="4" nolabel="1"/>
             <div class="oe_edit_only">
