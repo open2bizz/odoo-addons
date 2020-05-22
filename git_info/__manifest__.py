@@ -34,5 +34,5 @@
         "static/src/xml/base.xml",
     ],
     "application": False,
-    "installable": True,
+    "installable": False,
 }
