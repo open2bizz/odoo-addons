@@ -2,18 +2,17 @@
 <odoo>
   <data>
     <!-- Extends: task kanban view -->
-    <record id="project_type_view_project_kanban" model="ir.ui.view">
-      <field name="name">project_type.project.kanban</field>
-      <field name="model">project.project</field>
-      <field name="priority" eval="20" />
-      <field name="inherit_id" ref="project.view_project_kanban" />
+    <record id="task_kanban_open2bizz" model="ir.ui.view">
+      <field name="name">task_kanban_open2bizz</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_kanban" />
       <field name="arch" type="xml">
         <data>
           <xpath expr="//div[@class='o_kanban_record_top']" position="before">
             <div class="o_kanban_card_manage_title">
-              <button type="action" name="494" class="btn btn-primary btn-sm">This Week</button>
-              <button type="action" name="493" class="btn btn-secondary btn-sm">Next Week</button>
-              <button type="action" name="495" class="btn btn-secondary btn-sm">After Next Week</button>
+              <button type="object" name="set_plan_this_week" class="btn btn-primary btn-sm">This Week</button>
+              <button type="object" name="set_plan_next_week" class="btn btn-secondary btn-sm">Next Week</button>
+              <button type="object" name="set_plan_other_week" class="btn btn-secondary btn-sm">Other Week</button>
             </div>
             <br />
           </xpath>
