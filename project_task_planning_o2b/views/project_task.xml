@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<odoo>
+  <data>
+    <!-- Extends: task kanban view -->
+    <record id="project_type_view_project_kanban" model="ir.ui.view">
+      <field name="name">project_type.project.kanban</field>
+      <field name="model">project.project</field>
+      <field name="priority" eval="20" />
+      <field name="inherit_id" ref="project.view_project_kanban" />
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="//div[@class='o_kanban_record_top']" position="before">
+            <div class="o_kanban_card_manage_title">
+              <button type="action" name="494" class="btn btn-primary btn-sm">This Week</button>
+              <button type="action" name="493" class="btn btn-secondary btn-sm">Next Week</button>
+              <button type="action" name="495" class="btn btn-secondary btn-sm">After Next Week</button>
+            </div>
+            <br />
+          </xpath>
+          <xpath expr="//kanban[1]/templates[1]/t[1]/div[1]/div[1]/div[2]/div[1]/strong[1]/field[@name='name']" position="after">
+            <br/>
+            <div>Planned / Worked / Remaining:</div>
+            <div t-attr-class="oe_kanban_align badge badge-warning" name="kanban_hours">
+              <field name="planned_hours" widget="float_time" />
+              /
+              <field name="effective_hours" widget="float_time" />
+              /
+              <field name="remaining_hours" widget="float_time" />
+            </div>
+          </xpath>
+          <xpath expr="//field[@name='tag_ids']" position="replace" />
+          <xpath expr="//div[@class='o_kanban_record_bottom']" position="after">
+            <div class="o_kanban_record_bottom" style="font-weight: bold;font-size: 32px;" name="kanban_tags">
+              <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+            </div>
+          </xpath>
+        </data>
+      </field>
+    </record>
+  </data>
+</odoo>
