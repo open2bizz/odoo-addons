@@ -4,16 +4,19 @@
         <record id="tag_this_week" model="project.tags">
             <field name="name">This Week</field>
             <field name="color">3</field>
+            <field name="plan_type">this_week</field>
         </record>
 
         <record id="tag_next_week" model="project.tags">
             <field name="name">Next Week</field>
             <field name="color">10</field>
+            <field name="plan_type">next_week</field>
         </record>
 
         <record id="tag_other_week" model="project.tags">
             <field name="name">After next week</field>
             <field name="color">8</field>
+            <field name="plan_type">other_week</field>
         </record>
 
   </data>

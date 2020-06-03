@@ -57,3 +57,7 @@ class ProjectTask(models.Model):
         if tag_next_week in self.tag_ids:
 	        self.write({'tag_ids': [(3,tag_next_week.id)]})
 
+class ProjectTask(models.Model):
+    _inherit = 'project.tags'
+    
+    plan_type = fields.Selection([('this_week','This Week'),('next_week','Next Week'),('other_week','After next Week')],'Plan Type')

@@ -36,5 +36,23 @@
         </data>
       </field>
     </record>
+
+    <record id="task_search_open2bizz" model="ir.ui.view">
+      <field name="name">task_search_open2bizz</field>
+      <field name="model">project.task</field>
+      <field name="inherit_id" ref="project.view_task_search_form" />
+      <field name="arch" type="xml">
+        <data>
+		    <xpath expr="//filter[@name='starred']" position="after">
+			    <separator/>
+			    <filter string="This Week" name="this_week" domain="[('tag_ids.plan_type','=','this_week')]"/>
+			    <filter string="Next Week" name="next_week" domain="[('tag_ids.plan_type','=','next_week')]"/>
+			    <filter string="After next Week" name="other_week" domain="[('tag_ids.plan_type','=','other_week')]"/>
+			    <separator/>
+			</xpath>
+		</data>
+	  </field>
+      </record>
+		
   </data>
 </odoo>
