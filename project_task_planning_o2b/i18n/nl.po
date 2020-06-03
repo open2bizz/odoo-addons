@@ -1,0 +1,73 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* project_task_planning_o2b
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-03 22:26+0000\n"
+"PO-Revision-Date: 2020-06-04 00:28+0200\n"
+"Last-Translator: Thomas Pot <t.pot@open2bizz.nl>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: nl\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#. module: project_task_planning_o2b
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_search_open2bizz
+#: selection:project.tags,plan_type:0
+msgid "After next Week"
+msgstr "Na volgende week"
+
+#. module: project_task_planning_o2b
+#: model:ir.model.fields,field_description:project_task_planning_o2b.field_project_task__new_stage_id
+msgid "New Stage"
+msgstr "Nieuwe Fase"
+
+#. module: project_task_planning_o2b
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_kanban_open2bizz
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_search_open2bizz
+#: selection:project.tags,plan_type:0
+msgid "Next Week"
+msgstr "Volgende Week"
+
+#. module: project_task_planning_o2b
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_kanban_open2bizz
+msgid "Other Week"
+msgstr "Na volgende Week"
+
+#. module: project_task_planning_o2b
+#: model:ir.model.fields,field_description:project_task_planning_o2b.field_project_tags__plan_type
+msgid "Plan Type"
+msgstr "Planning type"
+
+#. module: project_task_planning_o2b
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_kanban_open2bizz
+msgid "Planned / Worked / Remaining:"
+msgstr "Gepland / Geboekt / Te doen:"
+
+#. module: project_task_planning_o2b
+#: model:ir.model.fields,field_description:project_task_planning_o2b.field_project_task__prev_stage_id
+msgid "Prev Stage"
+msgstr "Vorige Fase"
+
+#. module: project_task_planning_o2b
+#: model:ir.model,name:project_task_planning_o2b.model_project_tags
+msgid "Project Tags"
+msgstr "Project Labels"
+
+#. module: project_task_planning_o2b
+#: model:ir.model,name:project_task_planning_o2b.model_project_task
+msgid "Task"
+msgstr "Taak"
+
+#. module: project_task_planning_o2b
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_kanban_open2bizz
+#: model_terms:ir.ui.view,arch_db:project_task_planning_o2b.task_search_open2bizz
+#: selection:project.tags,plan_type:0
+msgid "This Week"
+msgstr "Deze week"
