@@ -33,6 +33,8 @@
         "project",
     ],
     "data": [
+             "data/project_tags.xml",
              "views/project_task.xml",
     ],
 }
+
