@@ -45,13 +45,14 @@
         <data>
 		    <xpath expr="//filter[@name='starred']" position="after">
 			    <separator/>
-			    <filter string="This Week" name="this_week" domain="[('tag_ids','ilike','This Week')]"/>
-			    <filter string="Next Week" name="next_week" domain="[('tag_ids','ilike','Next Week')]"/>
-			    <filter string="Next Week" name="next_week" domain="[('tag_ids','ilike','After next week')]"/>
+			    <filter string="This Week" name="this_week" domain="[('tag_ids.plan_type','=','this_week')]"/>
+			    <filter string="Next Week" name="next_week" domain="[('tag_ids.plan_type','=','next_week')]"/>
+			    <filter string="After next Week" name="other_week" domain="[('tag_ids.plan_type','=','other_week')]"/>
 			    <separator/>
 			</xpath>
 		</data>
-	  </field>	
+	  </field>
+      </record>
 		
   </data>
 </odoo>
