@@ -48,6 +48,7 @@
 			    <filter string="This Week" name="this_week" domain="[('tag_ids.plan_type','=','this_week')]"/>
 			    <filter string="Next Week" name="next_week" domain="[('tag_ids.plan_type','=','next_week')]"/>
 			    <filter string="After next Week" name="other_week" domain="[('tag_ids.plan_type','=','other_week')]"/>
+			    <filter string="Still to plan" name="no_week" domain="[('tag_ids.plan_type','=',False)]"/>
 			    <separator/>
 			</xpath>
 		</data>
