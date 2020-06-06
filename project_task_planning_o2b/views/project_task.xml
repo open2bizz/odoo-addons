@@ -49,10 +49,9 @@
 			    <filter string="After next Week" name="other_week" domain="[('tag_ids.plan_type','=','other_week')]"/>
 			    <filter string="Still to plan" name="no_week" domain="[('is_planned','=',False)]"/>
 			    <separator/>
-			</xpath>
-		</data>
-	  </field>
-      </record>
-		
+			  </xpath>
+ 		  </data>
+	   </field>
+    </record>
   </data>
 </odoo>
