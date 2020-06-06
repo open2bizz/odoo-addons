@@ -9,7 +9,7 @@
       <field name="arch" type="xml">
         <data>
           <xpath expr="//div[@class='o_kanban_record_top']" position="before">
-            <div class="o_kanban_card_manage_title">
+            <div class="o_kanban_card_manage_title" t-if="record.stage_id.value != 'Nieuw Backlog' and record.stage_id.value != 'Testen' and record.stage_id.value != 'Testen acceptatie klant' and record.stage_id.value != 'Testen (alleen intern)' and record.stage_id.value != 'Verwerkt' and record.stage_id.value != 'Merged in Master' and record.stage_id.value != 'Geannuleerd' and record.stage_id.value != 'Hoofdtaak' and record.stage_id.value != 'On hold (next or new fase)' and record.stage_id.value != 'Aangeleverd backlog klant'">
               <button type="object" name="set_plan_this_week" class="btn btn-primary btn-sm">This Week</button>
               <button type="object" name="set_plan_next_week" class="btn btn-secondary btn-sm">Next Week</button>
               <button type="object" name="set_plan_other_week" class="btn btn-secondary btn-sm">Other Week</button>
