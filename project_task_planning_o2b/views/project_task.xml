@@ -9,29 +9,28 @@
       <field name="arch" type="xml">
         <data>
           <xpath expr="//div[@class='o_kanban_record_top']" position="before">
-            <div class="o_kanban_card_manage_title">
+            <div class="o_kanban_card_manage_title" t-if="record.stage_id.value != 'Nieuw Backlog' and record.stage_id.value != 'Testen' and record.stage_id.value != 'Testen acceptatie klant' and record.stage_id.value != 'Testen (alleen intern)' and record.stage_id.value != 'Verwerkt' and record.stage_id.value != 'Merged in Master' and record.stage_id.value != 'Geannuleerd' and record.stage_id.value != 'Hoofdtaak' and record.stage_id.value != 'On hold (next or new fase)' and record.stage_id.value != 'Aangeleverd backlog klant'">
               <button type="object" name="set_plan_this_week" class="btn btn-primary btn-sm">This Week</button>
               <button type="object" name="set_plan_next_week" class="btn btn-secondary btn-sm">Next Week</button>
               <button type="object" name="set_plan_other_week" class="btn btn-secondary btn-sm">Other Week</button>
             </div>
-            <br />
-          </xpath>
-          <xpath expr="//kanban[1]/templates[1]/t[1]/div[1]/div[1]/div[2]/div[1]/strong[1]/field[@name='name']" position="after">
             <br/>
-            <div>Planned / Worked / Remaining:</div>
-            <div t-attr-class="oe_kanban_align badge badge-warning" name="kanban_hours">
-              <field name="planned_hours" widget="float_time" />
-              /
-              <field name="effective_hours" widget="float_time" />
-              /
-              <field name="remaining_hours" widget="float_time" />
-            </div>
           </xpath>
-          <xpath expr="//field[@name='tag_ids']" position="replace" />
+          <xpath expr="//field[@name='tag_ids']" position="replace"/>
           <xpath expr="//div[@class='o_kanban_record_bottom']" position="after">
             <div class="o_kanban_record_bottom" style="font-weight: bold;font-size: 32px;" name="kanban_tags">
-              <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+              <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
             </div>
+            <div t-attr-class="oe_kanban_align badge badge-warning" name="kanban_hours">
+              <field name="planned_hours" widget="float_time"/>
+              /
+              <field name="effective_hours" widget="float_time"/>
+              /
+              <field name="remaining_hours" widget="float_time"/>
+            </div>
+            <t t-if="record.remaining_hours.raw_value &lt; 0">
+               <span style="color:red">Over budget.</span>
+            </t>
           </xpath>
         </data>
       </field>
@@ -48,6 +47,7 @@
 			    <filter string="This Week" name="this_week" domain="[('tag_ids.plan_type','=','this_week')]"/>
 			    <filter string="Next Week" name="next_week" domain="[('tag_ids.plan_type','=','next_week')]"/>
 			    <filter string="After next Week" name="other_week" domain="[('tag_ids.plan_type','=','other_week')]"/>
+			    <filter string="Still to plan" name="no_week" domain="[('is_planned','=',False)]"/>
 			    <separator/>
 			</xpath>
 		</data>
