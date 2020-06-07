@@ -21,6 +21,8 @@ FIELD_TYPES = [
 
 class DefaultData(models.Model):
     _name = 'default.data'
+    _description = 'Default Data'
+    _order = 'model_id asc, name asc'
     
     name = fields.Char(
         string = 'Name',
