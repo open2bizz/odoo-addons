@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="account.view_account_journal_form_footer" model="ir.ui.view">
+    <record id="view_account_journal_form_footer" model="ir.ui.view">
         <field name="name">account.view_account_journal_form_footer</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="account.view_account_journal_form"/>

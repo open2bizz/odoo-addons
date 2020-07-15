@@ -15,7 +15,7 @@
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             IBAN No.:
-            <span t-field="ba.bank_acc_number" />
+            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
       </div>
@@ -37,7 +37,7 @@
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             IBAN No.:
-            <span t-field="ba.bank_acc_number" />
+            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
       </div>
@@ -59,7 +59,7 @@
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             IBAN No.:
-            <span t-field="ba.bank_acc_number" />
+            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
       </div>
@@ -81,7 +81,7 @@
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             IBAN No.:
-            <span t-field="ba.bank_acc_number" />
+            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
       </div>
@@ -102,7 +102,7 @@
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             IBAN No.:
-            <span t-field="ba.bank_acc_number" />
+            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
       </div>
