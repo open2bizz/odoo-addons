@@ -10,8 +10,9 @@
     'website': 'http://open2bizz.nl/',
     'depends': [
         'helpdesk',
-        'default_data',
-        'helpdesk_timesheet'
+        'default_data'
+#        'helpdesk_timesheet' 
+#        is not mandatory !!
     ],
     'data':[
         'views/view_helpdesk_ticket.xml',
