@@ -48,16 +48,16 @@
       
         <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
           <li t-if="ba.add_to_footer" class="list-inline-item">
+            IBAN No.:
+            <span t-field="ba.bank_account_id.acc_number" />
+          </li>
+          <li t-if="ba.add_to_footer" class="list-inline-item">
             Bank:
             <span t-field="ba.bank_id.name" />
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             BIC No.:
             <span t-field="ba.bank_id.bic" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
-            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
     </xpath>
@@ -70,6 +70,10 @@
       
         <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
           <li t-if="ba.add_to_footer" class="list-inline-item">
+            IBAN No.:
+            <span t-field="ba.bank_account_id.acc_number" />
+          </li>
+          <li t-if="ba.add_to_footer" class="list-inline-item">
             Bank:
             <span t-field="ba.bank_id.name" />
           </li>
@@ -77,10 +81,7 @@
             BIC No.:
             <span t-field="ba.bank_id.bic" />
           </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
-            <span t-field="ba.bank_account_id.acc_number" />
-          </li>
+
         </ul>
     </xpath>
   </template>
@@ -92,16 +93,16 @@
       
         <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
           <li t-if="ba.add_to_footer" class="list-inline-item">
+            IBAN No.:
+            <span t-field="ba.bank_account_id.acc_number" />
+          </li>
+          <li t-if="ba.add_to_footer" class="list-inline-item">
             Bank:
             <span t-field="ba.bank_id.name" />
           </li>
           <li t-if="ba.add_to_footer" class="list-inline-item">
             BIC No.:
             <span t-field="ba.bank_id.bic" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
-            <span t-field="ba.bank_account_id.acc_number" />
           </li>
         </ul>
     </xpath>
