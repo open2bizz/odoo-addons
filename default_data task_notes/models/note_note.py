@@ -13,9 +13,6 @@ class Note(models.Model):
 
     _inherit = 'note.note'
     
-    solution = fields.Html(
-        string = 'Solution'
-    )
     default_data_id = fields.Many2one(
         comodel_name = 'default.data',
         string = 'Default Memo',
