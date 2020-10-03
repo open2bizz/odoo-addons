@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+  <record id="view_project_note_note_default_data_form" model="ir.ui.view">
+    <field name="model">note.note</field>
+    <field name="inherit_id" ref="project_task_notes.view_project_note_note_form" />
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//field[@name='memo']" position="before">
+			<group>
+				<field name="default_data_id" />
+				<button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
+			</group>
+        </xpath>
+      </data>
+    </field>
+  </record>
+  <record id="view_project_note_note_default_data_form2" model="ir.ui.view">
+    <field name="model">note.note</field>
+    <field name="inherit_id" ref="note.view_note_note_form" />
+    <field name="arch" type="xml">
+      <data>
+        <xpath expr="//field[@name='memo']" position="before">
+			<group>
+				<field name="default_data_id" />
+				<button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
+			</group>
+        </xpath>
+      </data>
+    </field>
+  </record>
+</odoo>
