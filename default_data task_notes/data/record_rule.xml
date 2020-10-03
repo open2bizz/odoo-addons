@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="note_note_rule_task" model="ir.rule">
+        <field name="name">Followers of linked task view notes</field>
+        <field name="model_id" ref="model_note_note"/>
+        <field name="domain_force">[('task_id.message_partner_ids', '=', user.partner_id.id)]</field>
+		<field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+		<field name="perm_read" eval="True"/>
+		<field name="perm_write" eval="False"/>
+		<field name="perm_create" eval="False"/>
+		<field name="perm_unlink" eval="False"/>
+    </record>
+    <record id="note_note_rule_task_manager" model="ir.rule">
+        <field name="name">projectmanager task edti notes</field>
+        <field name="model_id" ref="model_note_note"/>
+        <field name="domain_force">[('project_id.user_id', '=', user.id)]</field>
+		<field name="groups" eval="[(4, ref('project.group_project_user'))]"/>
+		<field name="perm_read" eval="True"/>
+		<field name="perm_write" eval="True"/>
+		<field name="perm_create" eval="True"/>
+		<field name="perm_unlink" eval="True"/>
+    </record>
+
+</odoo>

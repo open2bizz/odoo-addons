@@ -12,6 +12,7 @@
     'depends': ['note','project_task_notes'],
     'data':[
         'views/view_notes.xml',
+        'data/record_rule.xml',
     ],
     'installable': True,
 }
