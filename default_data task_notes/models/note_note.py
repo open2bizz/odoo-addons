@@ -18,16 +18,16 @@ class Note(models.Model):
     )
     default_data_id = fields.Many2one(
         comodel_name = 'default.data',
-        string = 'Default Solution',
+        string = 'Default Memo',
         domain = "[('model', '=', 'note.note'), ('field', '=', 'memo')]"
     )
     
     @api.onchange("default_data_id")
     def onchange_default_data_id(self):
         if self.default_data_id:
-            update_data = self.default_data_id.get_update_default_data(self.solution)
+            update_data = self.default_data_id.get_update_default_data(self.memo)
             if update_data['update']:
-                self.default_data_id = update_data['data']
+                self.memo = update_data['data']
 
     def action_create_default_data(self):
         value = self.memo
@@ -44,3 +44,4 @@ class Note(models.Model):
                 'res_id': default_data.id,
                 'domain': [('model','=','note.note')],
             } 
+
