@@ -25,6 +25,14 @@
             <strong>
               <span t-esc="delivery.date_done" t-options="{&quot;widget&quot;: &quot;date&quot;}" />
             </strong>
+            <span>from:</span>
+            <strong>
+              <span t-field="delivery.company_id.name" />
+              <t t-if="delivery.company_id.name != delivery.picking_type_id.warehouse_id.name">
+                <span>/</span>
+                <span t-field="delivery.picking_type_id.warehouse_id.name" />
+              </t>
+            </strong>
           </t>
         </t>
       </xpath>
