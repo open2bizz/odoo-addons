@@ -7,7 +7,7 @@ from odoo import api, fields, models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
-    delivery_ids = fields.May2many(string="Deliveries linked",
+    delivery_ids = fields.Many2many(string="Deliveries linked",
         comodel_name='stock.picking',
         compute='_compute_deliveries',
         )
@@ -19,7 +19,6 @@ class AccountMove(models.Model):
             for line in rec.invoice_line_ids:
                 for sale_line in line.sale_line_ids:
                     for stock_move in sale_line.move_ids:
-                        rec.update({'delivery_ids': stock_move.picking_id})
+                        rec.delivery_ids = [(4,stock_move.picking_id.id)]
             if not rec.delivery_ids:
                rec.delivery_ids = False
-
