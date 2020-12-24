@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <template id="report_delivery_document_backorders" inherit_id="stock.report_delivery_document">
+
+    <data inherit_id="stock.report_delivery_document">
+      <xpath expr="//table[2]" position="after">
+
+		<t t-if="o.backorder_ids and o.backorder_ids.filtered(lambda x: x.state not in ('done', 'cancel'))">
+		  <h5><b><i>All items couldn't be shipped, the remaining ones will be shipped as soon as they become available, as specified below:</i></b></h5>
+	        <tr t-foreach="o.backorder_ids and o.backorder_ids.filtered(lambda x: x.state not in ('done', 'cancel'))" t-as="backorder">
+				<table class="table table-sm mt48" name="stock_move_backorder_line_table">
+					<thead>
+						<tr>
+							<th name="th_sml_product"><i><strong>Product</strong></i></th>
+							<th name="th_sml_quantity" class="text-right"><i><strong>Quantity Backorder</strong></i></th>
+							<th name="th_sml_date" class="text-right"><i><strong>Expected</strong></i></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr t-foreach="backorder.move_line_ids" t-as="backorder_line">
+							<td>
+								<i><span t-field="backorder_line.product_id"/></i>
+								<p t-if="backorder_line.move_id.description_picking != backorder_line.product_id.name">
+									<i><span t-field="backorder_line.move_id.description_picking"/></i>
+								</p>
+							</td>
+							<td class="text-right">
+								<i><span t-field="backorder_line.product_uom_qty"/></i>
+								<i><span t-field="backorder_line.product_uom_id"/></i>
+							</td>
+							<td class="text-right">
+								<i><span t-field="backorder_line.move_id.date_expected" t-options='{"widget": "date"}'/></i>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</tr>
+		</t>
+
+      </xpath>
+
+    </data>
+
+  </template>
+</odoo>
