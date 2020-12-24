@@ -15,6 +15,6 @@
         'sale',
     ],
     'data': [
-        'reports/delivery.xml',
+        'reports/delivery_views.xml',
     ]
 }
