@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-extend="CalendarView.quick_create">
+        <t t-jquery=".flow-calendar-apps" t-operation="append">
+            <button class="btn btn-default btn-sm">
+                Project Task
+            </button>
+            <input type="radio" name="flow_calendar_model" value="project.task"/>
+        </t>
+    </t>
+</templates>

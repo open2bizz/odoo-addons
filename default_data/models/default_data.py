@@ -21,7 +21,8 @@ FIELD_TYPES = [
 
 class DefaultData(models.Model):
     _name = 'default.data'
-    _description = "Default Data"
+    _description = 'Default Data'
+    _order = 'model_id asc, name asc'
     
     name = fields.Char(
         string = 'Name',
@@ -31,6 +32,7 @@ class DefaultData(models.Model):
         comodel_name = 'ir.model',
         help = "The model on which the data is used",
         string = 'Model',
+        ondelete = 'cascade',
         required = True
     )
     model = fields.Char(
@@ -44,6 +46,7 @@ class DefaultData(models.Model):
         help = "The fiels on which the data is used to set as template",
         string = 'Field',
         required = True,
+        ondelete = 'cascade',
         domain = "[('model_id.model', '=', model)]"
     )
     field = fields.Char(
@@ -108,36 +111,39 @@ class DefaultData(models.Model):
                 raise ValidationError(_('The type (\"%s\") of this field is not supported' % self.field_id.ttype))
 
     def get_default_data(self):
-        if  self.type == 'html':
-            return self.value_html
-        elif  self.type == 'char':
-            return self.value_char
-        elif  self.type == 'float':
-            return self.value_float
-        elif  self.type == 'boolean':
-            return self.value_boolean
-        elif  self.type == 'integer':
-            return self.value_integer
-        elif  self.type == 'text':
-            return self.value_text
-        elif  self.type == 'binary':
-            return self.value_binary
-        elif  self.type == 'date':
-            return self.value_date
-        elif  self.type == 'datetime':
-            return self.value_datetime
-        else:
-            raise ValidationError(_('Not able to find the default data record'))
+        for record in self:
+            if  record.type == 'html':
+                return record.value_html
+            elif  record.type == 'char':
+                return record.value_char
+            elif  record.type == 'float':
+                return record.value_float
+            elif  record.type == 'boolean':
+                return record.value_boolean
+            elif  record.type == 'integer':
+                return record.value_integer
+            elif  record.type == 'text':
+                return record.value_text
+            elif  record.type == 'binary':
+                return record.value_binary
+            elif  record.type == 'date':
+                return record.value_date
+            elif  record.type == 'datetime':
+                return record.value_datetime
+            else:
+                raise ValidationError(_('Not able to find the default data record'))
         
     def get_update_default_data(self, old_data):
-        new_data = self.get_default_data()
-        if old_data == new_data:
-            return {
-                'update' : False
-            }
-        else:
-            return {    
-                'update' : True,
-                'data' : new_data
-            }
+        for record in self:
+            new_data = record.get_default_data()
+            if old_data == new_data:
+                return {
+                    'update' : False
+                }
+            else:
+                return {    
+                    'update' : True,
+                    'data' : new_data
+                }
+
 

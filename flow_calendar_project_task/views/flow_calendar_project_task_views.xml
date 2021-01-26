@@ -1,0 +1,164 @@
+<?xml version="1.0"?>
+<!-- Copyright Nova Code (http://www.novacode.nl)
+See LICENSE file for full licensing details. -->
+
+<odoo>
+    <data>
+        <record id="view_flow_calendar_project_task_calendar_event_search_form" model="ir.ui.view">
+            <field name="name">flow_calendar_project_task.calendar.event.search.form</field>
+            <field name="model">calendar.event</field>
+            <field name="arch" type="xml">
+               <search string="Meetings">
+                    <field name="flowcal_task_project_id"/>
+                    <field name="flowcal_task_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="act_project_project_task_2_calendar_event_all" model="ir.actions.act_window">
+            <field name="name">Meetings</field>
+            <field name="res_model">calendar.event</field>
+            <field name="view_mode">calendar,tree,form</field>
+            <field name="context">{
+                'search_default_flowcal_task_id': [active_id],
+                'default_flowcal_task_id': active_id,
+            }</field>
+            <field name="search_view_id" ref="view_flow_calendar_project_task_calendar_event_search_form"/>
+        </record>
+
+        <record id="flow_calendar_project_task_view_calendar_event_form" model="ir.ui.view">
+            <field name="name">flow_calendar_project_task.calendar.event.form</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//label[@for='partner_ids']" position="before">
+                    <label for="flowcal_task_project_id" string="Project"
+                           attrs="{'invisible': [('flow_calendar_model', '!=', 'project.task')]}" />
+                    <h3>
+                        <field name="flowcal_task_project_id"
+                               attrs="{'required': [('flow_calendar_model', '=', 'project.task')],
+                                      'invisible': [('flow_calendar_model', '!=', 'project.task')]}"
+                               readonly="0"
+                               placeholder="Select project..." class="oe_inline" style="min-width:700px;" />
+                    </h3>
+                    <label for="flowcal_task_id" string="Task"
+                           attrs="{'invisible': ['|', ('flow_calendar_model', '!=', 'project.task'), ('flowcal_task_project_id', '=', False)]}" />
+                    <h3>
+                        <field name="flowcal_task_id"
+                               attrs="{'required': [('flow_calendar_model', '=', 'project.task')],
+                                      'invisible': ['|', ('flow_calendar_model', '!=', 'project.task'), ('flowcal_task_project_id', '=', False)]}"
+                               placeholder="Select task..." class="oe_inline" style="min-width:700px;" />
+                    </h3>
+                </xpath>
+                <field name="categ_ids" position="before">
+                    <field name="flowcal_task_date_deadline" attrs="{'invisible': [('flow_calendar_model', '!=', 'project.task')]}" />
+                </field>
+
+            </field>
+        </record>
+
+        <!-- Task -->
+        <record id="view_task_kanban_flow_calendar" model="ir.ui.view">
+            <field name="name">view_task_kanban_flow_calendar</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban/field[@name="active"]' position="after">
+                    <field name="flowcal_upcoming_event_count"/>
+                </xpath>
+                <xpath expr='//a[@t-if="widget.editable"]' position="before">
+                    <a type="object" name="delete_upcoming_calendar_event" attrs="{'invisible': [('flowcal_upcoming_event_count', '=', 0)]}">
+                        <i class="fa fa-trash"></i>
+                        Delete (<field name="flowcal_upcoming_event_count"/>) Upcoming Cal.Event(s)
+                    </a>
+                </xpath>
+                <xpath expr="//div[hasclass('o_kanban_record_body')]/field[@name='tag_ids']" position="after">
+                    <div t-if="record.flowcal_upcoming_event_start_date.raw_value">
+                        <span>
+                            <i class="fa fa-calendar"/> <field name="flowcal_upcoming_event_start_date"/>
+                            <span class="badge oe_kanban_color_1" style="background-color:#c6c6c6;"><field name="flowcal_upcoming_event_count"/></span>
+                        </span>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_task_form2_flow_calendar" model="ir.ui.view">
+            <field name="name">project.task.form.flow_calendar_project</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2" />
+            <field name="arch" type="xml">
+                <xpath expr="//form/header/field[@name='stage_id']" position="before">
+                    <button
+                        name="action_flow_calendar_event_load_project_task" type="object" string="Plan in Calendar"
+                        context="{'res_model': 'project.task', 'active_model': 'project.task', 'default_flowcal_task_project_id': project_id, 'default_flowcal_task_id': id, 'default_res_id': id}"
+                        class="oe_highlight"/>
+                </xpath>
+
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button class="oe_stat_button" type="action"
+                            name="%(act_project_project_task_2_calendar_event_all)d" icon="fa-calendar">
+                        <field string="Calendar Events" name="flowcal_upcoming_event_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+
+                <field name="name" position="after">
+                    <field name="id" invisible="1"/>
+                </field>
+
+                <field name="date_deadline" position="after">
+                    <field name="flowcal_upcoming_event_start_date"/>
+                </field>
+
+                <xpath expr="//notebook/page[@name='description_page']" position="after">
+                    <page string="Calendar" attrs="{'invisible': [('id', '=', False)]}">
+                        <field name="flowcal_event_ids" context="{'flowcal_task_id': id}">
+                            <tree name="calendar_events" string="Calendar Events" editable="bottom" readonly="1" default_order="start_datetime asc">
+                                <field name="name"/>
+                                <field name="start_datetime" invisible="1"/>
+                                <field name="stop_datetime" invisible="1"/>
+                                <field name="start" required="1"/>
+                                <field name="stop" required="1"/>
+                                <field name="duration" readonly="1"/>
+                                <field name="partner_ids" widget="many2many_tags"/>
+                                <field name="state" invisible="1"/>
+                                <field name="attendee_status"/>
+                                <button type="object" name="action_flow_calendar_event_from_project_task" string="Event"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_calendar_event_search_deadline_filters" model="ir.ui.view">
+            <field name="name">calendar.event.search.deadline.filters</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+            <field name="arch" type="xml">
+                <filter name="mymeetings" position="after">
+                    <separator name="deadline_current_and_next_weeks"/>
+                    <!-- current week -->
+                    <filter string="Deadline current week" name="deadline_current_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=-1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weekday=6)).strftime('%Y-%m-%d'))]" help="Tasks with Deadline current week"/>
+                    <!-- current AND next week -->
+                    <filter string="Deadline between current and next week" name="deadline_current_next_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=-1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=1,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline current and next week"/>
+                    <!-- current AND next 2nd week -->
+                    <filter string="Deadline between current and next 2nd week" name="deadline_current_next_2nd_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=-1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=2,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline between current and next 2nd week"/>
+                    <!-- current AND next 3rd week -->
+                    <filter string="Deadline between current and next 3rd week" name="deadline_current_next_3rd_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=-1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=3,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline between current and next 3rd week"/>
+                    <!-- current AND next 4th week -->
+                    <filter string="Deadline between current and next 4th week" name="deadline_current_next_4th_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=-1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=4,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline between current and next 4th week"/>
+                    <separator name="deadline_next_weeks"/>
+                    <!-- Next week -->
+                    <filter string="Deadline next week" name="deadline_next_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=1,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline next week"/>
+                    <!-- Next 2nd week -->
+                    <filter string="Deadline next 2nd week" name="deadline_next_2nd_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=1,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=2,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline next 2nd week"/>
+                    <!-- Next 3rd week -->
+                    <filter string="Deadline next 3rd week" name="deadline_next_3rd_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=2,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=3,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline next 3rd week"/>
+                    <!-- Next 4th week -->
+                    <filter string="Deadline next 4th week" name="deadline_next_4th_week" domain="['|', ('flowcal_task_id', '=', False), '&amp;', ('flowcal_task_id.date_deadline', '&gt;=', (context_today() + relativedelta(weeks=3,weekday=0)).strftime('%Y-%m-%d')),('flowcal_task_id.date_deadline','&lt;=',(context_today()+relativedelta(weeks=4,weekday=6)).strftime('%Y-%m-%d'))]"  help="Tasks with Deadline next 4th week"/>
+                </filter>
+            </field>
+        </record>
+    </data>
+</odoo>

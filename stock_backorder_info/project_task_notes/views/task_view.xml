@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <odoo>
+    <data>
+
+        <record id="edit_project_task_inherit_notes" model="ir.ui.view">
+            <field name="name">project.task.form2</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                     <button class="oe_stat_button" type="object" icon="fa-tasks" name="view_notes">
+                            <field string="Notes" name="notes_count" widget="statinfo" options="{'label_field': 'label_notes'}"/>
+                     </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-extend="CalendarView.quick_create">
+        <t t-jquery=".form-group" t-operation="after">
+            <div class="flow-calendar form-group">
+                <strong>Flow Calendar:</strong>
+                <div class="flow-calendar-apps"/>
+            </div>
+        </t>
+    </t>
+</templates>

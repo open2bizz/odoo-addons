@@ -1,8 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
-
-        <record id="view_default_data_form_edit" model="ir.ui.view">
+    <record id="view_default_data_form_edit" model="ir.ui.view">
             <field name="name">default.data.form</field>
             <field name="priority">100</field>
             <field name="model">default.data</field>
@@ -38,6 +36,42 @@
             </field>
         </record>
 
+    <record id="view_default_data_form_edit" model="ir.ui.view">
+            <field name="name">default.data.form</field>
+            <field name="priority">100</field>
+            <field name="model">default.data</field>
+            <field name="arch" type="xml">
+                <form string="Default Data">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="model_id"/>
+                        </group>
+                        <group>
+                            <field name="field_id" attrs="{'invisible' : [('model_id', '=', False)] }"/>
+                            <field name="model" attrs="{'invisible' : [('model_id', '=', False)] }"/>
+                            <field name="field" attrs="{'invisible' : [('field_id', '=', False)] }"/>
+                            <field name="type" attrs="{'invisible' : [('field_id', '=', False)] }"/>
+                        </group>
+                        </group>
+                        <group>
+                            <field name="value_char" attrs="{'invisible' : [('type', '!=', 'char')]}"/>
+                            <field name="value_text" attrs="{'invisible' : [('type', '!=', 'text')]}"/>
+                            <field name="value_html" attrs="{'invisible' : [('type', '!=', 'html')]}"/>
+                            <field name="value_integer" attrs="{'invisible' : [('type', '!=', 'integer')]}"/>
+                            <field name="value_float" attrs="{'invisible' : [('type', '!=', 'float')]}"/>
+                            <field name="value_boolean" attrs="{'invisible' : [('type', '!=', 'boolean')]}"/>
+                            <field name="value_binary" attrs="{'invisible' : [('type', '!=', 'binary')]}"/>
+                            <field name="value_date" attrs="{'invisible' : [('type', '!=', 'date')]}"/>
+                            <field name="value_datetime" attrs="{'invisible' : [('type', '!=', 'datetime')]}"/>
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+ 
         <record id="view_default_data_form" model="ir.ui.view">
             <field name="name">default.data.form_view</field>
             <field name="priority">16</field>
@@ -73,9 +107,8 @@
                 </form>
             </field>
         </record>
-        
-        
-        <record id="view_default_data_tree" model="ir.ui.view">
+
+    <record id="view_default_data_tree" model="ir.ui.view">
             <field name="name">default.data.tree</field>
             <field name="model">default.data</field>
             <field name="arch" type="xml">
@@ -108,12 +141,7 @@
             <field name="view_id" ref="view_default_data_form_edit"/>
             <field name="act_window_id" ref="action_default_data"/>
         </record>
-
         
-        <menuitem id="menu_default_data_root" parent="base.menu_custom"
-            groups="default_data.group_default_data_admin" string="Default Data" />
-
-        <menuitem id="menu_default_data" parent="default_data.menu_default_data_root"
-            action="action_default_data" />
-    </data>
+        <menuitem id="menu_default_data_root" parent="base.menu_administration"
+            groups="default_data.group_default_data_admin" name="Default Data" sequence="5" action="action_default_data" />
 </odoo>

@@ -1,0 +1,245 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* flow_calendar_project_task
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-06-25 10:15+0000\n"
+"PO-Revision-Date: 2018-06-25 12:20+0200\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_kanban_flow_calendar
+msgid ") Upcoming Cal.Event(s)"
+msgstr ") aankomende agenda item(s)"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_kanban_flow_calendar
+msgid ""
+"<i class=\"fa fa-trash\"/>\n"
+"                            Delete ("
+msgstr "<i class=\"fa fa-trash\"/> Verwijder ("
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form_popup
+msgid "<span style=\"margin-left: 4px;\">hours</span>"
+msgstr "<span style=\"margin-left: 4px;\">uren</span>"
+
+#. module: flow_calendar_project_task
+#: code:addons/flow_calendar_project_task/models/project.py:46
+#, python-format
+msgid "A Calendar Event after Deadline isn't allowed."
+msgstr ""
+"Het is niet toegestaan een agenda afspraak te maken na de deadline van de "
+"taak."
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_project_task_flowcal_event_ids
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_form2_flow_calendar
+msgid "Calendar"
+msgstr "Agenda"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_project_task_flowcal_event_count
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_project_task_flowcal_upcoming_event_count
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_form2_flow_calendar
+msgid "Calendar Events"
+msgstr "Agenda Afspraken"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline between current and next 2nd week"
+msgstr "Deadline tussen deze en volgende 2de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline between current and next 3rd week"
+msgstr "Deadline tussen deze en volgende 3de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline between current and next 4th week"
+msgstr "Deadline tussen deze en volgende 4de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline between current and next week"
+msgstr "Deadline tussen deze en volgende week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline current week"
+msgstr "Deadline deze week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline next 2nd week"
+msgstr "Deadline volgende 2de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline next 3rd week"
+msgstr "Deadline volgende 3de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline next 4th week"
+msgstr "Deadline volgende 4de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Deadline next week"
+msgstr "Deadline volgende week"
+
+#. module: flow_calendar_project_task
+#: model:ir.model,name:flow_calendar_project_task.model_calendar_event
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_form2_flow_calendar
+msgid "Event"
+msgstr "Afspraak"
+
+#. module: flow_calendar_project_task
+#: code:addons/flow_calendar_project_task/models/project.py:102
+#: model:ir.actions.act_window,name:flow_calendar_project_task.act_project_project_task_2_calendar_event_all
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_flow_calendar_project_task_calendar_event_search_form
+#, python-format
+msgid "Meetings"
+msgstr ""
+
+#. module: flow_calendar_project_task
+#: code:addons/flow_calendar_project_task/models/calendar.py:56
+#, python-format
+msgid "New"
+msgstr "Nieuw"
+
+#. module: flow_calendar_project_task
+#: code:addons/flow_calendar_project_task/models/calendar.py:43
+#, python-format
+msgid ""
+"Owner of the Calendar Event should be the same user as the assigned Task "
+"responsible."
+msgstr ""
+"De eigenaar van de Agenda Afspraak moet hetzelfde zijn als de toegewezen "
+"persoon van de Taak."
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_task_form2_flow_calendar
+msgid "Plan in Calendar"
+msgstr "Plan in Agenda"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+msgid "Project"
+msgstr ""
+
+#. module: flow_calendar_project_task
+#. openerp-web
+#: code:addons/flow_calendar_project_task/static/src/xml/flow_calendar_project_task.xml:6
+#, python-format
+msgid "Project Task"
+msgstr "Project Taak"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+msgid "Select project..."
+msgstr "Selecteer project..."
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+msgid "Select task..."
+msgstr "Selecteer taak..."
+
+#. module: flow_calendar_project_task
+#: model:ir.model,name:flow_calendar_project_task.model_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_calendar_event_flowcal_task_id
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form_popup
+msgid "Task"
+msgstr "Taak"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_calendar_event_flowcal_task_date_deadline
+msgid "Task Deadline"
+msgstr "Taak Deadline"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_calendar_event_flowcal_task_project_id
+msgid "Task Project"
+msgstr "Taak Project"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_calendar_event_flowcal_task_remaining_hours
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.flow_calendar_project_task_view_calendar_event_form_popup
+msgid "Task Remaining"
+msgstr "Taak Resterende Tijd"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_calendar_event_flowcal_task_stage_id
+msgid "Task Stage"
+msgstr "Taak Fase"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline between current and next 2nd week"
+msgstr "Taken met Deadline tussen deze en volgende 2de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline between current and next 3rd week"
+msgstr "Taken met Deadline tussen deze en volgende 3de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline between current and next 4th week"
+msgstr "Taken met Deadline tussen deze en volgende 4de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline current and next week"
+msgstr "Taken met Deadline tussen deze en volgende week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline current week"
+msgstr "Taken met Deadline in deze week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline next 2nd week"
+msgstr "Taken met Deadline volgende 2de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline next 3rd week"
+msgstr "Taken met Deadline volgende 3de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline next 4th week"
+msgstr "Taken met Deadline volgende 4de week"
+
+#. module: flow_calendar_project_task
+#: model:ir.ui.view,arch_db:flow_calendar_project_task.view_calendar_event_search_deadline_filters
+msgid "Tasks with Deadline next week"
+msgstr "Taken met Deadline volgende week"
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,help:flow_calendar_project_task.field_calendar_event_flowcal_task_remaining_hours
+msgid ""
+"Total remaining time, can be re-estimated periodically by the assignee of "
+"the task."
+msgstr ""
+
+#. module: flow_calendar_project_task
+#: model:ir.model.fields,field_description:flow_calendar_project_task.field_project_task_flowcal_upcoming_event_start_date
+msgid "Upcoming Calendar Start"
+msgstr "Aankomende in agenda/planning"

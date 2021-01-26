@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright Nova Code (http://www.novacode.nl)
+See LICENSE file for full licensing details. -->
+
+<odoo>
+    <template id="assets_backend" name="flow_calendar assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/flow_calendar/static/src/js/calendar_quick_create.js"></script>
+            <script type="text/javascript" src="/flow_calendar/static/src/js/calendar_controller.js"></script>
+            <link rel="stylesheet" href="/flow_calendar/static/src/less/flow_calendar.less" type="text/less"/>
+        </xpath>
+    </template>
+</odoo>
