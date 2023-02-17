@@ -4,12 +4,12 @@
 {
     'name': 'Backorder info on delivery',
     'summary': 'Adds backorder information on delivery',
-    'version': '13.0.1.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Stock',
     'website': 'https://www.open2bizz.nl/',
     'author': 'Open2Bizz',
     'license': 'LGPL-3',
-    'installable': True,
+    'installable': False,
     'depends': [
         'stock',
         'sale',

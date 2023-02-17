@@ -21,6 +21,26 @@
     </xpath>
   </template>
 
+  <!-- layout striped -->
+  <template id="external_layout_boxed_banks" inherit_id="web.external_layout_striped">
+    <xpath expr="//div/div/ul" position="inside">
+
+        <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
+          <li t-if="ba.add_to_footer" class="list-inline-item">
+            IBAN No.:
+            <span t-field="ba.bank_account_id.acc_number" />
+          </li>
+          <li t-if="ba.add_to_footer" class="list-inline-item">
+            Bank:
+            <span t-field="ba.bank_id.name" />
+          </li>
+          <li t-if="ba.add_to_footer" class="list-inline-item">
+            BIC No.:
+            <span t-field="ba.bank_id.bic" />
+          </li>
+        </ul>
+    </xpath>
+  </template>
   <!-- layout boxed -->
   <template id="external_layout_boxed_banks" inherit_id="web.external_layout_boxed">
     <xpath expr="//div/div/ul" position="inside">
@@ -42,8 +62,8 @@
     </xpath>
   </template>
 
-  <!-- layout external_layout_clean -->
-  <template id="external_layout_clean_banks" inherit_id="web.external_layout_clean">
+  <!-- layout external_layout_bold -->
+  <template id="external_layout_clean_banks" inherit_id="web.external_layout_bold">
     <xpath expr="//div/div/ul" position="inside">
       
         <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">

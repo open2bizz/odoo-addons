@@ -4,12 +4,12 @@
 {
     'name': 'Delivery info on Invoice',
     'summary': 'Adds delivery information on invoice',
-    'version': '13.0.1.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Accounting',
     'website': 'https://www.open2bizz.nl/',
     'author': 'Open2Bizz',
     'license': 'LGPL-3',
-    'installable': True,
+    'installable': False,
     'depends': [
         'account',
         'sale',

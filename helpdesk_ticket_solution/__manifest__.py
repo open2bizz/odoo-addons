@@ -16,5 +16,5 @@
         'views/view_helpdesk_ticket.xml',
         'security/ir.model.access.csv',
     ],            
-    'installable': True,
+    'installable': False,
 }

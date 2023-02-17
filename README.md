@@ -2,20 +2,10 @@
 
 https://github.com/open2bizz/odoo-addons
 
-For more information:
+Version 16
 
-- View the 'README' file in the addon
-- Check the Odoo Apps page:
+Changes from V13:
+module default_data moved to health (because it is primairaly used here)
+module project_type Not available (use default Odoo features)
+module project_view_with_messaging Not available (is default integrated now)
 
-Addon | Page | Community or Enterprise
------ | ---- | -----------------------
-default_data | https://www.odoo.com/apps/modules/13.0/default_data | Community
-helpdesk_ticket_solution | https://www.odoo.com/apps/modules/13.0/helpdesk_ticket_solution | Enterprise
-Project view messaging | https://www.odoo.com/apps/modules/13.0/project_view_with_messaging | Community
-
-Not available:
-
-Addon | Page | Community or Enterprise
------ | ---- | -----------------------
-project_type | https://www.odoo.com/apps/modules/13.0/project_type/ | Community
-git_info | https://www.odoo.com/apps/modules/13.0/git_info | Community

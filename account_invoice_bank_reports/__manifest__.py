@@ -1,10 +1,10 @@
-# Copyright 2013-2020 Open2Bizz <info@open2bizz.nl>
+# Copyright 2013-2023 Open2Bizz <info@open2bizz.nl>
 # License LGPL-3
 
 {
     'name': 'account_invoice_bank_reports',
     'summary': 'Add Banks (optional) to report footer',
-    'version': '13.0.1.0.0',
+    'version': '16.0.1.0.0',
     'category': 'Accounting',
     'website': 'https://www.open2bizz.nl/',
     'author': 'Open2Bizz',

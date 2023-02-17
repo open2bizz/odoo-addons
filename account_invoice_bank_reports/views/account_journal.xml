@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.view_account_journal_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='bank_id']" position="after">
-				<field name="add_to_footer"/>
+				<field name="add_to_footer" widget="boolean_toggle"/>
             </xpath>
         </field>
     </record>

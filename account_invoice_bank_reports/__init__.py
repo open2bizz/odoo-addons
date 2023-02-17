@@ -2,4 +2,5 @@
 # License LGPL-3
 
 from . import models
+from . import wizard
 
