@@ -1,85 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <!-- layout background -->
-  <template id="external_layout_background_banks" inherit_id="web.external_layout_background">
-    <xpath expr="//div/div/ul" position="inside">
-      
-        <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
-            <span t-field="ba.bank_account_id.acc_number" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            Bank:
-            <span t-field="ba.bank_id.name" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            BIC No.:
-            <span t-field="ba.bank_id.bic" />
-          </li>
-        </ul>
-    </xpath>
-  </template>
-
   <!-- layout striped -->
-  <template id="external_layout_boxed_banks" inherit_id="web.external_layout_striped">
+  <template id="external_layout_striped_banks" inherit_id="web.external_layout_striped">
     <xpath expr="//div/div/ul" position="inside">
-
-        <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
+        <t t-foreach="company.bank_journal_ids" t-as="ba" id="bank_account" >
+          <t t-if="ba.add_to_footer">
+            <span>IBAN: </span>
             <span t-field="ba.bank_account_id.acc_number" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            Bank:
+            <span> | </span>
             <span t-field="ba.bank_id.name" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            BIC No.:
+            <span> | BIC: </span>
             <span t-field="ba.bank_id.bic" />
-          </li>
-        </ul>
+          </t>
+        </t>
     </xpath>
   </template>
   <!-- layout boxed -->
   <template id="external_layout_boxed_banks" inherit_id="web.external_layout_boxed">
-    <xpath expr="//div/div/ul" position="inside">
-      
-        <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
+    <xpath expr="//div[@class='text-center'][1]/div[1]" position="after">
+        <t t-foreach="company.bank_journal_ids" t-as="ba" id="bank_account" >
+          <t t-if="ba.add_to_footer">
+            <span>IBAN: </span>
             <span t-field="ba.bank_account_id.acc_number" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            Bank:
+            <span> | </span>
             <span t-field="ba.bank_id.name" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            BIC No.:
+            <span> | BIC: </span>
             <span t-field="ba.bank_id.bic" />
-          </li>
-        </ul>
+          </t>
+        </t>
     </xpath>
   </template>
 
   <!-- layout external_layout_bold -->
   <template id="external_layout_clean_banks" inherit_id="web.external_layout_bold">
-    <xpath expr="//div/div/ul" position="inside">
-      
-        <ul id="bank_account" t-foreach="company.bank_journal_ids" t-as="ba" class="list-inline">
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            IBAN No.:
-            <span t-field="ba.bank_account_id.acc_number" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            Bank:
-            <span t-field="ba.bank_id.name" />
-          </li>
-          <li t-if="ba.add_to_footer" class="list-inline-item">
-            BIC No.:
-            <span t-field="ba.bank_id.bic" />
-          </li>
-        </ul>
+    <xpath expr="//div[@class='col-4'][2]" position="after">
+      <div class="col-4">
+        <t t-foreach="company.bank_journal_ids" t-as="ba" id="bank_account">
+          <t t-if="ba.add_to_footer">
+            <span>IBAN: </span><span t-field="ba.bank_account_id.acc_number"/><br/>
+            <span t-field="ba.bank_id.name"/><span> BIC: </span><span t-field="ba.bank_id.bic"/>
+          </t>
+        </t>
+      </div>
     </xpath>
   </template>
 
