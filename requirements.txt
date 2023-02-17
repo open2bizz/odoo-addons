@@ -1,3 +1,0 @@
-dicttoxml
-orbeon-xml-api
-xmlunittest
