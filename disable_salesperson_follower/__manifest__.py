@@ -1,4 +1,4 @@
-# Copyright 2020 Open2Bizz <info@open2bizz.nl>
+# Copyright 2020-2023 Open2Bizz <info@open2bizz.nl>
 # License LGPL-3
 
 {
@@ -8,7 +8,7 @@
     'category': 'Sale',
     'website': 'https://www.open2bizz.tech/',
     'author': 'Open2Bizz',
-    'license': 'OPL-1',
+    'license': 'LGPL-3',
     'installable': False,
     'depends': [
         'sale',
