@@ -25,5 +25,18 @@
       </xpath>
       </field>
     </record>
+
+    <record id="ticket_description_html" model="ir.ui.view">
+      <field name="name">ticket_description_html</field>
+      <field name="model">helpdesk.ticket</field>
+      <field name="inherit_id" ref="helpdesk.tickets_followup"/>
+      <field name="arch" type="xml">
+	<xpath expr="//div[@class='row mb-4'][5]/div[@class='col-lg-10'][1]" postion="replace">
+  		<!-- make it HTML -->
+  		<div t-if="ticket.description" class="col-lg-10" t-raw="ticket.description"/>
+	</xpath>
+      </field>
+    </record>	  
+	  
   </data>
 </odoo>
