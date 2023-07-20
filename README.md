@@ -3,6 +3,9 @@
 https://github.com/open2bizz/odoo-addons
 
 Version 16
+===
+These modules we moved to Gitlab (private)
+===
 
 Changes from V13:
 module default_data moved to health (because it is primairaly used here)
