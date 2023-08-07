@@ -1,42 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <data>
-    <!-- todo when integrating with timesheets this needs to be altered --> 
+
     <record id="helpdesk_ticket_view_form_inherit" model="ir.ui.view">
       <field name="name">helpdesk.ticket.form.inherit</field>
       <field name="model">helpdesk.ticket</field>
       <field name="priority">32</field>
-      <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+      <field name="inherit_id" ref="helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet" />
       <field name="arch" type="xml">
-		<xpath expr="//field[@name='description']" position="replace">
-		<notebook>
-          <page string="Description" name="description_page">
-			<field name="description" widget="html" colspan="4" nolabel="1"/>
-		  </page>
-          <page string="Solution or Response" name="solution_page">
-            <field name="solution" colspan="4" nolabel="1"/>
-            <div class="oe_edit_only">
-				Use template
-				<field name="default_solution" nolabel="1" class="oe_inline" options="{'no_create': True}"/>
-				</div>
-            <button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right"/>
-          </page>
-      </notebook>
-      </xpath>
+        <xpath expr="//field[@name='description']" position="replace">
+              <field name="description" widget="html" colspan="4" nolabel="1" />
+        </xpath>
+        <xpath expr="//notebook" position="inside">
+            <page string="Solution or Response" name="solution_page">
+              <field name="solution" colspan="4" nolabel="1" />
+              <div class="oe_edit_only">
+                Use template
+                <field name="default_solution" nolabel="1" class="oe_inline" options="{'no_create': True}" />
+              </div>
+              <button name="action_create_default_data" string="Add the value as new default data" type="object" class="oe_link oe_right" />
+            </page>
+        </xpath>
+        <xpath expr="//button[@name='assign_ticket_to_self']" position="after">
+          <button name="action_ticket_send" string="Send by email" type="object" class="oe_highlight" />
+        </xpath>
       </field>
     </record>
-
-    <record id="ticket_description_html" model="ir.ui.view">
-      <field name="name">ticket_description_html</field>
-      <field name="model">helpdesk.ticket</field>
-      <field name="inherit_id" ref="helpdesk.tickets_followup"/>
-      <field name="arch" type="xml">
-	<xpath expr="//div[@class='row mb-4'][5]/div[@class='col-lg-10'][1]" postion="replace">
-  		<!-- make it HTML -->
-  		<div t-if="ticket.description" class="col-lg-10" t-raw="ticket.description"/>
-	</xpath>
-      </field>
-    </record>	  
-	  
   </data>
 </odoo>

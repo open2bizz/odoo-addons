@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="mail_activity_projecttask_form" model="ir.ui.view">
+        <field name="name">mail.activity.projecttask_form</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="ticket_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+                <field name="customer_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+                <field name="project_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="mail_activity_projecttask_tree" model="ir.ui.view">
+        <field name="name">mail.activity.projecttask_tree</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='res_name']" position="before">
+                <field name="ticket_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+                <field name="customer_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+                <field name="project_id" attrs="{'invisible':[('ticket_id','=',False)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+</odoo>
