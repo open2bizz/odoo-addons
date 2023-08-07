@@ -10,10 +10,13 @@
     'website': 'http://open2bizz.nl/',
     'depends': [
         'helpdesk',
+        'helpdesk_timesheet',
         'default_data'
     ],
     'data':[
         'views/view_helpdesk_ticket.xml',
+        'views/helpdesk_team.xml',
+        'views/activity_view.xml',
         'security/ir.model.access.csv',
     ],            
     'installable': True,

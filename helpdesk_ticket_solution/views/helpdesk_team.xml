@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="helpdesk_team_view_form" model="ir.ui.view">
+      <field name="name">helpdesk_team_view_form</field>
+      <field name="model">helpdesk.team</field>
+      <field name="priority">32</field>
+      <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//div[@id='channels']" position="inside">
+            <div class="col-lg-6 o_setting_box" id="template">
+                <div class="o_setting_left_pane"/>
+                <div class="o_setting_right_pane">                
+                    <label for="default_solution_template_id"/>
+                    <field name="default_solution_template_id"/>
+                </div>
+                <div class="o_setting_left_pane"/>
+                <div class="o_setting_right_pane">                
+                    <label for="default_stage_closed_id"/>
+                    <field name="default_stage_closed_id" domain = "[('team_ids','in',id)]"/>
+                </div>
+            </div>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

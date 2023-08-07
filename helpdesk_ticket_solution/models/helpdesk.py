@@ -11,6 +11,19 @@ from odoo.exceptions import  ValidationError
 import logging
 _logger = logging.getLogger(__name__)
 
+class HelpdeskTeam(models.Model):
+    _inherit = 'helpdesk.team'
+
+    default_solution_template_id = fields.Many2one(
+        comodel_name = 'mail.template',
+        string = 'Default Template'
+    )
+    default_stage_closed_id = fields.Many2one(
+        comodel_name = 'helpdesk.stage',
+        string = 'Default Stage initial Closed',
+        domain = "[('model_id', '=', 'helpdesk.ticket')]"
+    )
+
 class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
     
@@ -45,3 +58,30 @@ class HelpdeskTicket(models.Model):
                 'res_id': default_data.id,
                 'domain': [('model','=','helpdesk.ticket')],
             } 
+
+    def action_ticket_send(self):
+        ''' Opens a wizard to compose an email, with relevant mail template loaded by default '''
+        self.ensure_one()
+        template = self.team_id.default_solution_template_id
+        lang = self.env.context.get('lang')
+        if template.lang:
+            lang = template._render_lang(self.ids)[self.id]
+        ctx = {
+            'default_model': 'helpdesk.ticket',
+            'default_res_id': self.ids[0],
+            'default_use_template': bool(template),
+            'default_template_id': template.id,
+            'default_composition_mode': 'comment',
+            'force_email': True,
+        }
+        if self.team_id.default_stage_closed_id:
+            self.stage_id = self.team_id.default_stage_closed_id.id
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
